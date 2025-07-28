@@ -1,0 +1,15 @@
+@keyframes modalanim {
+    0%{opacity: 0;}
+    100%{opacity:1;}
+}
+
+
+
+
+.modalanim{
+    animation-name: modalanim;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+    
+}
+

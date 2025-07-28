@@ -1,0 +1,43 @@
+.pfp{
+    border-radius: 50%;
+}
+
+
+.icon{
+    width: 20px;
+    height: 2%;
+}
+
+/* songlists*/
+
+.card{
+    
+}
+.card-img-top{
+    
+    filter:brightness(50%);
+    height:150px;
+
+}
+
+/* create song*/
+.songstructure{
+
+    width: 300px;
+    height: 300px;
+
+
+}
+
+/*song inputs*/
+.songinput,.songtextarea{
+    border-radius: 5px;
+    border:solid 1px gray;
+}
+.songinput{
+    width: 150px;
+}
+
+.btn{
+    border-radius: 30px;
+}
