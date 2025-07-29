@@ -27,17 +27,39 @@ class LogValidation {
         });
     }
 
+    putSubmitHandler(params = { redirect: false, url: "" }) {
+        this.form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            Alert.LoadingAlert();
+
+            const response = await Async.put(this.url, this.form);
+
+            if (response.status === "success") {
+                Alert.SuccessAlert(response.message);
+                if (params.redirect) {
+                    window.location.href = params.url;
+                }
+            } else {
+                Alert.ErrorAlert(response.message);
+            }
+        });
+    }
+
     async deleteSubmitHandler(element, params = { redirect: false, url: "" }) {
         const id = element.getAttribute("data-id");
-        const response = await Async.delete(this.url);
+        const cancelResponse = await Alert.confirmDeleteAlert();
 
-        if (response.status === "success") {
-            Alert.SuccessAlert(response.message);
-            if (params.redirect) {
-                window.location.href = params.url;
+        if (cancelResponse == true) {
+            const response = await Async.delete(this.url);
+            if (response.status === "success") {
+                Alert.SuccessAlert(response.message);
+                if (params.redirect) {
+                    window.location.href = params.url;
+                }
+            } else {
+                Alert.ErrorAlert(response.message);
             }
-        } else {
-            Alert.ErrorAlert(response.message);
         }
     }
 }

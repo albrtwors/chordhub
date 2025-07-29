@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Song;
 
 use App\Http\Controllers\Controller;
 use App\Models\Song;
+use App\Models\User;
 use App\Http\Controllers\Auth\AuthSessionVerify;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,9 @@ class SongViewsController extends Controller
 
    public function renderSong($id){
       $songs = Song::find($id);
-      return view("modules.Song.song", compact('songs'));
+      $user = $songs->user;
+
+      return view("modules.Song.song", ["songs"=>$songs, "user"=>$user]);
    }
 
    public function renderCreate(){
@@ -27,8 +30,13 @@ class SongViewsController extends Controller
 
    public function renderModify(){
 
+      $songs = Song::all();
+      return view("modules.Song.modify", compact('songs'));
+   }
 
-      return view("modules.Song.modify");
+   public function renderModifySong($id){
+      $song = Song::find($id);
+      return view("modules.Song.modify_song", compact('song'));
    }
 
    public function renderDelete(){

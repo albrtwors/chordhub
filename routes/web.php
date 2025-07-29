@@ -14,6 +14,7 @@ use App\Http\Controllers\App\AppPfpChangeController;
 use App\Http\Controllers\Song\SongViewsController;
 use App\Http\Controllers\Song\SongCreateController;
 use App\Http\Controllers\Song\SongDeleteController;
+use App\Http\Controllers\Song\SongModifyController;
 use Illuminate\Container\Attributes\Auth;
 
 
@@ -63,11 +64,13 @@ Route::get('/chordhub/canciones', [SongViewsController::class, 'renderSongs'])->
 Route::get('/chordhub/cancion/{id}', [SongViewsController::class, 'renderSong'])->name('song')->middleware(CheckUserSession::class);
 
 // SONG CREATE VIEW
-Route::get('/chordhub/canciones/crear', [SongViewsController::class, 'renderCreate'])->name('song_create')->middleware(CheckUserSession::class);;
+Route::get('/chordhub/canciones/crear', [SongViewsController::class, 'renderCreate'])->name('song_create')->middleware(CheckUserSession::class);
 Route::post('/song_create_validate', [SongCreateController::class, 'createSong'])->name('song_create_validate');
 
 // SONG MODIFY VIEW
-Route::get('/chordhub/canciones/modificar', [SongViewsController::class, 'renderModify'])->name('song_modify')->middleware(CheckUserSession::class);;
+Route::get('/chordhub/canciones/modificar', [SongViewsController::class, 'renderModify'])->name('song_modify')->middleware(CheckUserSession::class);
+Route::get('/chordhub/canciones/modificar/{id}', [SongViewsController::class, 'renderModifySong'])->name('song_mod')->middleware(CheckUserSession::class);
+Route::post('/song_modify_validate', [SongModifyController::class, 'modifySong'])->name('song_modify_validate');
 
 //SONG DELETE VIEWS
 Route::get('/chordhub/canciones/eliminar', [SongViewsController::class, 'renderDelete'])->name('song_delete')->middleware(CheckUserSession::class);;

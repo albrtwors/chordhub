@@ -8,8 +8,9 @@ window.songDelete = async (element) => {
         $form,
         `${url}${element.getAttribute("data-id")}`
     );
+
     validation.deleteSubmitHandler(element, {
         redirect: true,
-        url: `/chordhub/canciones/`,
+        url: `/chordhub/canciones/eliminar`,
     });
 };

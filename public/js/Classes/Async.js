@@ -23,4 +23,16 @@ class Async {
             },
         }).then((response) => response.json());
     }
+
+    static async put(url, form) {
+        return fetch(url, {
+            method: "PUT",
+            body: new FormData(form),
+            headers: {
+                "X-CSRF-TOKEN": document
+                    .querySelector('meta[name="csrf-token"]')
+                    .getAttribute("content"),
+            },
+        }).then((response) => response.json());
+    }
 }

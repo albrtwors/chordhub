@@ -60,8 +60,16 @@
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
-
-
+            <li class="nav-item {{request()->is('chordhub/news') ? 'active' : '' }}">
+                <a class="nav-link" href="/chordhub">
+                    <i class="fas fa-fw fa-newspaper"></i>
+                    <span>Últimas novedades</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="tables.html">
+                    <i class="fas fa-fw fa-robot"></i>
+                    <span>Asistente virtual</span></a>
+            </li>
 
            <!-- Divider -->
             <hr class="sidebar-divider">
@@ -134,9 +142,9 @@
             <!-- Nav Item - Pages Collapse Menu -->
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item {{request()->is("chordhub/songs") ? 'active' : ''}}">
+            <li class="nav-item {{request()->is("chordhub/cancioneros") ? 'active' : ''}}">
                 <a class="nav-link" href="/chordhub/songs">
-                    <i class="fas fa-fw fa-music"></i>
+                    <i class="fas fa-fw fa-clipboard-list"></i>
                     <span>Cancioneros</span></a>
             </li>
 
@@ -144,7 +152,7 @@
             <!-- Nav Item - Charts -->
             <li class="nav-item {{ request()->is('chordhub/songs/create') ? 'active' : '' }}">
                 <a class="nav-link" href="/chordhub/songs/create">
-                    <i class="fas fa-fw fa-upload"></i>
+                    <i class="fas fa-fw fa-folder-open"></i>
                     <span>Crear Cancionero</span></a>
             </li>
 
@@ -158,7 +166,7 @@
             <!-- Nav Item - Tables -->
             <li class="nav-item {{ request()->is('chordhub/songs/modify') ? 'active' : '' }} ">
                 <a class="nav-link" href="/chordhub/songs/modify">
-                    <i class="fas fa-fw fa-file"></i>
+                    <i class="fas fa-fw fa-hammer"></i>
                     <span>Modificar Cancionero</span></a>
             </li>
             
@@ -174,7 +182,7 @@
 
             <li class="nav-item">
                 <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
+                    <i class="fas fa-fw fa-music"></i>
                     <span>Editar Acordes</span></a>
             </li>
 
@@ -194,19 +202,7 @@
 
             <hr class="sidebar-divider d-none d-md-block">
 
-            <!-- Divider -->
-
-            <div class="sidebar-heading">
-                Asistente IA
-            </div>
-
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Habla con el asistente virtual</span></a>
-            </li>
-
-            <hr class="sidebar-divider d-none d-md-block">
+        
 
 
             <!-- Sidebar Toggler (Sidebar) -->
