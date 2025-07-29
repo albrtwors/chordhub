@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
    
 
 
@@ -101,22 +101,22 @@
 
 
             <!-- Nav Item - Charts -->
-            <li class="nav-item {{ request()->is('chordhub/songs/create') ? 'active' : '' }}">
-                <a class="nav-link" href="/chordhub/songs/create">
+            <li class="nav-item {{ request()->is('chordhub/canciones/crear') ? 'active' : '' }}">
+                <a class="nav-link" href="{{route("song_create")}}">
                     <i class="fas fa-fw fa-upload"></i>
                     <span>Crear Canción</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item {{ request()->is('chordhub/songs/delete') ? 'active' : '' }}">
-                <a class="nav-link " href="/chordhub/songs/delete">
+            <li class="nav-item {{ request()->is('chordhub/canciones/eliminar') ? 'active' : '' }}">
+                <a class="nav-link " href="{{route("song_delete")}}">
                     <i class="fas fa-fw fa-trash"></i> 
                     <span>Eliminar Canción</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item {{ request()->is('chordhub/songs/modify') ? 'active' : '' }} ">
-                <a class="nav-link" href="/chordhub/songs/modify">
+            <li class="nav-item {{ request()->is('chordhub/canciones/modificar') ? 'active' : '' }} ">
+                <a class="nav-link" href="{{route("song_modify")}}">
                     <i class="fas fa-fw fa-file"></i>
                     <span>Modificar Canción</span></a>
             </li>
@@ -180,11 +180,42 @@
 
             <hr class="sidebar-divider d-none d-md-block">
 
+             <!-- Divider -->
+
+            <div class="sidebar-heading">
+                Foro
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="tables.html">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Principal</span></a>
+            </li>
+
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Divider -->
+
+            <div class="sidebar-heading">
+                Asistente IA
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="tables.html">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Habla con el asistente virtual</span></a>
+            </li>
+
+            <hr class="sidebar-divider d-none d-md-block">
+
+
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
 
+
+            
 
 
 

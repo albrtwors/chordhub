@@ -26,4 +26,18 @@ class LogValidation {
             }
         });
     }
+
+    async deleteSubmitHandler(element, params = { redirect: false, url: "" }) {
+        const id = element.getAttribute("data-id");
+        const response = await Async.delete(this.url);
+
+        if (response.status === "success") {
+            Alert.SuccessAlert(response.message);
+            if (params.redirect) {
+                window.location.href = params.url;
+            }
+        } else {
+            Alert.ErrorAlert(response.message);
+        }
+    }
 }

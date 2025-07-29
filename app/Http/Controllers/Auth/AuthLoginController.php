@@ -14,7 +14,7 @@ class AuthLoginController extends Controller
     public function loginUser(Request $req){
         $user = $req->input('name');
         $pass = $req->input('pass');
-        $pfp = $req->input('pfp');
+        
 
         if(!$this->verifyUserOnBd($user, $pass)){ 
             return json_encode(["status"=> "wrong", 
@@ -25,7 +25,8 @@ class AuthLoginController extends Controller
             return json_encode(["status"=> "wrong", "message" => "El usuario no está activo"]);
         }
 
-        session(["user_name"=>$user, "user_pfp"=>$pfp]);
+        session(["user_name"=>$user, "user_pfp"=>$this->getPfp($user)]);
+        
         return json_encode(["status"=> "success", 
                             "message" => "Usuario logueado correctamente"]);
     }
@@ -51,5 +52,9 @@ class AuthLoginController extends Controller
         return false;
     }
 
+    function getPfp($name){
+        $user = $this->getUserByName($name);
+        return $user->pfp;
+    }
    
 }

@@ -23,65 +23,37 @@
 
 <div class="ms-5 me-3 row justify-content-center">
 
+<div class="row">
 
 
-    <?php 
+@forelse ($songs as $song)
 
-    $song = array(
-        array("En Tu Presencia", "Danilo Montero", "https://images.unsplash.com/photo-1492684223066-81342ee5ff30"),
-        array("Aquí Estoy", "Marcos Witt", "https://images.unsplash.com/photo-1506744038136-46273834b3fb"),
-        array("Dios de Pactos", "Marcos Brunet", "https://images.unsplash.com/photo-1520974734940-4f7b0f37e0b8"),
-        array("La Niña de Tus Ojos", "Hillsong Worship", "https://images.unsplash.com/photo-1606788075761-cc2d0dca1d4a"),
-        array("Que Se Abra el Cielo", "Elevation Worship", "https://images.unsplash.com/photo-1506744038136-46273834b3fb"),
-        array("Tu Fidelidad", "Marcos Brunet", "https://images.unsplash.com/photo-1512917774080-9991f1c4c750"),
-        array("Alabaré", "Marcos Witt", "https://images.unsplash.com/photo-1523413651479-597f00b91b92"),
-        array("Grande y Fiel", "Miel San Marcos", "https://images.unsplash.com/photo-1519389950473-47ba0277781c"),
-        array("Mi Redentor", "Evan Craft", "https://images.unsplash.com/photo-1549924231-f129b911e442"),
-        array("Gracias te Doy", "Christine D'Clario", "https://images.unsplash.com/photo-1506744038136-46273834b3fb"),
-        array("Dios Es Bueno", "Marcos Brunet", "https://images.unsplash.com/photo-1549924231-f129b911e442"),
-        array("La Luz del Mundo", "Miel San Marcos", "https://images.unsplash.com/photo-1519389950473-47ba0277781c"),
-        array("Tu Amor Es Grande", "Hillsong United", "https://images.unsplash.com/photo-1521737604893-d14cc237f11d"),
-        array("El Poder de Tu Amor", "Jesús Adrián Romero", "https://images.unsplash.com/photo-1549924231-f129b911e442"),
-        array("Eres Santo", "Christine D'Clario", "https://images.unsplash.com/photo-1506744038136-46273834b3fb"),
-        array("Solo Jesús", "Marcos Brunet", "https://images.unsplash.com/photo-1519389950473-47ba0277781c"),
-        array("Por Siempre", "Miel San Marcos", "https://images.unsplash.com/photo-1519389950473-47ba0277781c"),
-        array("Dios de lo Imposible", "Evan Craft", "https://images.unsplash.com/photo-1549924231-f129b911e442"),
-        array("Tú Eres Rey", "Hillsong Worship", "https://images.unsplash.com/photo-1506744038136-46273834b3fb"),
-        array("Mi Fortaleza", "Marcos Brunet", "https://images.unsplash.com/photo-1519389950473-47ba0277781c")
-    );
-    $num = 0;
-    foreach($song as $so){
-        
-        echo '
             
                 <div class="col-xl-4 col-md-6 col-sm-12 mt-5">
-                <div class="d-flex">
-                    
-                    <div>
-                        <img width="100px" height="100px" src="https://cdn-icons-png.flaticon.com/512/3809/3809073.png" alt="">
-                    
+                    <div class="d-flex">
+
+                        <div>
+                            <img width="100px" height="100px"
+                                src="https://cdn-icons-png.flaticon.com/512/3809/3809073.png" alt="">
+
+                        </div>
+                        <div class="ms-3">
+                            <a class="link-dark" href="{{route("song", $song->id)}}">
+                                <h4>{{$song->name}}</h4>
+                                <p>{{$song->author}}</p>
+                            </a>
+                        </div>
+
                     </div>
-                    <div class="ms-3">
-                    <a class="link-dark"  href="/chordhub/songs/song/">
-                        <h4>'.$so[0].'</h4>
-                        <p>'.$so[1].'</p>
-                    </a>
-                    </div>
-                    
                 </div>
-                </div>
-
-            
-
-        
-        
-        ';
-        $num+=1;
-    }
-
-    ?>
-
-
+    
+@empty
+    
+<div>
+    no hay mas canciones
+</div>
+@endforelse
+</div>
 
 
 </div>
