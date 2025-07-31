@@ -1,43 +1,62 @@
-.pfp{
+.pfp {
     border-radius: 50%;
 }
 
-
-.icon{
+.icon {
     width: 20px;
     height: 2%;
 }
 
 /* songlists*/
 
-.card{
-    
+.card {
 }
-.card-img-top{
-    
-    filter:brightness(50%);
-    height:150px;
-
+.card-img-top {
+    filter: brightness(50%);
+    height: 150px;
 }
 
 /* create song*/
-.songstructure{
-
+.songstructure {
     width: 300px;
     height: 300px;
-
-
 }
 
 /*song inputs*/
-.songinput,.songtextarea{
+.songinput,
+.songtextarea {
     border-radius: 5px;
-    border:solid 1px gray;
+    border: solid 1px gray;
 }
-.songinput{
+.songinput {
     width: 150px;
 }
 
-.btn{
+.btn {
     border-radius: 30px;
+}
+
+/* LISTS */
+
+.quote-badge {
+    background-color: #000000;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.quote-box {
+    overflow: hidden;
+    margin-top: 50px;
+    padding-top: -25px;
+    border-radius: 17px;
+    background-color: #255ed8;
+    color: white;
+    width: 325px;
+    box-shadow: 2px 2px 2px 2px #e0e0e0;
+}
+
+.quote-text {
+    font-size: 19px;
+}
+
+.blog-post-bottom pull-right {
 }

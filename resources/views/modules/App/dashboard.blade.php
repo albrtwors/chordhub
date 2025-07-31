@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
- <div class="container">
-     <h1>Bienvenido {{session("user_name")}}</h1>
+ <div class="container ">
+     <h1 class="">Bienvenido {{session("user_name")}}</h1>
 
      <div class="row justify-content-center">
-         <div class="col-xl-6 col-md-12">
+         <div class="col-xl-6  col-md-12">
              <div class="d-flex justify-content-center">
                  <img class="pfp my-3"
                      src="<?php  if(session("user_pfp")){echo session("user_pfp");}else{echo 'https://cdn-icons-png.flaticon.com/512/8791/8791450.png';}?>"

@@ -114,21 +114,18 @@
                     <i class="fas fa-fw fa-upload"></i>
                     <span>Crear Canción</span></a>
             </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item {{ request()->is('chordhub/canciones/eliminar') ? 'active' : '' }}">
-                <a class="nav-link " href="{{route("song_delete")}}">
-                    <i class="fas fa-fw fa-trash"></i> 
-                    <span>Eliminar Canción</span></a>
-            </li>
-
             <!-- Nav Item - Tables -->
             <li class="nav-item {{ request()->is('chordhub/canciones/modificar') ? 'active' : '' }} ">
                 <a class="nav-link" href="{{route("song_modify")}}">
                     <i class="fas fa-fw fa-file"></i>
                     <span>Modificar Canción</span></a>
             </li>
-            
+            <!-- Nav Item - Tables -->
+            <li class="nav-item {{ request()->is('chordhub/canciones/eliminar') ? 'active' : '' }}">
+                <a class="nav-link " href="{{route("song_delete")}}">
+                    <i class="fas fa-fw fa-trash"></i> 
+                    <span>Eliminar Canción</span></a>
+            </li>
             
 
             <!-- Divider -->
@@ -142,33 +139,33 @@
             <!-- Nav Item - Pages Collapse Menu -->
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item {{request()->is("chordhub/cancioneros") ? 'active' : ''}}">
-                <a class="nav-link" href="/chordhub/songs">
+            <li class="nav-item {{request()->is("chordhub/listas") ? 'active' : ''}}">
+                <a class="nav-link" href="{{route("lists")}}">
                     <i class="fas fa-fw fa-clipboard-list"></i>
                     <span>Cancioneros</span></a>
             </li>
 
 
             <!-- Nav Item - Charts -->
-            <li class="nav-item {{ request()->is('chordhub/songs/create') ? 'active' : '' }}">
-                <a class="nav-link" href="/chordhub/songs/create">
+            <li class="nav-item {{ request()->is('chordhub/listas/crear') ? 'active' : '' }}">
+                <a class="nav-link" href="{{route("lists_create")}}">
                     <i class="fas fa-fw fa-folder-open"></i>
                     <span>Crear Cancionero</span></a>
             </li>
-
             <!-- Nav Item - Tables -->
-            <li class="nav-item {{ request()->is('chordhub/songs/delete') ? 'active' : '' }}">
-                <a class="nav-link " href="/chordhub/songs/delete">
+            <li class="nav-item {{ request()->is('chordhub/listas/modificar') ? 'active' : '' }} ">
+                <a class="nav-link" href="{{route("lists_modify")}}">
+                    <i class="fas fa-fw fa-hammer"></i>
+                    <span>Modificar Cancionero</span></a>
+            </li>
+            <!-- Nav Item - Tables -->
+            <li class="nav-item {{ request()->is('chordhub/listas/eliminar') ? 'active' : '' }}">
+                <a class="nav-link " href="{{route("lists_delete")}}">
                     <i class="fas fa-fw fa-trash"></i> 
                     <span>Eliminar Cancionero</span></a>
             </li>
 
-            <!-- Nav Item - Tables -->
-            <li class="nav-item {{ request()->is('chordhub/songs/modify') ? 'active' : '' }} ">
-                <a class="nav-link" href="/chordhub/songs/modify">
-                    <i class="fas fa-fw fa-hammer"></i>
-                    <span>Modificar Cancionero</span></a>
-            </li>
+
             
 
 

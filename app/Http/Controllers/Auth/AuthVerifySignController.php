@@ -15,10 +15,7 @@ class AuthVerifySignController extends Controller
         $name = session('sign_name');
         $code = $req->input('codeinput');
 
-        if($this->verifyNameOnDb($name)){
-            return json_encode(["status"=> "wrong", 
-                                "message" => "El usuario ya existe"]);
-        }
+
         
         if(!$this->verifyCodeValidation($code)){
             return json_encode(["status"=> "wrong", 
@@ -45,6 +42,7 @@ class AuthVerifySignController extends Controller
     function updateUserState($name){
         $user = User::where('name', $name)->first();
         $user->state = 1;
+        $user->sign_code = null;
         $user->save();   
     }
 

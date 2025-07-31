@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<h1 class="ms-5 py-3">
+<h1 class="ms-5 py-3 ">
     Canciones
 </h1>
-<h3 class="ms-5 pb-3">
-    Aquí encontrarás todas las canciones disponibles
+<h3 class="ms-5 pb-3 ">
+    Aquí encontrarás todas las canciones disponiles
 </h3>
 
 

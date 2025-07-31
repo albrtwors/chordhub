@@ -12,18 +12,18 @@
 <h1 class="text-start sidebar-brand-text ms-5 py-3">
     Crea una nueva canción
 </h1>
-<h3 class="text-start ms-5 pb-3">
+<h3 class="text-start ms-5 pb-3 fs-xl-1 fs-md-4 fs-4 fs-sm-4">
     Establece todo lo necesario
 </h3>
 
-<div class="row d-flex justify-content-center">
-    <div class="border-left-primary col-xl-4 col-md-10 d-flex justify-content-center">
+<div class="row d-flex m-xl-0 m-md-5 m-5 justify-content-center">
+    <div class="border-left-xl-primary col-xl-4 col-md-10 d-flex justify-content-center">
         <form action="{{route("song_create_validate")}}" id="songform">
             @csrf
             @method('post')
             <input type="text" class="d-none" name="song_structure" id="valueofstructure">
             <div class="mx">
-                <h5 class="mt-3">Letra</h5>
+                <h5 class="mt-3 text-center">Letra</h5>
                 <div class="mt-3">
                     <div class="d-flex justify-content-center">
                         <button type="button" class="btn btn-danger my-3 me-3" id="clear">Limpiar</button>
@@ -40,9 +40,7 @@ Precoro
 Coro
 
 Puente
-
-
-                </textarea>
+</textarea>
 
                     </div>
 
@@ -53,7 +51,7 @@ Puente
                         <button type="button" title="añade un verso" id="coro" class=" me-3 btn btn-primary mt-2">Coro +</button>
                         <button type="button" id="puente" title="puente" class="btn btn-primary me-3 mt-2">Puente +</button>
                     </div>
-                    <h6 class="mt-3">Nombre de la canción</h6>
+                    <h6 class="mt-3 text-center">Nombre de la canción</h6>
 
                     <div class="input-group mt-3">
                         <input type="text" class="form-control bg-light small" name="song_name"
@@ -62,7 +60,7 @@ Puente
 
                     </div>
 
-                    <h6 class="mt-3">Intérpretes originales</h6>
+                    <h6 class="mt-3 text-center">Intérpretes originales</h6>
                     <div class="mt-3">
                         <div class="input-group mt-3">
                             <input type="text" name="song_author" class="form-control bg-light small"
@@ -102,10 +100,15 @@ Puente
 
                     </div> --}}
 
-                    <h6 class="mt-3">Género</h6>
-                    <div class="mt-3">
+                    <h6 class="mt-3 text-center">Género</h6>
+                    <div class="mt-3 d-flex justify-content-center">
                         <select name="song_genre" class="songinput form-control bg-light small">
                             <option value="Adoración">Adoración</option>
+                            <option value="Corito">Corito</option>
+                            <option value="Disco">Disco</option>
+                            <option value="Balada">Balada</option>
+                            <option value="Electrónica">Electrónica</option>
+                            <option value="Reggaeton">Reggaeton</option>
                             <option value="Pop">Pop</option>
                             <option value="Rock">Rock</option>
                             <option value="Bossa Nova">Bossa nova</option>
@@ -116,34 +119,11 @@ Puente
                         </select>
                     </div>
 
-                    <textarea name="" spellcheck="false" class="d-none songstructure songtextarea  bg-light small"
-                        id="area2">
-                    <div class="row justify-content-center">
-                    <div class="col-xl-8 col-md-12">
-                        <div class="est text-center">
-                            <h3 class="text-center">Estrofa</h3>
-                            <p class="m-5"></p>
-                        </div>
-                        <div class="pre text-center">
-                            <h3 class="text-center"></h3>
-                            <p class="m-5"></p>
-                        </div>
-                        <div class="chorus text-center">
-                            <h3 class="text-center">Coro</h3>
-                            <p class="m-5"></p>
-                        </div>
-                        <div class="inter text-center">
-                            <h3 class="text-center">Interludio</h3>
-                            <p class="m-5"></p>
-                        </div>
-                    </div>
+                   
                 </div>
 
-                </textarea>
-                </div>
-
-                <h6 class="mt-3">Palabras clave</h6>
-                <div class="mt-3">
+                <h6 class="mt-3 text-center">Palabras clave</h6>
+                <div class="mt-3 d-flex justify-content-center">
                     <input class="songinput" type="text" name="song_keywords" id="">
                 </div>
 
@@ -154,7 +134,7 @@ Puente
 
             </div>
     </div>
-    <div class="col-xl-6 col-md-10 d-flex justify-content-center">
+    <div class="col-xl-6 col-md-10 d-flex justify-content-center mt-md-5 mt-5 mt-xl-3">
         <div class="">
             <h5 class="text-center">Previsualización</h5>
             <div id="structure" class="m-3 text-center songletterbox">

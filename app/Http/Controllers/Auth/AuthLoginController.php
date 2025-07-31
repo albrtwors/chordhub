@@ -25,7 +25,7 @@ class AuthLoginController extends Controller
             return json_encode(["status"=> "wrong", "message" => "El usuario no está activo"]);
         }
 
-        session(["user_name"=>$user, "user_pfp"=>$this->getPfp($user)]);
+        session(["user_name"=>$user, "user_pfp"=>$this->getPfp($user), "user_id"=>$this->getId($user)]);
         
         return json_encode(["status"=> "success", 
                             "message" => "Usuario logueado correctamente"]);
@@ -55,6 +55,11 @@ class AuthLoginController extends Controller
     function getPfp($name){
         $user = $this->getUserByName($name);
         return $user->pfp;
+    }
+    
+    function getId($name){
+        $user = $this->getUserByName($name);
+        return $user->id;
     }
    
 }

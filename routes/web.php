@@ -9,12 +9,18 @@ use App\Http\Controllers\Auth\AuthLogoutController;
 use App\Http\Controllers\Auth\AuthSignController;
 use App\Http\Controllers\Auth\AuthVerifySignController;
 use App\Http\Controllers\Auth\AuthRestoreController;
+
 use App\Http\Controllers\App\AppViewController;
 use App\Http\Controllers\App\AppPfpChangeController;
+
 use App\Http\Controllers\Song\SongViewsController;
 use App\Http\Controllers\Song\SongCreateController;
 use App\Http\Controllers\Song\SongDeleteController;
 use App\Http\Controllers\Song\SongModifyController;
+
+use App\Http\Controllers\List\ListViewsController;
+use App\Http\Controllers\List\ListCreateController;
+use App\Http\Controllers\List\ListDeleteController;
 use Illuminate\Container\Attributes\Auth;
 
 
@@ -78,5 +84,15 @@ Route::delete('/chordhub/canciones/eliminar/{id}', [SongDeleteController::class,
 
 
 //////////////////// LIST MODULE VIEWS /////////////////////
+Route::get('/chordhub/listas', [ListViewsController::class, 'renderLists'])->name('lists')->middleware(CheckUserSession::class);
+Route::get('/chordhub/lista/{id}', [ListViewsController::class, 'renderList'])->name('list')->middleware(CheckUserSession::class);
+//LIST CREATE VIEW
+Route::get('/chordhub/listas/crear', [ListViewsController::class, 'renderCreate'])->name('lists_create')->middleware(CheckUserSession::class);
+Route::post('/lists_create_validate', [ListCreateController::class, 'createList'])->name('lists_create_validate')->middleware(CheckUserSession::class);
+//LIST MODIFY VIEW
+Route::get('/chordhub/listas/modificar', [ListViewsController::class, 'renderModify'])->name('lists_modify')->middleware(CheckUserSession::class);
+//LIST DELETE VIEW
+Route::get('/chordhub/listas/eliminar', [ListViewsController::class, 'renderDelete'])->name('lists_delete')->middleware(CheckUserSession::class);
+Route::delete('/list_delete_validate/{id}', [ListDeleteController::class, 'DeleteList'])->name("list_delete_validate");
 
 //////////////////// CHORD MODULE VIEWS /////////////////////

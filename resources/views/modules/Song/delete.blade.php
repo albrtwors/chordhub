@@ -2,10 +2,10 @@
 
 @section('content')
 
-<h1 class="text-start sidebar-brand-text ms-5 py-3">
+<h1 class="text-start sidebar-brand-text ms-5 py-3 fs-xl-1 fs-md-4 fs-4 fs-sm-4">
     Borrar canción
 </h1>
-<h3 class="text-start ms-5 pb-3">
+<h3 class="text-start ms-5 pb-3  ">
     Busca la canción que hayas subido que deseas eliminar
 </h3>
     <!-- Topbar Search -->

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="ms-5">
+    <h1 class="ms-5 ">
         {{session("user_name")}}
     </h1>
 

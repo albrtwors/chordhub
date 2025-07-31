@@ -100,7 +100,9 @@ class AuthRestoreController extends Controller
 
         if ($user) {
             $user->password = password_hash($pass, PASSWORD_DEFAULT);
+            $user->restore_code = null;
             $user->save();
+
             return true;
         }
         return false;
