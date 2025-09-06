@@ -3,10 +3,16 @@
 namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthViewsController extends Controller
 {
     public function renderLogin(){
+        
+        if(session('user_name')){
+            return view('modules.App.dashboard');
+        }
+       
         return view("modules.Auth.login");
     }
 
@@ -15,7 +21,7 @@ class AuthViewsController extends Controller
     }
 
     public function renderSignCodeValidation(){
-        if(!session('sign_name')){
+        if(!session('sign_id')){
             return to_route('sign');
         }
 

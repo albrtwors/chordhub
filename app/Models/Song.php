@@ -1,17 +1,67 @@
 <?php
 
 namespace App\Models;
-use App\Models\User;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Song extends Model
 {
-    public function user(){
-        return $this->belongsTo("App\Models\User", "user_id", "id");
+    use Notifiable;
+    protected $guarded = [];
+
+    //relaciones uno a muchos inversa
+    public function author(){
+        return $this->belongsTo('App\Models\Author');
     }
 
-    public function lists(){
-        return $this->belongsToMany("App\Models\Lists");
+    public function genre(){
+        return $this->belongsTo('App\Models\Genre');
+    }
+
+    //relacion uno a uno inversa
+    public function user(){
+        return $this->belongsTo('App\Models\User');
+    }
+
+    //relacion muchos a muchos
+    public function files(){
+        return $this->belongsToMany('App\Models\File');
+    }
+
+    //relacion uno a uno
+    public function chord(){
+        return $this->hasOne('App\Models\Chord');
+    }
+
+    //relacion uno a uno polimorfica
+    public function image(){
+        return $this->morphOne('App\Models\Image', 'imageable');
+    }
+    
+    public function visit(){
+        return $this->morphOne('App\Models\Visit', 'visitable');
+    }
+
+    //uno a muchos poli
+    public function comments(){
+        return $this->morphMany('App\Models\Comment', 'commentable');
+    }
+
+    public function tonalities(){
+        return $this->belongsToMany(
+            'App\Models\Tonality', 
+            'tonality_user', // nombre de la tabla pivote
+            'song_id',     // llave foránea en tonality_user para la canción
+            'tonality_id')->withPivot('user_id');;    // llave foránea en tonality_user para la tonalidad
+     
+    }
+
+
+
+
+
+    public function usersTonality(){
+        return $this->hasMany('App\Models\UserTonalitySong');
     }
 }

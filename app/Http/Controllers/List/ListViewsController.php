@@ -17,7 +17,10 @@ class ListViewsController extends Controller
 
     public function renderList($id){
         $list = Lists::find($id);
-        return view("modules.List.list", compact('list'));
+        $list_songs = $list->songs()->orderBy('pivot_list_order')->get();
+     
+     
+        return view("modules.List.list", ['list'=>$list, 'list_songs'=>$list_songs]);
     }
 
     public function renderCreate(){
@@ -33,6 +36,14 @@ class ListViewsController extends Controller
     }
 
     public function renderModify(){
-        return view("modules.List.modify");
+        $lists = Lists::all();
+        return view("modules.List.modify", compact('lists'));
+    }
+
+    public function renderModifyList($id){
+        $list= Lists::find($id);
+        $list_songs = $list->songs()->orderBy('pivot_list_order')->get();
+        $songs = Song::all();
+        return view("modules.List.modify_list", ["list"=>$list, 'list_songs'=>$list_songs,"songs"=>$songs]);
     }
 }

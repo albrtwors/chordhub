@@ -1,16 +1,11 @@
 import { LogValidation } from "../Classes/LogValidation.js";
 
-const $form = document.getElementById("songdelete");
+const $form = document.getElementById("delform");
 const url = $form.getAttribute("action");
 
-window.songDelete = async (element) => {
-    const validation = new LogValidation(
-        $form,
-        `${url}${element.getAttribute("data-id")}`
-    );
+const validation = new LogValidation($form, url);
 
-    validation.deleteSubmitHandler(element, {
-        redirect: true,
-        url: `/chordhub/canciones/eliminar`,
-    });
-};
+validation.deleteSubmitHandler({
+    redirect: true,
+    url: `/canciones`,
+});

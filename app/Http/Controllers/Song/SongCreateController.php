@@ -4,13 +4,21 @@ namespace App\Http\Controllers\Song;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Validation\ValidationException;
+use App\Http\Controllers\Song\Traits\SongValidation;
 use App\Models\Song;
 use Illuminate\Http\Request;
 
 class SongCreateController extends Controller
 {
+    use SongValidation;
+    
     public function createSong(Request $request)
     {
+        if(!$this->checkRequest($request)){
+            return response()->json(["status"=>"wrong","message"=>"Tienes que llenar todos los campos"]);
+        }
+
         $user = User::where('name', session('user_name'))->first();
         $id = $user->id;
 
@@ -20,11 +28,13 @@ class SongCreateController extends Controller
         $structure = $request->input('song_structure');
         $keywords = $request->input('song_keywords');
 
-        $this->validateSong($request);
+        
 
         $this->insertSongOnDb($name, $author, $genre, $structure, $keywords, $id);
         return response()->json(['status' => 'success', 'message' => 'Canción creada exitosamente']);
     }
+
+    
 
     function validateSong(Request $request)
     {

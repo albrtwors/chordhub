@@ -18,7 +18,7 @@
     	            <form action="{{route('restore_validate')}}" id="restore">
     	                @csrf
     	                <div class="wrap-input100 validate-input">
-    	                    <input class="input100" type="email" required name="mail">
+    	                    <input class="input100" type="email" required name="email">
 
     	                    <span class="focus-input100" data-placeholder="Email"></span>
     	                </div>

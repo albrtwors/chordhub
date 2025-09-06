@@ -19,16 +19,18 @@
 	                @csrf
                     @method('POST')
 	                <div class="wrap-input100 validate-input">
-	                    <input class="input100" type="password" name="pass"
+	                    <input class="input100" type="password" name="password"
+							onfocus="completeHelper(this)" data-validate="Debe tener 8-15 caracteres, al menos una mayúscula y 3 o mas números."
 	                        pattern="^(?=.*[A-Z])(?=(?:.*\d){3})[A-Za-z\d]{8,15}$"
-	                        title="Debe tener 8-15 caracteres, al menos una mayúscula y exactamente 3 números." required>
+	                        title="Debe tener 8-15 caracteres, al menos una mayúscula e incluir 3 o mas números." required>
 
 	                    <span class="focus-input100" data-placeholder="Contraseña"></span>
 	                </div>
 	                <div class="wrap-input100 validate-input">
-	                    <input class="input100" type="password" name="repass"
+	                    <input class="input100" type="password" name="password_confirmation"
+							onfocus="completeHelper(this)" data-validate="Debe tener 8-15 caracteres, al menos una mayúscula e incluir 3 o mas números."
 	                        pattern="^(?=.*[A-Z])(?=(?:.*\d){3})[A-Za-z\d]{8,15}$"
-	                        title="Debe tener 8-15 caracteres, al menos una mayúscula y exactamente 3 números." required>
+	                        title="Debe tener 8-15 caracteres, al menos una mayúscula y 3 o mas números." required>
 
 	                    <span class="focus-input100" data-placeholder="Repite la contraseña"></span>
 	                </div>
@@ -60,6 +62,7 @@
 	</div>
 
     <script type="module" src="{{asset('js/Auth/ChangePass.js')}}"></script>
+	<script src="{{asset('js/Auth/SignFormsHelper.js')}}"></script>
 	<div id="dropDownSelect1"></div>
 
 

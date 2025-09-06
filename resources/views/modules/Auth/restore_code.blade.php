@@ -19,7 +19,7 @@
 	                @csrf
 	                <div class="wrap-input100 validate-input">
 
-	                    <input class="input100" type="number" name="inputcode">
+	                    <input class="input100" type="number" name="codeinput">
 
 	                    <span class="focus-input100" data-placeholder="Código"></span>
 	                </div>

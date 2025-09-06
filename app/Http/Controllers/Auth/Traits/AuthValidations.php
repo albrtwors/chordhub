@@ -22,12 +22,12 @@ trait AuthValidations
 
     public function verifyUserOnBd($email, $name)
     {
-        return User::where('mail', $email)->orWhere('name', $name)->exists();
+        return User::where('email', $email)->orWhere('name', $name)->exists();
     }
 
     public function verifyMailOnDb($mail)
     {
-        return User::where('mail', $mail)->exists();
+        return User::where('email', $mail)->exists();
     }
 
     protected function verifyNameOnDb($name)
@@ -39,11 +39,7 @@ trait AuthValidations
     public function verifyPassCharacters($req)
     {
         try{
-            $req->validate([
-            'pass' => [
-                'required',
-                'regex:/^(?=.*[A-Z])(?=(?:.*\d){3})[A-Za-z\d]{8,15}$/'
-            ]]);
+            $req->validate();
 
              return true;
         }

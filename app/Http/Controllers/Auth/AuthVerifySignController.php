@@ -12,39 +12,34 @@ class AuthVerifySignController extends Controller
     use AuthValidations;
 
     public function verifySignCode(Request $req){
-        $name = session('sign_name');
-        $code = $req->input('codeinput');
-
-
+        $id = session('sign_id');
+        $code = $req->codeinput;
         
         if(!$this->verifyCodeValidation($code)){
-            return json_encode(["status"=> "wrong", 
+            return response()->json(["status"=> "wrong", 
                                 "message" => "Código de verificación incorrecto"]);
         }
+        
+        $user = User::find($id);
+        $user->update(['active'=>1, 'sign_code'=>null]);
+       
 
-        
-        $this->updateUserState($name);
         session()->flush();
-        return json_encode(["status"=> "success", 
-                            "message" => "Usuario registrado correctamente"]);
-        
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Usuario registrado correctamente"
+        ]);
     }
 
 
     function verifyCodeValidation($code){
-        $user = User::where('name', session('sign_name'))->first();
-        if($code == $user->sign_code){
-            return true;
-        }
-        return false;
+        $user = User::find(session('sign_id'));
+       
+        return $code == $user->sign_code;
     }
 
-    function updateUserState($name){
-        $user = User::where('name', $name)->first();
-        $user->state = 1;
-        $user->sign_code = null;
-        $user->save();   
-    }
+ 
 
 
 }

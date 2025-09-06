@@ -1,30 +1,52 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckUserSession;
-
-use App\Http\Controllers\Auth\AuthViewsController;
-use App\Http\Controllers\Auth\AuthLoginController;
-use App\Http\Controllers\Auth\AuthLogoutController;
-use App\Http\Controllers\Auth\AuthSignController;
-use App\Http\Controllers\Auth\AuthVerifySignController;
-use App\Http\Controllers\Auth\AuthRestoreController;
-
+use App\Http\Middleware\SaveLastPage;
+use Illuminate\Container\Attributes\Auth;
 use App\Http\Controllers\App\AppViewController;
-use App\Http\Controllers\App\AppPfpChangeController;
-
-use App\Http\Controllers\Song\SongViewsController;
-use App\Http\Controllers\Song\SongCreateController;
-use App\Http\Controllers\Song\SongDeleteController;
-use App\Http\Controllers\Song\SongModifyController;
-
+use App\Http\Controllers\Auth\AuthSignController;
+use App\Http\Controllers\Auth\AuthLoginController;
+use App\Http\Controllers\Auth\AuthViewsController;
 use App\Http\Controllers\List\ListViewsController;
+
+use App\Http\Controllers\SongBook\SongBookController;
+use App\Http\Controllers\Song\SongViewsController;
+use App\Http\Controllers\Auth\AuthLogoutController;
+
+
 use App\Http\Controllers\List\ListCreateController;
 use App\Http\Controllers\List\ListDeleteController;
-use Illuminate\Container\Attributes\Auth;
+use App\Http\Controllers\List\ListModifyController;
+use App\Http\Controllers\Song\SongCreateController;
+
+use App\Http\Controllers\Song\SongDeleteController;
+use App\Http\Controllers\Song\SongModifyController;
+use App\Http\Controllers\App\AppPfpChangeController;
+use App\Http\Controllers\Auth\AuthRestoreController;
+use App\Http\Controllers\Files\FileController;
 
 
-//////////////////// AUTH MODULE VIEWS /////////////////////
+use App\Http\Controllers\Chord\ChordViewsController;
+use App\Http\Controllers\Chord\ChordCreateController;
+
+use App\Http\Controllers\Search\SearchListController;
+use App\Http\Controllers\Search\SearchSongController;
+use App\Http\Controllers\Auth\AuthVerifySignController;
+use App\Http\Controllers\Chatbot\ChatbotController as ChatbotController;
+
+use App\Http\Controllers\Chord\ChordController;
+use App\Http\Controllers\Comment\CommentController;
+use App\Http\Controllers\Notification\NotificationController;
+use App\Http\Controllers\Search\SearchUsersAdminController;
+use App\Http\Controllers\Song\SongController;
+use App\Http\Controllers\SongList\SongListController;
+use App\Http\Controllers\TonalityController;
+use App\Http\Controllers\UserController;
+use Illuminate\Notifications\Notification;
+
+// //////////////////// AUTH MODULE VIEWS /////////////////////
 
 // Login
 Route::get('/', [AuthViewsController::class, 'renderLogin'])->name('login');
@@ -53,46 +75,92 @@ Route::post('/restore_code_validate', [AuthRestoreController::class, 'verifyRest
 Route::get('/restaurar/cambiarcontraseña', [AuthViewsController::class, 'renderChangePass'])->name('restore_change');
 Route::post('/restore_change_validate', [AuthRestoreController::class, 'changePassword'])->name('restore_change_validate');
 
-
-//////////////////// APP MODULE VIEWS /////////////////////
+///////////// SESSION MIDDLEWARE
+Route::middleware([CheckUserSession::class, SaveLastPage::class])->group(function () {
+ //////////////////// APP MODULE VIEWS /////////////////////
 //APP VIEWS
-Route::get('/chordhub', [AppViewController::class, 'renderApp'])->name('app')->middleware(CheckUserSession::class);;
+Route::get('/chordhub', [AppViewController::class, 'renderApp'])->name('app');
 //APP PROFILE
-Route::get('/chordhub/perfil', [AppViewController::class, 'renderProfile'])->name('app_profile')->middleware(CheckUserSession::class);;
+Route::get('/chordhub/perfil', [AppViewController::class, 'renderProfile'])->name('app_profile');
 Route::post('/app_change_pfp', [AppPfpChangeController::class, 'changePfp'])->name('app_change_pfp');
 
 
 //////////////////// SONG MODULE VIEWS /////////////////////
 // SONGS VIEWS
-Route::get('/chordhub/canciones', [SongViewsController::class, 'renderSongs'])->name('songs')->middleware(CheckUserSession::class);
-
-// SONG VIEW
-Route::get('/chordhub/cancion/{id}', [SongViewsController::class, 'renderSong'])->name('song')->middleware(CheckUserSession::class);
-
-// SONG CREATE VIEW
-Route::get('/chordhub/canciones/crear', [SongViewsController::class, 'renderCreate'])->name('song_create')->middleware(CheckUserSession::class);
-Route::post('/song_create_validate', [SongCreateController::class, 'createSong'])->name('song_create_validate');
+Route::resource('/canciones', SongController::class);
+Route::get('/chordhub/canciones', [SongViewsController::class, 'renderSongs'])->name('songs');
+Route::get('/cancion/eliminar', [SongController::class, 'indexDeletes'])->name('songDelete.index');
+Route::get('/cancion/editar', [SongController::class, 'indexEdits'])->name('songEdits.index');
 
 // SONG MODIFY VIEW
-Route::get('/chordhub/canciones/modificar', [SongViewsController::class, 'renderModify'])->name('song_modify')->middleware(CheckUserSession::class);
-Route::get('/chordhub/canciones/modificar/{id}', [SongViewsController::class, 'renderModifySong'])->name('song_mod')->middleware(CheckUserSession::class);
-Route::post('/song_modify_validate', [SongModifyController::class, 'modifySong'])->name('song_modify_validate');
+Route::get('/chordhub/canciones/modificar', [SongViewsController::class, 'renderModify'])->name('song_modify');
 
-//SONG DELETE VIEWS
-Route::get('/chordhub/canciones/eliminar', [SongViewsController::class, 'renderDelete'])->name('song_delete')->middleware(CheckUserSession::class);;
-Route::delete('/chordhub/canciones/eliminar/{id}', [SongDeleteController::class, 'deleteSong'])->name('song_delete_validate');
 
 
 //////////////////// LIST MODULE VIEWS /////////////////////
-Route::get('/chordhub/listas', [ListViewsController::class, 'renderLists'])->name('lists')->middleware(CheckUserSession::class);
-Route::get('/chordhub/lista/{id}', [ListViewsController::class, 'renderList'])->name('list')->middleware(CheckUserSession::class);
+Route::resource('/cancioneros', FileController::class);
+Route::get('/cancionero/modificar', [FileController::class, 'indexEdits'])->name('filesEdits.index');
+Route::get('/cancionero/eliminar', [FileController::class, 'indexDelete'])->name('filesDelete.index');
+
+
+Route::get('/buscador/cancioneros', [FileController::class, 'searchByName'])->name('cancioneros.search');
+Route::get('/chordhub/listas', [ListViewsController::class, 'renderLists'])->name('lists');
+Route::get('/chordhub/lista/{id}', [ListViewsController::class, 'renderList'])->name('list');
+
 //LIST CREATE VIEW
-Route::get('/chordhub/listas/crear', [ListViewsController::class, 'renderCreate'])->name('lists_create')->middleware(CheckUserSession::class);
-Route::post('/lists_create_validate', [ListCreateController::class, 'createList'])->name('lists_create_validate')->middleware(CheckUserSession::class);
+Route::get('/chordhub/listas/crear', [ListViewsController::class, 'renderCreate'])->name('lists_create');
+Route::post('/lists_create_validate', [ListCreateController::class, 'createList'])->name('lists_create_validate');
 //LIST MODIFY VIEW
-Route::get('/chordhub/listas/modificar', [ListViewsController::class, 'renderModify'])->name('lists_modify')->middleware(CheckUserSession::class);
+Route::get('/chordhub/listas/modificar', [ListViewsController::class, 'renderModify'])->name('lists_modify');
+Route::get('/chordhub/listas/modificar/{id}', [ListViewsController::class, 'renderModifyList'])->name('list_mod');
+Route::post('/list_modify_validate', [ListModifyController::class, 'modifyList'])->name('list_modify_validate');
 //LIST DELETE VIEW
-Route::get('/chordhub/listas/eliminar', [ListViewsController::class, 'renderDelete'])->name('lists_delete')->middleware(CheckUserSession::class);
+Route::get('/chordhub/listas/eliminar', [ListViewsController::class, 'renderDelete'])->name('lists_delete');
 Route::delete('/list_delete_validate/{id}', [ListDeleteController::class, 'DeleteList'])->name("list_delete_validate");
 
 //////////////////// CHORD MODULE VIEWS /////////////////////
+Route::resource('/acordes', ChordController::class);
+Route::get('/chordhub/acordes', [ChordViewsController::class, 'renderChords'])->name('chords');
+Route::get('/chordhub/acordes/editar/{id}', [ChordViewsController::class, 'renderEdit'])->name('chord_edit');
+Route::post('/chordhub_validate_create', [ChordCreateController::class, 'CreateChordSet'])->name('chord_create_validate');
+//CHORD VIEW
+Route::get('/chordhub/acordes/cancion/{id}', [ChordViewsController::class, 'renderChord'])->name('chord_view');
+//CHORD DELETE VIEW
+Route::get('/chordhub/acordes/eliminar', [ChordViewsController::class, 'renderDelete'])->name('chords_delete');
+
+///COMMENT MODULES
+Route::resource('/comments', CommentController::class);
+
+////////////////////     ADMIN MODULE               ///////////////////////
+//-----------------     USERS      -------------------
+Route::get('/admin/usuarios', [AdminController::class, 'usersIndex'])->name('admin.users');
+Route::get('/admin/usuarios/{id}', [AdminController::class, 'usersEdit'])->name('admin.users.edit');
+Route::put('/admin/usuarios/{id}', [AdminController::class, 'usersUpdate'])->name('admin.users.update');
+Route::delete('/admin/usuarios/{id}', [AdminController::class, 'usersDestroy'])->name('admin.users.destroy');
+//---------------- GENRES -----------------------
+Route::get('/admin/generos', [AdminController::class, 'genreIndex'])->name('admin.genre');
+
+///////TONALITY MODULE
+
+Route::resource('/tonality', TonalityController::class);
+
+
+//// AI CHAT MODULE (BETA)
+Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot.index');
+Route::post('/chatbot/prompt', [ChatbotController::class, 'prompt'])->name('chatbot.prompt');
+
+////////////         NOTIFICATION MODULE
+Route::resource('/notificaciones', NotificationController::class);
+Route::post('/leernotificacion/{id}', [NotificationController::class, 'read'])->name('notification.read');
+Route::get('/leernotificacion/{id}', [NotificationController::class, 'readAsGet'])->name('notification.readAsGet');
+Route::get('/leernotificaciones', [NotificationController::class, 'readAll'])->name('notifications.read');
+
+//SEARCH VIEWS
+Route::get('/buscador/canciones', [SongController::class, 'searchByNameAndGenre'])->name('canciones.search');
+Route::get('/buscador/acordes', [ChordController::class, 'searchByNameAndGenre'])->name('acordes.search');
+Route::get('/buscador/cancioneros', [FileController::class, 'searchByName'])->name('cancioneros.search');
+Route::post('/search_lists', [SearchListController::class, 'SearchLists'])->name('search_lists');
+Route::post('/buscador/cancionero_canciones', [SearchListController::class, 'SearchListSongs'])->name('canciones_cancioneros.search');
+Route::get('/buscador/usuarios', [SearchUsersAdminController::class, 'SearchUsers'])->name('search.users');
+ 
+});

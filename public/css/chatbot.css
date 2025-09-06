@@ -1,0 +1,123 @@
+.chat {
+    height: 80dvh;
+    width: 80%;
+    background: #a9a9a9;
+    display: flex;
+    flex-direction: column;
+}
+.chat main {
+    flex: 1;
+    position: relative;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+.chat h1 {
+    font-weight: bold;
+    color: gray;
+}
+.chat header {
+    height: 60px;
+    width: 100%;
+    color: rgb(74, 74, 231);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+.chat.footer {
+    height: 60px;
+    width: 100%;
+    color: rgb(74, 74, 231);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.chatbot-message {
+    display: flex;
+    gap: 30px;
+    align-self: start;
+}
+.chatbot-message.user {
+    display: flex;
+    gap: 30px;
+    flex-direction: row-reverse;
+    align-self: end;
+}
+.message-remitent {
+    background: lightblue;
+    padding: 20px;
+    border-radius: 100%;
+    margin: auto auto;
+}
+.message {
+    padding: 20px;
+    width: 300px;
+    background-color: rgb(186, 223, 255);
+    border-radius: 30px;
+}
+.chat-area {
+    margin: 10px;
+
+    display: flex;
+    flex-direction: row;
+
+    gap: 20px;
+}
+
+@media (max-width: 649px) {
+    .chat main {
+        .message {
+            padding: 20px;
+            width: 200px;
+            font-size: 0.8em;
+            background-color: rgb(183, 253, 183);
+            border-radius: 30px;
+        }
+    }
+}
+
+@media (max-width: 525px) {
+    .chat main {
+        .message {
+            padding: 20px;
+            width: 150px;
+            font-size: 0.8em;
+            background-color: rgb(183, 253, 183);
+            border-radius: 30px;
+        }
+    }
+}
+
+@media (max-width: 479px) {
+    .chat main {
+        .message {
+            padding: 20px;
+            width: 100px;
+            font-size: 0.8em;
+            background-color: rgb(183, 253, 183);
+            border-radius: 30px;
+        }
+    }
+}
+
+.loaderOfChat {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(0, 123, 255, 0.2);
+    border-top: 3px solid #007bff; /* azul sólido */
+    border-radius: 50%;
+    display: inline-block;
+    animation: spin 0.8s linear infinite;
+    margin: 10px auto; /* centrado horizontal */
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

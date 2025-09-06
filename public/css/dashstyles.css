@@ -1,60 +1,44 @@
-.pfp{
+.pfp {
     border-radius: 50%;
 }
 
-
-.icon{
+.icon {
     width: 20px;
     height: 2%;
 }
 
 /* songlists*/
 
-.card{
-    
+.card {
 }
-.card-img-top{
-    
-    filter:brightness(50%);
-    height:150px;
-
+.card-img-top {
+    filter: brightness(50%);
+    height: 150px;
 }
 
 /* create song*/
-.songstructure{
-
+.songstructure {
     width: 300px;
     height: 300px;
-
-
 }
 
 /*song inputs*/
-.songinput,.songtextarea{
+.songinput,
+.songtextarea {
     border-radius: 5px;
     background-color: rgb(207, 207, 207);
-    border:solid 1px gray;
+    border: solid 1px gray;
 }
 
-#structure{
+#structure {
     line-height: 2;
-    height:600px;
-    
-    
+    height: 600px;
 }
 
-.songinput{
+.songinput {
     width: 150px;
 }
 
-.btn{
+.btn {
     border-radius: 30px;
 }
-
-
-
-
-
-
-
-

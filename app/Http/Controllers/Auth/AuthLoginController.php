@@ -6,50 +6,41 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Http\Controllers\Auth\Traits\AuthTraitGetBd;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\LoginRequest;
 class AuthLoginController extends Controller
 {
     use AuthTraitGetBd;    
     
-    public function loginUser(Request $req){
-        $user = $req->input('name');
-        $pass = $req->input('pass');
-        
+    public function loginUser(LoginRequest $req){
 
-        if(!$this->verifyUserOnBd($user, $pass)){ 
-            return json_encode(["status"=> "wrong", 
-                                "message" => "Usuario o contraseña incorrectos"]);
-        } 
+        $validatedData = $req->validated();
         
-        if(!$this->verifyState($user)){
-            return json_encode(["status"=> "wrong", "message" => "El usuario no está activo"]);
+        if(Auth::attempt($validatedData)){
+            
+            if(!$this->verifyState($req->name)){
+                return response()->json(["status"=>'wrong', 'message'=>'Usuario no activado']);
+            }
+
+            $req->session()->regenerate();
+            return response()->json(["status"=>'success', 'message'=>'Credenciales Correctas']);
+
+            
+            
+            
         }
 
-        session(["user_name"=>$user, "user_pfp"=>$this->getPfp($user), "user_id"=>$this->getId($user)]);
+        return response()->json(["status"=>'wrong', 'message'=>'Credenciales Incorrectos']);
         
-        return json_encode(["status"=> "success", 
-                            "message" => "Usuario logueado correctamente"]);
+        
+       
     }
 
-
-    function verifyUserOnBd($name, $pass){
-        $user = $this->getUserByName($name);
-        if ($user && password_verify($pass, $user->password)) {
-            return true;          
-        }
-
-        return false;
-
-
-    }
 
     function verifyState($name){
         $user = $this->getUserByName($name);
-        if ($user->state == 1) {
-            return true;
-        }
 
-        return false;
+        return $user->active == 1;
     }
 
     function getPfp($name){

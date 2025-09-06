@@ -14,15 +14,19 @@
             <form action="{{route('sign_validate')}}" id="signform">
                 @csrf
                 @method('POST')
-                <div class="wrap-input100 validate-input" data-validate="Tu email debe ser del tipo: a@b.c">
+                <div class="wrap-input100 validate-input position-relative" >
                     <!-- EMAIL -->
-                    <input class="input100" type="email" required name="email">
+                    <input class="input100" onfocus="completeHelper(this)" data-validate="Tu email debe ser del tipo: a@b.c" name="email" required>
                     <span class="focus-input100" data-placeholder="Email"></span>
                 </div>
                 <!-- NAME -->
                 <div class="wrap-input100 validate-input">
-                    <input pattern="^[a-zA-Z0-9_]{8,}$"
-                        title="El nombre de usuario debe tener al menos 8 caracteres y solo letras, números o guiones bajos."
+                    <input 
+                    data-validate="El nombre de usuario debe tener al menos 8 caracteres y solo letras, números o guiones bajos, además de comenzar con letras."
+                        onfocus="completeHelper(this)"
+                        required
+                        id="signFormName"
+                        title="El nombre de usuario debe tener al menos 8 caracteres y solo letras, números o guiones bajos, además de comenzar con letras."
                         class="input100" type="text" name="name">
                     <span class="focus-input100" data-placeholder="Nombre de usuario"></span>
                 </div>
@@ -31,9 +35,12 @@
                     <span class="btn-show-pass">
                         <i class="zmdi zmdi-eye"></i>
                     </span>
-                    <input class="input100" type="password" name="pass"
-                        pattern="^(?=.*[A-Z])(?=(?:.*\d){3})[A-Za-z\d]{8,15}$"
-                        title="Debe tener 8-15 caracteres, al menos una mayúscula y exactamente 3 números." required>
+                    <input class="input100" type="password" name="password"
+                            required
+	                        pattern="^(?=.*[A-Z])(?=(?:.*\d){3})[A-Za-z\d]{8,15}$"
+                            data-validate="Debe tener 8-15 caracteres, al menos una mayúscula e incluir o mas números."
+                            onfocus="completeHelper(this)"
+	                        title="Debe tener 8-15 caracteres, al menos una mayúscula y 3 o mas números." required> 
                     <span class="focus-input100" data-placeholder="Contraseña (Ej: Passwo039)"></span>
                 </div>
 
@@ -41,21 +48,19 @@
                     <span class="btn-show-pass">
                         <i class="zmdi zmdi-eye"></i>
                     </span>
-                    <input class="input100" type="password" pattern="^(?=.*[A-Z])(?=(?:.*\d){3})[A-Za-z\d]{8,15}$"
-                        title="Debe tener 8-15 caracteres, al menos una mayúscula y exactamente 3 números." required
-                        name="repass">
+                    <input class="input100" type="password" name="password_confirmation"
+	                        pattern="^(?=.*[A-Z])(?=(?:.*\d){3})[A-Za-z\d]{8,15}$"
+                            required
+                            data-validate="Debe tener 8-15 caracteres, al menos una mayúscula e incluir 3 o mas números."
+                            onfocus="completeHelper(this)"
+	                        title="Debe tener 8-15 caracteres, al menos una mayúscula y 3 o mas números." required
+                            
+                            >
                     <span class="focus-input100" data-placeholder="Repite la contraseña"></span>
                 </div>
 
                 <div>
 
-                    <select required name="role" style="border:solid 1px #adadad; color: #adadad;"
-                        class="form-select m-b-40" aria-label="Default select example">
-                        <option style="color: #adadad;" value="" disabled selected>Qué rol ejerces?</option>
-                        <option style="color: #adadad;" value="musician">Músico</option>
-                        <option style="color: #adadad;" value="singer">Cantante</option>
-                        <option style="color: #adadad;" value="supporter">Apoyo audiovisual</option>
-                    </select>
 
                     <div class="container-login100-form-btn p-t-20">
                         <div class="wrap-login100-form-btn">
@@ -83,7 +88,11 @@
 </div>
 
 <div id="dropDownSelect1"></div>
-<script type="module" src="{{asset('js/Auth/SignValidate.js')}}"></script>
 
 
 @endsection
+
+
+<script type="module" src="{{asset('js/Auth/SignValidate.js')}}"></script>
+<script src="{{asset('js/Auth/SignFormsHelper.js')}}"></script>
+

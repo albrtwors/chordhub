@@ -7,5 +7,5 @@ SongPrev.clearStructure();
 SongPrev.cloneStructure();
 
 SongPrev.songArea.addEventListener("input", () => {
-    SongPrev.formatOutput();
+    SongPrev.renderOutput(SongPrev.songToJson());
 });

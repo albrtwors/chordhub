@@ -8,83 +8,38 @@ use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\Auth\AuthMailController;
 use App\Http\Controllers\Auth\Traits\AuthValidations;
 use App\Models\User;
+use App\Http\Requests\SignRequest;
 
 class AuthSignController extends Controller
 {
     use AuthValidations;
 
-    public function signUser(Request $req){
+    public function signUser(SignRequest $req){
 
-
-        if(!$this->validateCharacters($req)){
-            return json_encode(["status"=> "wrong", 
-                                "message" => "Por favor, cumpla el formato de los campos"]);
-        }
-
-        $email = $req->input('email');
-        $name = $req->input('name');
-        $pass = $req->input('pass');
-        $role = $req->input('role'); 
-        $pass2 = $req->input('repass');
+        $validatedData = $req->validated();
         $code = rand(100000, 999999);
-        
-        if($this->verifyUserOnBd($email, $name)){
-            return json_encode(["status"=> "exists", 
-                                "message" => "El usuario o email ya existe"]);
-        } 
-       
-        if(!$this->verifyPasses($pass, $pass2)){
-            return json_encode(["status"=> "wrong", 
-                                "message" => "Las contraseñas no coinciden"]);
-        }
 
-        if(!$this->validateMail($email)){
-            return json_encode(["status"=> "wrong", 
+        if(!$this->validateMail($req->email)){
+            return response()->json(["status"=> "wrong", 
                                 "message" => "El correo electrónico no es válido"]);
         }
     
-        session(["sign_name"=>$name]);
-        
-        $this->insertUserOnBd($email, $name, $pass, $role, $code, 0);
-        $this->sendMail($email, $code); 
+       $user = User::create([
+            'name'=>$validatedData['name'],
+            'password'=>password_hash($validatedData['password'], PASSWORD_DEFAULT),
+            'email'=>$validatedData['email'],
+            'sign_code'=>$code
+       ])->assignRole('visitor');
        
-        return json_encode(["status"=> "success", 
-                            "message" => "Correo Electrónico enviado, por favor verifica tu cuenta"]);
-       
+
+       $this->sendMail($req->email, $code);
+      
+       session(['sign_id'=>$user->id]);
+       return response()->json(['status'=>'success', 'message'=>'Usuario creado, revisa tu email']);
     }
 
 
-    function validateCharacters($req)
-    {
 
-        try{
-            $req->validate([
-            'email' => 'required|email',
-            'name' => [
-                'required',
-                'regex:/^[a-zA-Z0-9_]{8,}$/'
-            ],
-            'pass' => [
-                'required',
-                'regex:/^(?=.*[A-Z])(?=(?:.*\d){3})[A-Za-z\d]{8,15}$/'
-            ],
-            'repass' => [
-                'required',
-                'regex:/^(?=.*[A-Z])(?=(?:.*\d){3})[A-Za-z\d]{8,15}$/'
-            ],
-            'role' => 'required'
-             ]);
-
-             return true;
-        }
-        catch(ValidationException $e)
-        {
-            return false;
-        }
-
-
-
-    }
 
     function validateMail($mail){
         $key = 'seMhPGJkiE13H59l4anVlp6XfYT4QAFr';
@@ -108,16 +63,6 @@ class AuthSignController extends Controller
 
     }
 
-    function insertUserOnBd($email, $name, $pass, $role, $code, $state){
-        $user = new User();
-        $user->mail = $email;
-        $user->name = $name;
-        $user->password = password_hash($pass, PASSWORD_DEFAULT); 
-        $user->role = $role; 
-        $user->sign_code = $code; 
-        $user->state = $state; 
-        $user->save();
-    }
 
 
 

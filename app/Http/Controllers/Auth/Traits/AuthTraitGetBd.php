@@ -6,7 +6,7 @@ trait AuthTraitGetBd
 {
     public function getUserByEmail($email)
     {
-        return User::where('mail', $email)->first();
+        return User::where('email', $email)->first();
     }
 
     public function getUserByName($name)

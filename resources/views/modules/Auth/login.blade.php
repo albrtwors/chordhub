@@ -12,7 +12,7 @@
 				Bienvenido a Chordhub
 			</span>
 
-			<form action="{{route("login_validate")}}" id="logform">
+			<form action="{{route('login_validate')}}" id="logform">
 				@csrf
 
 				<!-- inputs -->
@@ -26,7 +26,7 @@
 					<span class="btn-show-pass">
 						<i class="zmdi zmdi-eye"></i>
 					</span>
-					<input required class="input100" type="password" name="pass">
+					<input required class="input100" type="password" name="password">
 					<span class="focus-input100" data-placeholder="Contraseña"></span>
 				</div>
 
@@ -82,12 +82,5 @@
 
 
 
-<?php 
 
- $redirect = true;
- $redirectdir = "/chordhub";
- $idname = "logform";
- $route = "/logval";
-//require "../public/js/asyncsend-auth.php";
-?>
 @endsection

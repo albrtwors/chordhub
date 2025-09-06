@@ -65,8 +65,8 @@ class AuthMailController extends Controller
                                     <p style="font-size:16px; line-height:1.5;">Gracias por unirte a nosotros. Estamos emocionados de tenerte aquí. Explora nuestras funciones y mantente atento a las novedades.</p>
                                      <p style="font-size:16px; line-height:1.5;"><b>Tú código de verificación: </b>'. $this->code .'</p>
 
-
-                                            <a href="http://127.0.0.1:8000/verificacion"><button name="submitemail">Verifica tu email</button></a>
+                                                    
+                                           <a href="http://127.0.0.1:8000/verificacion"><button name="submitemail">Verifica tu email</button></a>
  
                                     
                                     </td>
@@ -119,8 +119,7 @@ class AuthMailController extends Controller
                                      <p style="font-size:16px; line-height:1.5;"><b>Tú código de verificación: </b>'. $this->code .'</p>
 
                                      
-
-                                           <a href="http://127.0.0.1:8000/restaurar/codigo"> <button name="submitemail" type="submit">Verifica tu email</button> </a>
+                                           <a href="http://127.0.0.1:8000/restaurar/codigo"><button name="submitemail">Verifica tu email</button></a>
                                   
                                     </td>
                                 </tr>

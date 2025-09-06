@@ -6,12 +6,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
-
+   
+    use HasFactory, Notifiable, HasRoles;
+   
     /**
      * The attributes that are mass assignable.
      *
@@ -21,10 +24,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
+        'active',
         'sign_code',
-        'restore_code',
-        'pfp'
+        'restore_code'
+        
     ];
 
     /**
@@ -49,4 +52,37 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    //relacion uno a uno
+    public function song(){
+        return $this->hasMany('App\Models\Song');
+    }
+
+    public function chord(){
+        return $this->hasOne('App\Models\Chord');
+    }
+
+    //relacion uno a uno polimorfica
+    public function image(){
+        return $this->morphOne('App\Models\Image', 'imageable');
+    }
+
+    //relacion uno a muchos
+    public function files(){
+        return $this->hasMany('App\Models\Files');
+        
+    }
+    //muchos a muchos 
+    public function roles(){
+       return $this->belongsToMany('Spatie\Permission\Models\Role', 'model_has_roles', 'model_id');
+    }
+
+
+    public function tonalities(){
+        return $this->belongsToMany('App\Models\Tonality');
+    }
+    // public function songsTonality(){
+    //     return $this->hasMany('App\Models\UserTonalitySong');
+    // }
+
 }

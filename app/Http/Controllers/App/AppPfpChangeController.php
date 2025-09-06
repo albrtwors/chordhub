@@ -4,6 +4,8 @@ namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ImageRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
@@ -20,8 +22,9 @@ class AppPfpChangeController extends Controller
             ]);
         }
         
+        // $this->deleteLastPfp(); pending
         $pfp = $request->file('pfp');
-        $path = $pfp->store('pfps', 'public');
+        $path = $pfp->store('images', 'public');
         $globalPath = Storage::url($path);
 
 
@@ -32,9 +35,9 @@ class AppPfpChangeController extends Controller
             ]);
 
         }
-        
-        $this->deleteLastPfp();
 
+        
+        
         session(['user_pfp' => $globalPath]);
         $this->insertPfpToDb($globalPath);
         return json_encode([
@@ -61,21 +64,29 @@ class AppPfpChangeController extends Controller
 
     function insertPfpToDb($pfp)
     {
-        $user = User::where('name', session('user_name'))->first();
-        $user->pfp = $pfp;
-        $user->save();
+        $user = User::find(Auth::user()->id);
+        if(!isset($user->image)){
+            $user->image()->create(["url"=>$pfp, 'imageable_type'=>'App\Models\User', 'imageable_id'=>Auth::user()->id]);
+        }else{
+            $user->image()->update(['url'=>$pfp]);
+        }
+        
+    
     }
 
     function deleteLastPfp(){
-        $user = User::where('name', session('user_name'))->first();
-        $pfp = str_replace( '/storage/', '', $user->pfp);
-
-
-        if($user->pfp) {
+        $user = User::find(Auth::user()->id);
+        if($user->image->url){
+        
+            $pfp = str_replace( '/storage/', '', $user->image->url);
             Storage::disk('public')->delete($pfp);
-            $user->pfp = null;
-            $user->save();
-            session()->forget('user_pfp');
+            $user->image()->update(['url'=>$pfp]);
+
+
+
         }
+
+
+
     }
 }
