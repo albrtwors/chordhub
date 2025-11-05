@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class Song extends Model
 {
@@ -30,8 +31,8 @@ class Song extends Model
     }
 
     //relacion uno a uno
-    public function chord(){
-        return $this->hasOne('App\Models\Chord');
+    public function chords(){
+        return $this->hasMany('App\Models\Chord');
     }
 
     //relacion uno a uno polimorfica
@@ -63,5 +64,13 @@ class Song extends Model
 
     public function usersTonality(){
         return $this->hasMany('App\Models\UserTonalitySong');
+    }
+
+
+
+    // SCOPES
+
+    public function scopeCollabs($q){
+        return $q->where('collab', true)->where('user_id', '!=', Auth::user()->id);           
     }
 }

@@ -18,15 +18,32 @@ use App\Models\User;
 use App\Notifications\SongNotification;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
-class SongController extends Controller
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
+
+class SongController extends Controller implements HasMiddleware
 {
 
     use Notifiable;
     /**
      * Display a listing of the resource.
      */
+
+    public static function middleware(): array
+    {
+        return [
+            'auth',
+            new Middleware('can:songs.create', only: ['create']),
+            new Middleware('can:songs.index', only: ['index']),
+            new Middleware('can:songs.edit', only: ['edit']),
+            new Middleware('can:songs.destroy', only: ['indexDeletes']),
+            new Middleware('can:songs.edit', only: ['indexEdits']),
+           
+        ];
+    }
     public function index()
     {
         return view("modules.Song.songs");
@@ -38,7 +55,7 @@ class SongController extends Controller
     }
     public function indexDeletes()
     {
-        return view('modules.song.delete');
+        return view('modules.Song.delete');
     }
     /**
      * Show the form for creating a new resource.
@@ -46,7 +63,8 @@ class SongController extends Controller
     public function create()
     {
         $genre = Genre::all();
-        return view("modules.Song.create", compact('genre'));  
+        $songs = Song::all();
+        return view("modules.Song.create", compact('genre', 'songs'));  
     }
 
     /**
@@ -54,6 +72,8 @@ class SongController extends Controller
      */
     public function store(SongRequest $request)
     {
+
+
         $author=Author::where('name', $request->author)->first();
         
         if(!$author){
@@ -110,7 +130,8 @@ class SongController extends Controller
     {   
         $genre = Genre::all();
         $song = Song::find($id);
-        return view('modules.Song.modify_song', compact(['song', 'genre']));
+        $songs = Song::all();
+        return view('modules.Song.modify_song', compact(['song', 'genre', 'songs']));
     }
 
     /**
@@ -118,13 +139,22 @@ class SongController extends Controller
      */
     public function update(SongModifyRequest $request, string $id)
     {
+
+
        $author=Author::where('name', $request->author)->first();
         
+
+        $song = Song::find($id);
+        
+        if (! Gate::allows('modify-song', $song)) {
+            return response()->json(['status'=>'wrong', 'message'=>'No autorizado']);
+        }
+
         if(!$author){
             $author = Author::create(['name'=>$request->author]);
         }
-        
-        Song::find($id)->update([
+
+        $song->update([
             'name'=>$request->name,
             'collab'=>$request->collab,
             'keywords'=>$request->keywords,
@@ -134,7 +164,17 @@ class SongController extends Controller
             'author_id'=>$author->id,
             'genre_id'=>$request->genre
         ]);
-
+        if($request->file('pfp')){
+            $image=$request->file('pfp');
+            $url = $image->store('songimages','public');
+            $globalUrl = Storage::url($url);
+            if($song->image){
+                $song->image()->update(['url'=>$globalUrl]);
+            }else{
+                $song->image()->create(['url'=>$globalUrl]);
+            }
+            
+        }
         return response()->json(['status'=>'success', 'message'=>'Canción modificada']);
     }
 
@@ -143,7 +183,11 @@ class SongController extends Controller
      */
     public function destroy(string $id)
     {
-        Song::find($id)->delete();
+        $song = Song::find($id);
+        if (! Gate::allows('delete-song', $song)) {
+            return response()->json(['status'=>'wrong', 'message'=>'No autorizado']);
+        }
+        $song->delete();
         return response()->json(['status'=>'success', 'message'=>'Cancion Eliminada']);
     }
 
@@ -152,5 +196,9 @@ class SongController extends Controller
     public function searchByNameAndGenre(Request $request)
     {
        return SearchSongController::SearchSongs($request, 'modules.Song.songs');
+    }
+
+    public function getSongsAPI(){
+        return response()->json(Song::all());
     }
 }

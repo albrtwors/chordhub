@@ -30,7 +30,7 @@ class GenreTable extends Component
     }
     public function render()
     {
-        $genres = Genre::where('name','like','%'.$this->name .'%')->orderBy($this->order, $this->sort)->paginate($this->quantity);
+        $genres = Genre::where('name', 'LIKE', '%'.$this->name.'%')->orderBy($this->order, $this->sort)->paginate($this->quantity);
         return view('livewire.admin.genre-table', compact('genres'));
     }
     public function updatingName(){

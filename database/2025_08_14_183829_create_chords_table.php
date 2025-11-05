@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->longText('structure');
             $table->unsignedBigInteger('song_id');
+       
             $table->foreign('song_id')->references('id')->on('songs')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });

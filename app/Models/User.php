@@ -67,19 +67,23 @@ class User extends Authenticatable
         return $this->morphOne('App\Models\Image', 'imageable');
     }
 
+    
     //relacion uno a muchos
     public function files(){
         return $this->hasMany('App\Models\Files');
         
     }
-    //muchos a muchos 
-    public function roles(){
-       return $this->belongsToMany('Spatie\Permission\Models\Role', 'model_has_roles', 'model_id');
+    // //muchos a muchos 
+    // public function roles(){
+    //    return $this->belongsToMany('Spatie\Permission\Models\Role', 'model_has_roles', 'model_id');
+    // }
+
+    public function code(){
+        return $this->hasOne('App\Models\Code');
     }
 
-
     public function tonalities(){
-        return $this->belongsToMany('App\Models\Tonality');
+        return $this->belongsToMany('App\Models\Tonality')->withPivot('song_id', 'tonality_id');
     }
     // public function songsTonality(){
     //     return $this->hasMany('App\Models\UserTonalitySong');

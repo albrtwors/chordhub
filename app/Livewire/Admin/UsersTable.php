@@ -16,7 +16,7 @@ class UsersTable extends Component
     //modal vars   
     protected $paginationTheme = 'bootstrap';
     public $open_state = false;
-    public $user;
+    public $user, $userName, $userRoles, $userPermissions;
     public $quantity = '10';
     public $delete_modal = false;
     public $userToDelete;
@@ -38,8 +38,9 @@ class UsersTable extends Component
     
     //search vars
     public $name = "";
-    public $sort = 'id';
+    public $order = 'id';
     public $direction ='asc';
+  
     protected $listeners = ['render'=>'render'];
 
     public function mount(){
@@ -47,7 +48,7 @@ class UsersTable extends Component
         $this->roles = Role::all();
         $this->userToDelete = new User();
         $this->selectedRoles = $this->user->roles->pluck('id')->toArray();
-       
+        $this->userPermissions = $this->user->permissions->pluck('id')->toArray();
         $this->loadPermissions();
     }
     
@@ -62,36 +63,36 @@ class UsersTable extends Component
             ];
         })->toArray();
         
-        $this->dispatch('render');
+       
     }
 
 
     public function render()
     {
-        $users = User::where('name', 'like', '%'.$this->name.'%')
-                        ->orWhere('email', 'like', '%'.$this->name.'%')
-                        ->orderBy($this->sort, $this->direction)->paginate($this->quantity);
-
+      
+        $users = User::where('name', 'like', '%'.$this->name.'%')->orWhere('email', 'like', '%'.$this->name.'%')->orderBy($this->order, $this->direction)->paginate($this->quantity);
+            
+     
         return view('livewire.admin.users-table', compact('users'));
     }
 
-    public function order($sort){
 
-        if($this->sort === $sort)
-        {
-         
-            if($this->direction == 'asc')
-            {
+    public function sorting($name){
+        
+       
+        if($name === $this->order){
+            if($this->direction === 'asc'){
                 $this->direction = 'desc';
-            }
-            else{
+            }else{
                 $this->direction = 'asc';
             }
         }else{
-            $this->sort = $sort;
-            
+            $this->order = $name;
         }
+      
+        
     }
+    
 
     public function togglePermission($permi, $ischecked){
         $this->loadPermissions();
@@ -107,16 +108,24 @@ class UsersTable extends Component
 
     }
 
-    public function edit($user){
+    public function edit($us){
         
-      
-        $this->open_state = true;
-        $this->user = User::find($user);
+        
+        
+        $this->user = User::find($us);
+        $this->userName = $this->user->name;
+        $this->userRoles = $this->user->roles;
+        $this->userPermissions = $this->user->permissions->pluck('id')->toArray();
         $this->loadPermissions();
-    
+        $this->dispatch('render');
+        $this->open_state = true;
 
     }
 
+    public function closeModal(){
+        $this->open_state = false;
+        $this->dispatch('render');
+    }
     public function update(){
        
         $this->user->roles()->sync($this->selectedPermissions);

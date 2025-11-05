@@ -56,7 +56,7 @@ class CommentNotification extends Notification
         }elseif($comment_type == 'App\Models\File'){
             $route = route('cancioneros.show', $comment_id);
         }elseif($comment_type == 'App\Models\Chord'){
-            $comment_id = $this->comment->commentable->song_id;
+            $comment_id = $this->comment->commentable->id;
             $route = route('acordes.show', $comment_id);
         }
         

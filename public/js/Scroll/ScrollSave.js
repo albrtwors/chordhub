@@ -1,5 +1,5 @@
 const scrollKey = "scrollPosition_" + window.location.pathname;
-const scrollId = document.getElementById('scroll_position');
+const scrollId = document.getElementById("scroll_position");
 window.addEventListener("scroll", function () {
     localStorage.setItem(scrollKey, window.scrollY);
 });
@@ -16,11 +16,10 @@ document.addEventListener("DOMContentLoaded", function () {
         window.scrollTo(0, parseInt(scrollY));
     }
 
-    if(scrollId){
+    if (scrollId) {
         const scrollPosition = scrollId.value;
-        if(scrollPosition){
+        if (scrollPosition) {
             window.scrollTo(0, parseInt(scrollPosition));
+        }
     }
 });
-
-

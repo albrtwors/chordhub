@@ -1,6 +1,19 @@
 <div>
     <div class="d-flex justify-content-center mx-5">
         <div class="d-flex justify-content-center mx-5 w-50 gap-3">
+            @if ($type == 'show')
+                <select wire:model.live="ownFiles" class="form-control">
+
+                    <option value="{{ false }}">Cancioneros de todos</option>
+                    <option value="{{ true }}">Solo cancioneros Propios</option>
+                </select>
+            @elseif($type == 'edit')
+                <select wire:model.live="collabFiles" class="form-control">
+                    <option value="{{ false }}">Cancioneros Propios</option>
+                    <option value="{{ true }}">Solo Cancioneros Colaborativos</option>
+                </select>
+            @endif
+
             <select wire:model.live="quantity" class="w-25 form-control">
                 <option value="10">10</option>
                 <option value="25">25</option>

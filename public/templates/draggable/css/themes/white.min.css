@@ -1,0 +1,12 @@
+.winbox.white {
+    background: #fff;
+}
+.winbox.white .wb-title {
+    color: #000;
+}
+.winbox.white .wb-control {
+    filter: invert(1);
+}
+.wb-header {
+    background: rgb(48, 105, 220);
+}

@@ -7,12 +7,25 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class AdminController extends Controller
+class AdminController extends Controller implements HasMiddleware
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public static function middleware(): array
+    {
+        return [
+            'auth',
+            new Middleware('can:admin.access', only: ['usersIndex']),
+            new Middleware('can:admin.usersIndex', only: ['usersIndex']),
+            new Middleware('can:admin.usersEdit', only: ['usersEdit']),
+            new Middleware('can:admin.genresIndex', only: ['genreIndex']),
+            new Middleware('can:admin.commentsIndex', only: ['commentsIndex']),
+
+           
+           
+        ];
+    }
     public function usersIndex()
     {
         return view('modules.Admin.usersIndex');
@@ -51,7 +64,11 @@ class AdminController extends Controller
     public function genreIndex()
     {
         
-        return view('modules.admin.genreIndex');
+        return view('modules.Admin.genreIndex');
+    }
+
+    public function commentsIndex(){
+        return view('modules.Admin.commentsIndex');
     }
     public function songsIndex()
     {

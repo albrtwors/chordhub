@@ -3,6 +3,7 @@
 namespace App\Livewire\File;
 use App\Models\File;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 use Livewire\WithPagination;
 class Files extends Component
@@ -10,6 +11,9 @@ class Files extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
     public $type;
+    public $ownFiles = false;
+    public $collabFiles = false;
+    protected $userUpload = false;
     public $selectedFile;
     public $name = '', $quantity='10';
     public $open = false;
@@ -18,6 +22,16 @@ class Files extends Component
         
     }
     public function delete(){
+        
+        $file = $this->selectedFile;
+
+        if (! Gate::allows('delete-file', $file)) {
+            $this->dispatch('alertError', 'No autorizado');
+            $this->open = false;
+            return;
+
+        }
+        
         $this->selectedFile->delete();
         $this->open = false;
         $this->dispatch('alert', 'Cancionero eliminado');
@@ -26,21 +40,48 @@ class Files extends Component
         $this->selectedFile = File::find($id);
         $this->open = true;
     }
-    public function mount($type){
+    public function mount($type, $userUpload = false){
         $this->type=$type;
         $this->selectedFile = new File();
+        $this->userUpload = $userUpload;
 
     }
     public function render()
     {
-        if($this->type=='show'){
-            $lists = File::where('name', 'like', '%'.$this->name.'%')->paginate($this->quantity);
-        }else{
-            $lists = File::where('name', 'like', '%'.$this->name.'%')
-                            ->where('user_id', Auth::user()->id) 
-                            ->paginate($this->quantity);
+        $query = File::query();
+        if($this->type==='edit'){
+            if($this->collabFiles){
+                $query->where(function ($q){
+                    $q->where('name', 'like', '%'.$this->name.'%');
+                 
+                });
+                $query->collabs();
+            }else{
+                $query->where(function ($q){
+                    $q->where('user_id', Auth::user()->id);
+                });
+            }
+        } 
+                  
+        elseif($this->type==='destroy'){
+            $query->where(function ($q){
+                $q->where('name', 'like', '%'.$this->name.'%');
+                
+
+            });
+            $query->where('user_id', Auth::user()->id);
         }
-        
+        else{
+            $query->where('name', 'like', '%'.$this->name.'%');
+            
+            if($this->ownFiles){
+                $query->where('user_id', Auth::user()->id);
+            }
+                           
+                            
+        }
+
+        $lists = $query->paginate($this->quantity);
         return view('livewire.file.files', compact('lists'));
     }
 }

@@ -14,8 +14,11 @@ return new class extends Migration
         Schema::create('chords', function (Blueprint $table) {
             $table->id();
             $table->longText('structure');
+            $table->string('name', 45);
             $table->unsignedBigInteger('song_id');
             $table->unsignedBigInteger('user_id');
+            $table->boolean('collab')->default(false);
+          
             $table->foreign('song_id')->references('id')->on('songs')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

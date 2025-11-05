@@ -15,7 +15,8 @@
 
     @livewire('admin.own-modal')
 
-    @livewire('admin.users-table')
+    <livewire:admin.users-table />
+
 
     {{-- <table class="m-xl-5 m-md-1 m-1 m-sm-1 usersTable text-center">
         <thead>

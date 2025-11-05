@@ -2,7 +2,20 @@
 
     <div class="d-flex justify-content-center mx-5">
         <div class="d-flex justify-content-center mx-5 w-50 gap-3">
+            @if ($type == 'show')
+                <select wire:model.live="ownSongs" class="form-control">
+                    <option value="{{ false }}">Canciones de todos</option>
+                    <option value="{{ true }}">Solo canciones Propias</option>
+                </select>
+            @elseif($type == 'edit')
+                <select wire:model.live="collabSongs" class="form-control">
+                    <option value="{{ false }}">Canciones Propias</option>
+                    <option value="{{ true }}">Canciones Colaborativas</option>
+                </select>
+            @endif
+
             <select wire:model.live="quantity" class="w-25 form-control">
+
                 <option value="10">10</option>
                 <option value="25">25</option>
                 <option value="50">50</option>
@@ -18,7 +31,7 @@
         </div>
 
     </div>
-    <div class="d-flex justify-content-center mt-2">
+    <div class="d-flex justify-content-center mt-3">
         {{ $songs->links() }}
     </div>
 
@@ -29,8 +42,8 @@
 
 
             @forelse ($songs as $song)
-                <div id="song_template" class="col-xl-4 col-md-6 col-sm-12 mt-5">
-                    <div class="d-flex p-3 {{ $song->collab ? 'rounded-3 bg-green' : '' }}">
+                <div id="song_template" class="col-xl-4 col-md-6 col-sm-12 mt-3">
+                    <div class="d-flex p-3 ">
 
 
                         <div>
@@ -40,13 +53,8 @@
 
                         </div>
                         <div class="ms-3 d-flex flex-column flex-fill">
-                            @if ($song->collab && $type == 'edit')
-                                <div class="align-self-end ">
-                                    <span class="p-1 bg-success text-white rounded-5">
-                                        Colaborable!
-                                    </span>
-                                </div>
-                            @endif
+
+
 
                             <h4 class="mt-1">{{ $song->name }}</h4>
                             <p>{{ $song->author->name }}</p>
@@ -58,8 +66,8 @@
                                 <a href="{{ route('canciones.show', $song->id) }}"><button
                                         class="btn btn-primary">Ver</button></a>
                             @elseif($type == 'destroy')
-                                <button type="button" wire:click="showDelete({{ $song->id }})"
-                                    data-id="{{ $song->id }}" class="btn btn-danger">Eliminar</button>
+                                <a><button type="button" wire:click="showDelete({{ $song->id }})"
+                                        data-id="{{ $song->id }}" class="btn btn-danger">Eliminar</button></a>
                             @endif
                         </div>
 

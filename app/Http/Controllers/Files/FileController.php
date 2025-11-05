@@ -10,13 +10,32 @@ use App\Models\Song;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Events\FileEvent;
+use App\Models\Tonality;
 use App\Notifications\FileNotification;
 use App\Models\User;
-class FileController extends Controller
+use App\Models\Visit;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
+
+class FileController extends Controller implements HasMiddleware
 {
     /**
      * Display a listing of the resource.
-     */
+     */  
+    public static function middleware(): array
+    {
+        return [
+            'auth',
+            new Middleware('can:songlists.create', only: ['create']),
+            new Middleware('can:songlists.index', only: ['index']),
+            new Middleware('can:songlists.edit', only: ['edit']),
+            new Middleware('can:songlists.destroy', only: ['indexDeletes']),
+            new Middleware('can:songlists.edit', only: ['indexEdits']),
+           
+           
+        ];
+    }
     public function index()
     {
         $lists = File::all();
@@ -27,6 +46,14 @@ class FileController extends Controller
     }
     public function indexDelete(){
         return view('modules.List.delete');
+    }
+
+    public function songInFile($file_id, $song_id){
+        $file = File::find($file_id);
+        $song = Song::find($song_id);
+        $tonalities=Tonality::all();
+        
+        return view('modules.List.songInFile', compact(['file', 'song','tonalities']));
     }
     /**
      * Show the form for creating a new resource.
@@ -45,7 +72,8 @@ class FileController extends Controller
         
         $file = File::create([
             'name'=>$request->listname,
-            'user_id'=>Auth::user()->id
+            'user_id'=>Auth::user()->id,
+            'collab'=>$request->collab??0
 
         ]);   
         
@@ -76,9 +104,12 @@ class FileController extends Controller
      */
     public function show(string $id)
     {
+
+        Visit::create(['user_id'=>Auth::user()->id,'visitable_type'=>'App\Models\File','visitable_id'=>$id]);
         $list = File::find($id);
         $list_songs = $list->songs;
-      
+        
+       
         $comments = $list->comments()->whereNull('parent_id')->get();
         return view('modules.List.list', compact(['list', 'list_songs', 'comments']));
     }
@@ -98,11 +129,16 @@ class FileController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
+    { 
         $file = File::find($id);
+
+        if (! Gate::allows('modify-file', $file)) {
+            return response()->json(['status'=>'wrong', 'message'=>'No autorizado']);
+        }
+        
         $file->update([
             'name'=>$request->list_name,
-            
+            'collab'=>$request->collab??0
         ]);
 
         
@@ -131,7 +167,13 @@ class FileController extends Controller
      */
     public function destroy(string $id)
     {
-        File::find($id)->delete();
+        $file = File::find($id);
+
+        if (! Gate::allows('delete-file', $file)) {
+            return response()->json(['status'=>'wrong', 'message'=>'No autorizado']);
+        }
+        
+        $file->delete();
         return response()->json(['status'=>'success','message'=>'Cancionero Eliminado']);
     }
 

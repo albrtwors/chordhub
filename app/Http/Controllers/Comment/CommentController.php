@@ -7,11 +7,100 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CommentRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\CommentNotification;
+use App\Notifications\CommentOwnerNotification;
+
 class CommentController extends Controller
 {
+        function getType($type){
+        switch($type){
+            case 'song':
+                return 'App\Models\Song';
+                break;
+            case 'file':
+                return 'App\Models\File';
+                break;
+            case 'chord';
+                return 'App\Models\Chord';
+                break;
+            default:
+                return 'song';
+                break;
+
+        }
+    }
     /**
+     * 
      * Display a listing of the resource.
      */
+  public function getCommentsPriv($id, $type)
+{
+    $comments = Comment::where('commentable_id', $id)
+        ->whereNull('parent_id')
+        ->where('commentable_type', $type)
+        ->with([
+            'user' => fn($q) => $q->with('image'),
+            'responses' => fn($q) => $q->with([
+                'user' => fn($q) => $q->with('image'),
+                'responses' => fn($q) => $q->with([
+                    'user' => fn($q) => $q->with('image'),
+                    'responses' => fn($q) => $q->with([
+                        'user' => fn($q) => $q->with('image'),
+                        'responses' => fn($q) => $q->with([
+                            'user' => fn($q) => $q->with('image'),
+                            'responses' => fn($q) => $q->with([
+                                'user' => fn($q) => $q->with('image'),
+                                'responses' => fn($q) => $q->with([
+                                    'user' => fn($q) => $q->with('image'),
+                                    'responses' => fn($q) => $q->with([
+                                        'user' => fn($q) => $q->with('image'),
+                                        
+                                    ])
+                                ])
+                            ])
+                        ])
+                    ])
+                ])
+            ])
+        ])
+        ->get();
+
+    return $comments;
+}
+
+public function getComments($id, $type)
+{
+    $comments = Comment::where('commentable_id', $id)
+        ->whereNull('parent_id')
+        ->where('commentable_type', $this->getType($type))
+        ->with([
+            'user' => fn($q) => $q->with('image'),
+            'responses' => fn($q) => $q->with([
+                'user' => fn($q) => $q->with('image'),
+                'responses' => fn($q) => $q->with([
+                    'user' => fn($q) => $q->with('image'),
+                    'responses' => fn($q) => $q->with([
+                        'user' => fn($q) => $q->with('image'),
+                        'responses' => fn($q) => $q->with([
+                            'user' => fn($q) => $q->with('image'),
+                            'responses' => fn($q) => $q->with([
+                                'user' => fn($q) => $q->with('image'),
+                                'responses' => fn($q) => $q->with([
+                                    'user' => fn($q) => $q->with('image'),
+                                    'responses' => fn($q) => $q->with([
+                                        'user' => fn($q) => $q->with('image'),
+                                       
+                                    ])
+                                ])
+                            ])
+                        ])
+                    ])
+                ])
+            ])
+        ])
+        ->get();
+
+    return $comments;
+}
     public function index()
     {
         //
@@ -43,8 +132,11 @@ class CommentController extends Controller
         if($comment->parent_id){
             $comment->parent->user->notify(new CommentNotification($comment));
         }
-        // return response()->json(['status'=>'success', 'message'=>'Comentario subido', 'comment'=>$comment->comment, 'user'=>$comment->user->name]);
-        return redirect()->back();
+        $comment->commentable->user->notify(new CommentOwnerNotification($comment));
+
+        $newCommentList = $this->getCommentsPriv($request->postid, $request->postype);
+        return response()->json(['status'=>'success', 'comments'=>response()->json($newCommentList)]);
+        // return redirect()->back();
     }
 
     /**

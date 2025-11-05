@@ -21,7 +21,7 @@ class OwnModal extends Component
         'email' => 'required|email|unique:users,email',
         'name' => 'required|min:8|max:15|regex:/^[a-zA-Z][a-zA-Z0-9]{7,14}$/|unique:users,name',
         'password' => 'required|regex:/^(?=.*[A-Z])(?=(?:.*\d){3})[A-Za-z\d]{8,15}$/',
-        'imagen'=>'image|max:2048'
+        'imagen'=>'nullable|image|max:2048'
     ];
 
     public function mount(){
@@ -38,10 +38,13 @@ class OwnModal extends Component
             'password' => password_hash($this->password, PASSWORD_DEFAULT),
             'active' => 1,
         ])->assignRole('visitor');
-        $image = $this->imagen->store('images','public');
-        $user->image()->create([
-            'url'=>Storage::url($image)
-        ]);
+        if($this->imagen){
+            $image = $this->imagen->store('images','public');
+            $user->image()->create([
+                'url'=>Storage::url($image)
+            ]);
+        }
+
         $this->random = rand(1,999);
     
         $this->dispatch('render');

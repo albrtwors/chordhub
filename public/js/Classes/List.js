@@ -28,6 +28,13 @@ class List {
             return song.getAttribute("data-id");
         });
         this.addedSongsValue.value = JSON.stringify(this.songsSelected);
+
+        this.addedSongsList = document.getElementById("addedSongs");
+        this.SortableInit = new Sortable(this.addedSongsList, {
+            handle: ".handle",
+            animation: 150,
+        });
+        console.log(this);
     }
 
     modifiedListInit() {
@@ -44,7 +51,7 @@ class List {
         return array.indexOf(id) !== -1;
     }
 
-    addSong = (text, id) => {
+    addSong = (text, id, update = false) => {
         if (this.checkIfIsAlreadyOnList(id, this.songsSelected)) {
             Alert.ErrorAlert("Ya incluiste esta canción");
             return false;
@@ -52,22 +59,25 @@ class List {
 
         const newElement = this.list.cloneNode(true);
         newElement.classList.add("d-block");
+
         newElement.innerHTML =
             text +
             `        
             
-            <div class="d-flex justify-content-end ">
+            <div class="d-flex justify-content-end" draggable="true">
             
             <button id="deleteButton" data-id="${id}" onclick="ListInstance.deleteSong(this)" class="btn btn-danger songbut">
                         <i class="fas fa-trash"></i>
                     </button>
             </div>
-            <i class="fas fa-bars"></i>
+            <i class="fas fa-bars handle"></i>
                     `;
         this.songsSelected.push(id);
 
         this.addedSongsList.appendChild(newElement);
-        this.addedSongsValue.value = JSON.stringify(this.songsSelected);
+        if (update) {
+            this.addedSongsValue.value = JSON.stringify(this.songsSelected);
+        }
     };
 
     deleteSong = (element) => {

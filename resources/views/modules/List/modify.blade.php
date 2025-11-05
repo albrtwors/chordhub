@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="ms-5 py-3">
+    <h1 class="ms-5 py-3 fw-bold">
         Modificar cancionero
     </h1>
     <h3 class="ms-5 pb-3">

@@ -1,9 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="ms-5 fw-bold py-3">
-        Eliminar Cancionero
-    </h1>
+    <x-app.page-header text="Eliminar Cancionero" />
     <h3 class="ms-5 pb-3">
         Elimina tus cancioneros
     </h3>

@@ -8,6 +8,7 @@
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
+        "@vitejs/plugin-react": "^5.0.4",
         "axios": "^1.8.2",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^2.0.0",
@@ -15,6 +16,10 @@
         "vite": "^7.0.4"
     },
     "dependencies": {
+        "@midudev/tailwind-animations": "^0.2.0",
+        "motion": "^12.23.22",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0",
         "sortable": "^2.0.0",
         "sortablejs": "^1.15.6"
     }

@@ -14,18 +14,19 @@
         </div>
 
     </div>
-    <div class="d-flex justify-content-center gap-5 mt-2">
-        {{ $users->links() }}
+    <div class="d-flex justify-content-center gap-5 mt-3">
+        {{ count($users) > 0 ? $users->links(data: ['scrollTo' => false]) : '' }}
 
     </div>
-    <div class="d-flex flex-column align-items-center justify-items-start">
-        <table class=" m-md-1 m-1 m-sm-1 col-xl-8 col-md-10 col-sm-10 col-10 usersTable ">
+
+    <div class="container-fluid d-flex justify-content-center mt-3">
+        <table class="container-fluid">
             <thead>
                 <tr>
-                    <th wire:click="order('id')" style="cursor:pointer"
+                    <th wire:click='sorting("id")' style="cursor:pointer"
                         class="cursor-pointer bg-primary p-2 text-white">
                         Id
-                        @if ($sort == 'id')
+                        @if ($order == 'id')
                             @if ($direction == 'desc')
                                 <i class="ms-2 fas fa-sort-alpha-down-alt"></i>
                             @else
@@ -34,10 +35,10 @@
                         @endif
 
                     </th>
-                    <th wire:click="order('name')" style="cursor:pointer"
+                    <th wire:click="sorting('name')" style="cursor:pointer"
                         class="cursor-pointer bg-primary p-2 text-white">
                         Nombre
-                        @if ($sort == 'name')
+                        @if ($order == 'name')
                             @if ($direction == 'desc')
                                 <i class="ms-2 fas fa-sort-alpha-down-alt"></i>
                             @else
@@ -47,10 +48,10 @@
 
 
                     </th>
-                    <th wire:click="order('email')" style="cursor:pointer"
+                    <th wire:click="sorting('email')" style="cursor:pointer"
                         class="cursor-pointer bg-primary p-2 text-white">
                         Correo
-                        @if ($sort == 'email')
+                        @if ($order == 'email')
                             @if ($direction == 'desc')
                                 <i class="ms-2 fas fa-sort-alpha-down-alt"></i>
                             @else
@@ -64,126 +65,128 @@
                     <th class="bg-primary p-2 text-white">Opciones</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach ($users as $item)
-                    <tr wire:key="{{ $item->id }}">
-                        <td>{{ $item->id }}</td>
-                        <td>
-                            @if (isset($item->image->url))
-                                <img width="20px" class="rounded-circle" height="20px" class="mx-1"
-                                    src="{{ $item->image->url }}"></img>
-                            @endif
-                            {{ $item->name }}
-                        </td>
-                        <td>{{ $item->email }}</td>
-                        <td>{{ $item->active }}</td>
-
-                        <td>
-                            <a class="text-decoration-none" wire:click="edit({{ $item->id }})">
-                                <button class="btn fs-50 btn-primary cargar-info">
-                                    Añadir Roles
-                                </button>
-                            </a>
-
-                            <button wire:click="delete({{ $item->id }})" class="btn fs-50 btn-danger">Eliminar
-                            </button>
-
-
-                        </td>
-                    </tr>
-                @endforeach
-
-            </tbody>
-        </table>
-
-
-
-
-
-
-
-
-
 
 
     </div>
+    @foreach ($users as $item)
+        <tr class="p-3" wire:key="{{ $item->id }}">
+            <td>{{ $item->id }}</td>
+            <td>
 
-    <x-modal state="{{ $delete_modal }}">
-        <x-slot name="head">
-            <h3 class="fw-bold">Eliminar usuario</h3>
+                {{ $item->name }}
+            </td>
+            <td>{{ $item->email }}</td>
+            <td>{{ $item->active }}</td>
 
-        </x-slot>
-        <x-slot name="content">
-            <h4>Estás seguro de que quieres eliminar a <b>{{ $userToDelete->name }}</b></h4>
-        </x-slot>
+            <td>
+                <a class="text-decoration-none" href="{{ route('admin.users.edit', $item->id) }}">
+                    <button class="btn fs-50 btn-primary cargar-info">
+                        Añadir Roles
+                    </button>
+                </a>
 
-        <x-slot name="footer">
-
-            <div class="d-flex justify-content-center gap-3">
-                <button class="btn btn-danger" wire:click="$set('delete_modal', false)">Cerrar</button>
-                <button class="btn btn-primary" wire:click="deleteFromDb">Aceptar</button>
-            </div>
-
-        </x-slot>
-    </x-modal>
-
-
-    <x-modal state="{{ $open_state }}">
-        <x-slot name="head">
-            <h3 class="fw-bold">Modificar Roles</h3>
-
-        </x-slot>
-        <x-slot name="content">
+                <button wire:click="delete({{ $item->id }})" class="btn fs-50 btn-danger">Eliminar
+                </button>
 
 
-            <span>Nombre del usuario</span>
-            <input value={{ $user->name }} disabled type="text" class="form-control">
-            <div class="text-center">
+            </td>
+        </tr>
+    @endforeach
+    {{-- <livewire:admin.users-table-body :users="$users->pluck('id', 'name', 'email', 'active')->toArray()" />
+ --}}
 
-                <div class="row justify-content-center">
-                    <div class="col-6">
-                        <h3 class="fw-bold">Roles</h3>
 
-                        <div class="d-flex flex-column justify-content-center">
-                            @foreach ($roles as $index => $role)
-                                <div wire:key="{{ $role->id }}">
-                                    <span class="fw-bold">
-                                        {{ $role->name }}:
-                                    </span>
+    </table>
+</div>
 
-                                    <span>
-                                        <input value="{{ $role->id }}"
-                                            {{ $user->hasRole($role->name) ? 'checked' : '' }} type="checkbox">
-                                    </span>
+{{-- @if (!$isLoaded)
+@endif --}}
 
-                                </div>
-                            @endforeach
-                        </div>
+
+
+
+
+
+
+
+<x-modal state="{{ $delete_modal }}">
+    <x-slot name="head">
+        <h3 class="fw-bold">Eliminar usuario</h3>
+
+    </x-slot>
+    <x-slot name="content">
+        <h4>Estás seguro de que quieres eliminar a <b>{{ $userToDelete->name }}</b></h4>
+    </x-slot>
+
+    <x-slot name="footer">
+
+        <div class="d-flex justify-content-center gap-3">
+            <button class="btn btn-danger" wire:click="$set('delete_modal', false)">Cerrar</button>
+            <button class="btn btn-primary" wire:click="deleteFromDb">Aceptar</button>
+        </div>
+
+    </x-slot>
+</x-modal>
+
+
+<x-modal state="{{ $open_state }}">
+    <x-slot name="head">
+        <h3 class="fw-bold">Modificar Roles</h3>
+
+    </x-slot>
+    <x-slot name="content">
+
+
+        <span>Nombre del usuario</span>
+        <input wire:model.live='userName' disabled type="text" class="form-control">
+        <div class="text-center">
+
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <h3 class="fw-bold">Roles</h3>
+
+                    <div class="d-flex flex-column justify-content-center">
+                        @foreach ($roles as $index => $role)
+                            <div wire:key="{{ $role->id }}">
+                                <span class="fw-bold">
+                                    {{ $role->name }}:
+                                </span>
+
+                                <span>
+                                    <input value="{{ $role->id }}"
+                                        {{ $user->hasRole($role->name) ? 'checked' : '' }} type="checkbox">
+                                </span>
+
+                            </div>
+                        @endforeach
                     </div>
-
-                    <div class="col-6">
-                        <h3 class="fw-bold">Permisos</h3>
-                        <div class="d-flex flex-column justify-content-center">
-                            @foreach ($allPermissions as $index => $permission)
-                                <div wire:key="{{ $permission->id }}" class="mb-2">
-                                    <span class="fw-bold">{{ $permission->name }}:</span>
-                                    <span>
-                                        <input type="checkbox" value="{{ $permission->id }}"
-                                            wire:change="togglePermission({{ $permission->id }}, $event.target.checked)"
-                                            @checked($permissions[$permission->id] ?? false)>
-                                    </span>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-
-
-
                 </div>
 
+                <div class="col-6">
+                    <h3 class="fw-bold">Permisos</h3>
+                    <div class="d-flex flex-column justify-content-center">
+                        @foreach ($allPermissions as $index => $permission)
+                            @php
+                                $hasPermission = collect($userPermissions)->contains('id', $permission->id);
+                            @endphp
+                            <div wire:key="{{ $permission->id }}" class="mb-2">
+                                <span class="fw-bold">{{ $permission->name }}:</span>
+                                <input type="checkbox" value="{{ $permission->id }}"
+                                    wire:change="togglePermission({{ $permission->id }}, $event.target.checked)"
+                                    @checked(in_array($permission->id, $userPermissions))>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
+
+
+
+
+
             </div>
 
+        </div>
 
 
 
@@ -192,20 +195,20 @@
 
 
 
-        </x-slot>
-        <x-slot name="footer">
+    </x-slot>
+    <x-slot name="footer">
 
-            <div class="d-flex justify-content-center gap-3">
-                <button class="btn btn-danger" wire:click="$set('open_state', false)">Cerrar</button>
+        <div class="d-flex justify-content-center gap-3">
+            <button class="btn btn-danger" wire:click="closeModal">Cerrar</button>
 
-            </div>
+        </div>
 
-        </x-slot>
-    </x-modal>
+    </x-slot>
+</x-modal>
 
 </div>
 
-<script type="module" src="{{ asset('js\Admin\AdminUsersDelete.js') }}"></script>
+
 
 {{-- <div class="m-5 text-center">
 

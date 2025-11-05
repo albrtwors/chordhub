@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class File extends Model
 {
@@ -26,5 +27,12 @@ class File extends Model
     //uno a muchos poli
     public function comments(){
         return $this->morphMany('App\Models\Comment', 'commentable');
+    }
+
+
+    //SCOPES
+    public function scopeCollabs($q){
+        
+        return $q->where('collab', true)->where('user_id', '!=', Auth::user()->id);
     }
 }

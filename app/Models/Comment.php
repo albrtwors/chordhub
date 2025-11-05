@@ -19,6 +19,11 @@ class Comment extends Model
         return $this->belongsTo('App\Models\Comment', 'parent_id');
     }
     public function responses(){
-        return $this->hasMany('App\Models\Comment', 'parent_id');
+       return $this->hasMany('App\Models\Comment', 'parent_id');
+    }
+
+    public function responsesRecursive()
+    {
+    return $this->responses()->with('responsesRecursive');
     }
 }

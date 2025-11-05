@@ -27,7 +27,7 @@ class SongModifyRequest extends FormRequest
             'author'=>'required|max:45',
             'genre'=>'required',
             'structure'=>'required',
-            
+            'pfp'=>'image'
         ];
     }
 
@@ -42,7 +42,8 @@ class SongModifyRequest extends FormRequest
             'author.required' => 'El autor es requerido',
             'author.max'=>'El nombre del autor no debe ser mayor a 45 caracteres',
             'genre.required' => 'El género es requerido',
-            'structure.required'=>'Necesitas armar una estructura'
+            'structure.required'=>'Necesitas armar una estructura',
+            'pfp.image'=>'El archivo no es una imagen'
         ];
     }
 
@@ -58,6 +59,9 @@ class SongModifyRequest extends FormRequest
             $message = $errors->first('genre');
         }elseif($errors->has('structure')){
             $message = $errors->first('structure');
+        }
+        elseif($errors->has('pfp')){
+            $message = $errors->first('pfp');
         }
         else {
             $message = 'Hubo un error de validación';

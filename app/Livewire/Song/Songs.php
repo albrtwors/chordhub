@@ -6,23 +6,30 @@ use App\Models\Genre;
 use App\Models\Song;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use App\Models\Author;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Gate;
 class Songs extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
+    public $collabSongs = false;
+    public $ownSongs = false;
     public $songName = '', $quantity = '10';
     public $genre;
     public $genreId = null;
     public $type;
+    public $userUpload;
     public $open = false;
-
+    public $author = "";
     public $selectedSong;
     
-    public function mount($type){
+    public function mount($type, $userUpload = false){
         $this->selectedSong = new Song();
         $this->type = $type;
+        
         $this->genre = new Genre();
+        $this->userUpload = $userUpload;
     }
     public function updatingSongName(){
         $this->resetPage();
@@ -32,21 +39,55 @@ class Songs extends Component
     
         $query = Song::query();
 
-        if($this->type=='edit'||$this->type=='destroy'){
-            $query->where(function($q) {
-                $q->where('name', 'like', '%'.$this->songName.'%')
-                ->where('collab',true)
-                ->orWhere('keywords', 'like', '%'.$this->songName.'%');
-            });
+        if($this->type=='edit'){
+            if($this->collabSongs){
+                $query->where(function($q) {
+                            $q->where('name', 'like', '%'.$this->songName.'%')
+                            ->orWhere('keywords', 'like', '%'.$this->songName.'%');
 
-            $query->orWhere('user_id', Auth::user()->id);
-        }else{
+                        });
 
-            $query->where(function($q) {
-                $q->where('name', 'like', '%'.$this->songName.'%')
+                $query->collabs();
+                        
+            }else{
+                $query->where(function($q) {
+                    $q->where('name', 'like', '%'.$this->songName.'%')
+                    ->orWhere('keywords', 'like', '%'.$this->songName.'%');
+                });
+
+                $query->where('user_id', Auth::user()->id);
                 
+            }
+        
+
+        }
+        elseif($this->type=='destroy'){
+            $query->where(function($q) {
+                $q->where('name', 'like', '%'.$this->songName.'%')
                 ->orWhere('keywords', 'like', '%'.$this->songName.'%');
             });
+
+            $query->where('user_id', Auth::user()->id);
+        }
+        else{
+            if($this->ownSongs){
+                $query->where(function($q) {
+                    $q->where('name', 'like', '%'.$this->songName.'%')
+                      ->orWhere('keywords', 'like', '%'.$this->songName.'%');
+                   
+                    
+                });
+                $query->where('user_id', Auth::user()->id);
+            }else{
+
+                $query->where(function($q) {
+                    $q->where('name', 'like', '%'.$this->songName.'%')
+                      ->orWhere('keywords', 'like', '%'.$this->songName.'%');
+                });
+
+
+            }
+
 
 
 
@@ -58,7 +99,8 @@ class Songs extends Component
             $query->where('genre_id', $this->genreId);
         }
 
-        
+
+       
         $songs = $query->paginate($this->quantity);
 
 
@@ -76,6 +118,14 @@ class Songs extends Component
     }
 
     public function delete(){
+        $song = $this->selectedSong;
+        
+        if(!Gate::allows('delete-song', $song)){
+            $this->dispatch('alertError', 'No autorizado');
+            $this->open = false;
+            return;
+        }
+        $this->selectedSong->comments()->delete();
         $this->selectedSong->delete();
         $this->dispatch('alert', 'Canción Eliminada');
         $this->open = false;

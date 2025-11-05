@@ -1,9 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="text-start sidebar-brand-text ms-5 py-3 fw-bold">
-        Borrar canción
-    </h1>
+    <x-app.page-header text="Borrar canción" />
     <h3 class="text-start ms-5 pb-3  ">
         Elimina tus canciones
     </h3>

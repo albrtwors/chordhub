@@ -21,6 +21,13 @@ class RoleSeeder extends Seeder
         $role5 = Role::create(['name'=>'singer']);
         $role6 = Role::create(['name'=>'visitor']);
 
+        //admin
+        Permission::create(['name'=>'admin.access'])->syncRoles([$role1,$role2]);
+        Permission::create(['name'=>'admin.usersEdit'])->syncRoles([$role1,$role2]);
+        Permission::create(['name'=>'admin.usersIndex'])->syncRoles([$role1,$role2]);
+        Permission::create(['name'=>'admin.genresIndex'])->syncRoles([$role1,$role2]);
+        Permission::create(['name'=>'admin.commentsIndex'])->syncRoles([$role1,$role2]);
+        //songs
         Permission::create(['name'=>'songs.index'])->syncRoles([$role1,$role2,$role3,$role4,$role5,$role6]);
         Permission::create(['name'=>'songs.create'])->syncRoles([$role1,$role2,$role4,$role5]);
         Permission::create(['name'=>'songs.edit'])->syncRoles([$role1,$role2,$role4,$role5]);

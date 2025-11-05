@@ -24,8 +24,10 @@ class AuthRestoreController extends Controller
                                 "message" => "El correo electrónico no está registrado"]);
         }
 
-        $this->sendMail($mail, $code);
+
         $this->insertCodeOnBd($mail, $code);
+        $this->sendMail($mail, $code);
+        
         session(["restore_mail"=>$mail]);
         return response()->json(["status"=> "success", 
                             "message" => "Correo de restauración enviado correctamente"]);
@@ -49,6 +51,7 @@ class AuthRestoreController extends Controller
         
         $pass = $req->password;
         $this->changePasswordOnDb(session('restore_mail'), $pass);
+        
         session()->flush();
         return response()->json(["status"=> "success", 
                             "message" => "Contraseña cambiada correctamente"]);
@@ -67,7 +70,13 @@ class AuthRestoreController extends Controller
     // Insert the restore code into the database
     function insertCodeOnBd($mail, $code){
         $user = $this->getUserByEmail($mail);
-        $user->update(['restore_code'=>$code]);
+        if($user->code){
+            $user->code()->update(['restore_code'=>$code]);
+        }else{
+            
+            $user->code()->create(['restore_code'=>$code]);
+        }
+        
         
      
         
@@ -77,13 +86,14 @@ class AuthRestoreController extends Controller
     // Verify the restore code against the database
     function verifyCodeOnDb($mail, $code){
         $user = $this->getUserByEmail($mail);
-        return $user->restore_code == $code;
+        return $user->code->restore_code == $code;
     }
 
     function changePasswordOnDb($mail, $pass){
         $user = $this->getUserByEmail($mail);
-        $user->update(['password'=>password_hash($pass, PASSWORD_DEFAULT),'restore_code'=>null]);
-      
+        $user->code()->delete();
+        $user->update(['password'=>password_hash($pass, PASSWORD_DEFAULT)]);
+        
     }
 
 }

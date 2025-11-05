@@ -22,9 +22,17 @@
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        Canción más buscada</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Aleluya Por Siempre</div>
+                                    <a
+                                        href="
+                                    @if ($topSong) {{ route('canciones.show', $topSong->id) }}
+                                    @else
+                                        'no hay entradas' @endif 
+                                     ">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            Canción más buscada</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            {{ $topSong->name ?? 'No hay entradas' }}</div>
+                                    </a>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -39,13 +47,25 @@
                     <div class="card border-left-success shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
+
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                        Última Canción Añadida</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Jesús vendrá otra vez</div>
+
+                                    <a
+                                        href="
+                                    @if ($lastSong) {{ route('canciones.show', $lastSong->id) }}
+                                    @else
+                                        'no hay entradas' @endif 
+                                     ">
+
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            Última Canción Añadida</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            {{ $lastSong->name ?? 'No hay entradas' }}</div>
+                                    </a>
                                 </div>
+
                                 <div class="col-auto">
-                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                    <i class="fas fa-music fa-2x text-gray-300"></i>
                                 </div>
                             </div>
                         </div>
@@ -75,14 +95,11 @@
                                     </div>
                                     <div class="row no-gutters align-items-center">
                                         <div class="col-auto">
-                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="progress progress-sm mr-2">
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%"
-                                                    aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                                {{ $userSongs->count() == 1 ? $userSongs->count() . ' Canción añadida' : $userSongs->count() . ' Canciones añadidas' }}
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -100,11 +117,13 @@
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                        APORTES AL REPOSITORIO</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">18 Canciones</div>
+                                        CANCIONES DISPONIBLES</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ $songs->count() == 1 ? $songs->count() . ' Canción añadida' : $songs->count() . ' Canciones añadidas' }}
+                                    </div>
                                 </div>
                                 <div class="col-auto">
-                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                    <i class="fas fa-guitar fa-2x text-gray-300"></i>
                                 </div>
                             </div>
                         </div>
@@ -211,7 +230,7 @@
                         <!-- Card Body -->
                         <div class="card-body">
                             <div class="chart-area">
-                                <canvas id="myAreaSongChart"></canvas>
+                                <canvas id="myAreaFileChart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -228,7 +247,7 @@
                         <!-- Card Body -->
                         <div class="card-body">
                             <div class="chart-pie pt-4 pb-2">
-                                <canvas id="myPieContributorChart"></canvas>
+                                <canvas id="myListedChart"></canvas>
                             </div>
 
                         </div>
@@ -247,7 +266,7 @@
 
             <div class="row">
 
-                <!-- Chart area de cancioneros mas visitados -->
+                {{-- <!-- Chart area de cancioneros mas visitados -->
                 <div class="col-xl-12 col-lg-7">
                     <div class="card shadow mb-4">
                         <!-- Card Header - Dropdown -->
@@ -262,12 +281,16 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
+
+
 
                 <input id="topGenresValue" type="hidden" value="{{ $topGenreJson }}" name="">
+                <input id="topContributors" type="hidden" value="{{ $topContributors }}" name="">
+                <input id="topTonalities" type="hidden" value="{{ json_encode($topTonalities) }}" name="">
                 <input id="topSongVisitsValue" type="hidden" value="{{ $topSongJson }}" name="">
-
-
+                {{-- <input id="topFilesValue" type="hidden" value="{{ $topFilesJson }}" name=""> --}}
+                {{-- <input id="mostListedSongs" type="hidden" value="{{ $mostListedSongs }}" name=""> --}}
 
 
                 <!-- Pie Chart -->
@@ -321,5 +344,7 @@
                 <script src="{{ asset('templates/userpanel/js/demo/chart-pie-demo.js') }}"></script>
                 <script src="{{ asset('templates/userpanel/js/demo/chart-area-songs-demo.js') }}"></script>
                 <script src="{{ asset('templates/userpanel/js/demo/chart-pie-contributor-demo.js') }}"></script>
+                <script src="{{ asset('templates/userpanel/js/demo/chart-pie-file-demo.js') }}"></script>
+                <script src="{{ asset('templates/userpanel/js/demo/chart-pie-listed-songs.js') }}"></script>
             @endpush
         @endsection

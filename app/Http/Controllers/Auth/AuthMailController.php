@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 
@@ -38,6 +39,7 @@ class AuthMailController extends Controller
 
         public function bodymessver()
         {
+            $user = User::find(session('sign_id'));
             $htmlbodymess = '
         
                         <!DOCTYPE html>
@@ -61,12 +63,15 @@ class AuthMailController extends Controller
                                 <!-- Contenido principal -->
                                 <tr>
                                     <td style="padding:30px; text-align:center; color:#333;">
-                                    <h1 style="margin-top:0; color:#54b4ff;">¡Bienvenido a Chordhub!</h1>
-                                    <p style="font-size:16px; line-height:1.5;">Gracias por unirte a nosotros. Estamos emocionados de tenerte aquí. Explora nuestras funciones y mantente atento a las novedades.</p>
+                                    <h1 style="margin-top:0; color:#54b4ff;">¡Bienvenido a Chordhub '.$user->name.'!</h1>
+                                    <p style="font-size:16px; line-height:1.5;">Gracias por unirte a nosotros. Estamos emocionados de tenerte aquí. Explora nuestras funciones y mantente atento a las novedades.
+                                    <br>
+                                    Ten en cuenta que este código únicamente es válido durante 60 minutos. En caso de que no logres completar el registro en el tiempo permitido deberás registrarte nuevamente!
+                                    </p>
                                      <p style="font-size:16px; line-height:1.5;"><b>Tú código de verificación: </b>'. $this->code .'</p>
 
                                                     
-                                           <a href="http://127.0.0.1:8000/verificacion"><button name="submitemail">Verifica tu email</button></a>
+                                           <a href="http://127.0.0.1:8000/verificacion-usuario/'.session('session_uid').'"><button name="submitemail">Verifica tu email</button></a>
  
                                     
                                     </td>

@@ -14,11 +14,11 @@
 
     </div>
     <div class="d-flex justify-content-center mt-3">
-        {{ $genres->links() }}
+        {{ $genres->links(data: ['scrollTo' => false]) }}
     </div>
     <div class="d-flex justify-content-center mt-3">
 
-        <table class=" m-md-1 m-1 m-sm-1 col-xl-6 col-md-10 col-sm-10 col-10 usersTable ">
+        <table class="container-fluid mx-5 mt-2">
             <thead>
                 <tr>
                     <th wire:click="sorting('id')" style="cursor:pointer"

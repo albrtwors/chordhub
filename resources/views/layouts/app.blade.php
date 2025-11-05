@@ -13,10 +13,13 @@
     <!-- Custom fonts for this template-->
     <x-styles></x-styles>
 
-<body id="page-top">
+
+
+<body id="page-top ">
+    @yield('modal')
+
 
     <x-loader />
-
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -25,7 +28,7 @@
         <!-- End of sidebar -->
 
         <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content-wrapper" class="d-flex flex-column ">
 
             <!-- Main Content -->
 
@@ -62,7 +65,7 @@
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">Seguro de que quieres cerrar sesión?.</div>
+                    <div class="modal-body fw-light">Seguro de que quieres cerrar sesión?.</div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
                         <a class="btn btn-primary" href="{{ route('logout') }}">Cerrar sesión</a>
@@ -71,10 +74,23 @@
             </div>
         </div>
 
+
         <x-scripts />
 
         @stack('scripts')
 
+        {{-- <script>
+            const elements = document.querySelectorAll('*');
+            elements.forEach(element => {
+                element.classList.add('bg-black', 'text-white');
+                if (element.tagName.toLowerCase() === 'input') {
+                    element.classList.add('bg-dark');
+                }
+                if (element.tagName.toLowerCase() === 'nav') {
+                    element.classList.add('bg-dark');
+                }
+            });
+        </script> --}}
 </body>
 @livewireScripts
 

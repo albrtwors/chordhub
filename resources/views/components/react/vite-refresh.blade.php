@@ -1,0 +1,2 @@
+@viteReactRefresh
+@vite($path)

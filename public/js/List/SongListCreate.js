@@ -9,6 +9,7 @@ ListInstance.SortableInit.option("onEnd", () => {
 
 ListInstance.submitButton.addEventListener("click", () => {
     const listinput = document.getElementById("list_name");
+    const listcollab = document.getElementById("collab");
     const songs_selected = ListInstance.songsSelected;
 
     const Validation = new LogValidation(null, "/cancioneros");
@@ -16,6 +17,7 @@ ListInstance.submitButton.addEventListener("click", () => {
         {
             songs: songs_selected,
             listname: listinput.value,
+            collab: listcollab?.checked ? 1 : 0,
         },
         Validation.url
     );

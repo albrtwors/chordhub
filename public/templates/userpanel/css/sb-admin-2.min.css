@@ -80,6 +80,23 @@ body {
 [tabindex="-1"]:focus:not(:focus-visible) {
     outline: 0 !important;
 }
+.navbar-light {
+    z-index: 300300;
+}
+@keyframes expandible {
+    0% {
+        scale: 0;
+    }
+    100% {
+        scale: 1;
+    }
+}
+#clickHint.expandible {
+    animation-name: expandible;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+    animation-duration: 0ms;
+}
 hr {
     box-sizing: content-box;
     height: 0;
@@ -89,9 +106,12 @@ hr {
     width: 8px;
     height: 8px;
 }
+
 ::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 50%;
+    width:3px;
+    height:10px;
     border: none;
 }
 ::-webkit-scrollbar-track {
@@ -117,6 +137,31 @@ hr {
     opacity: 1;
     visibility: visible;
 }
+.user-pfp-card {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
+    border-radius: 100%;
+}
+.user-card:hover .user-pfp-card {
+    scale: 1.1;
+    rotate: 10deg;
+}
+
+.user-card {
+    background: white;
+
+    border-radius: 15px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+
+    height: auto;
+    padding: 60px;
+    max-height: 300px;
+    overflow: hidden;
+}
 .modal-container {
     width: 84vw;
     height: 100vh;
@@ -128,7 +173,7 @@ hr {
     top: 0;
     margin: 0;
     padding: 0;
-    z-index: 10;
+    z-index: 5000000;
 }
 @keyframes fade {
     0% {
@@ -160,10 +205,20 @@ hr {
 }
 .modal-container footer {
 }
-
-#structure {
-    max-height: 700px;
+/* #draggableMenu {
+    background-color: whitesmoke;
+    border: 1px solid rgb(0 0 0 /30%);
+    border-radius: 30px;
+    max-width: 400px;
+    padding: 40px;
+    max-height: 600px;
+}
+#draggableMenu li {
+    max-height: 100px;
+    overflow-x: hidden;
     overflow-y: scroll;
+} */
+#structure {
 }
 h1,
 h2,
@@ -373,6 +428,7 @@ legend {
 progress {
     vertical-align: baseline;
 }
+
 [type="number"]::-webkit-inner-spin-button,
 [type="number"]::-webkit-outer-spin-button {
     height: auto;
@@ -4207,6 +4263,16 @@ input[type="submit"].btn-block {
 }
 .navbar-light .navbar-brand {
     color: rgba(0, 0, 0, 0.9);
+    z-index: 5;
+}
+.modal.fade.show {
+    z-index: 300000;
+}
+.modal-content {
+    z-index: 3000023423400;
+}
+nav {
+    z-index: 30;
 }
 .navbar-light .navbar-brand:focus,
 .navbar-light .navbar-brand:hover {
@@ -9451,6 +9517,7 @@ a:focus {
 .topbar .dropdown-list {
     padding: 0;
     border: none;
+    z-index: 300394203940294;
     overflow: hidden;
 }
 .topbar .dropdown-list .dropdown-header {

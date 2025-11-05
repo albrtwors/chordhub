@@ -52,7 +52,7 @@ class ChordNotification extends Notification
         return [
             'name'=>$this->chord->song->name,
             'id'=>$this->chord->song_id,
-            'route'=>route('acordes.show', $this->chord->song_id),
+            'route'=>route('acordes.show', $this->chord->id),
             'user_id'=> $this->chord->user_id,
             'message'=> 'Nuevos acordes subidos',
             'description'=>User::find($this->chord->user_id)->name.' subió nuevos acordes'

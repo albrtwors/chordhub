@@ -12,6 +12,7 @@ class CreateUser extends Component
     public $email = "";
     public $name = "";
     public $password = "";
+    
     protected $rules = [
 
         'name'=>'required',

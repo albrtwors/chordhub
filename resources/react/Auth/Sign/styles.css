@@ -1,0 +1,21 @@
+.signForm {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 20px;
+}
+
+.success {
+    background-color: rgba(0, 255, 157, 0.359);
+    border: 3px solid rgb(39, 243, 134);
+}
+.wrong {
+    background-color: rgba(238, 104, 104, 0.23);
+    border: 3px solid rgb(243, 39, 63);
+}
+
+.form-control {
+    border: 0.5px solid gray;
+}
+.form-control:focus {
+    background: inherit;
+}

@@ -1,15 +1,22 @@
 @extends('layouts.app')
 @section('content')
+    <link rel="stylesheet" href="{{ asset('templates/draggable/css/winbox.min.css') }}">
+    <!-- Themes -->
+    <link rel="stylesheet" href="{{ asset('templates/draggable/css/themes/white.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('templates/draggable/css/themes/white.min.css') }}">
+
+    <script src="{{ asset('templates/draggable/js/winbox.min.js') }}"></script>
     <style>
         #structure {
-
+            max-height: 700px;
+            overflow-y: scroll;
             line-height: 2;
         }
     </style>
 
-    <h1 class="text-start sidebar-brand-text fw-bold ms-5 py-3">
-        Crea una nueva canción
-    </h1>
+
+    <x-app.page-header text="Crea una nueva canción" />
+
     <h3 class="text-start ms-5 pb-3 fs-xl-1 fs-md-4 fs-4 fs-sm-4">
         Establece todo lo necesario
     </h3>
@@ -18,122 +25,88 @@
 
 
         <div class="row d-flex m-xl-0 m-md-5 m-5 justify-content-center">
-            <div class="border-left-xl-primary col-xl-4 col-md-10 d-flex justify-content-center">
+            <div class="border-left-xl-primary col-xl-4 col-md-10 d-flex flex-column justify-content-center">
                 <form action="{{ route('canciones.store') }}" id="songform">
                     @csrf
                     @method('post')
-                    <input type="text" class="d-none" name="structure" id="valueofstructure">
-                    <div class="mx">
-                        <h5 class="mt-3 text-center">Letra</h5>
-                        <div class="mt-3">
-                            <div class="d-flex justify-content-center">
-                                <button type="button" class="btn btn-danger my-3 me-3" id="clear">Limpiar</button>
-                                <button type="button" class="btn btn-success my-3" id="clone">Duplicar</button>
-                            </div>
+                    <x-forms.input type="text" class="d-none" name="structure" id="valueofstructure" />
 
-                            <div data-mdb-input-init class="form-outline">
-                                <textarea spellcheck="false" class="form-control   bg-light small" id="area" rows="10">
-Estrofa
-
-Precoro
-
-Coro
-
-Puente
-</textarea>
+                    <x-containers.flexcolcenter gap="3">
+                        <x-forms.label text="Estructura" />
+                        <div class="d-flex flex-column gap-3 align-items-center">
+                            <div class="d-flex justify-content-center gap-3">
+                                <x-forms.button text="Limpiar" color="danger" id="clear" />
+                                <x-forms.button text="Duplicar" color="success" id="clone" />
 
                             </div>
 
-                            <div class="mt-3 ">
-                                <button type="button" title="añade un coro" id="intro"
-                                    class="btn btn-primary me-3 mt-2">Intro+</button>
-                                <button type="button" title="añade un coro" id="estro"
-                                    class="btn btn-primary me-3 mt-2">Estrofa+</button>
-                                <button type="button" title="añade un coro" id="precor"
-                                    class="btn btn-primary me-3 mt-2">PreCoro+</button>
-                                <button type="button" title="añade un verso" id="coro"
-                                    class=" me-3 btn btn-primary mt-2">Coro +</button>
-                                <button type="button" id="puente" title="puente"
-                                    class="btn btn-primary me-3 mt-2">Puente +</button>
-                            </div>
-                            <h6 class="mt-3 text-center">Nombre de la canción</h6>
+                            <x-forms.area id="area" type="song" />
 
-                            <div class="input-group mt-3">
-                                <input type="text" class="form-control bg-light small" name="name"
-                                    placeholder="ej: Tú fidelidad es grande" aria-label="Search"
-                                    aria-describedby="basic-addon2">
+                            <div class="d-flex flex-wrap gap-3 justify-content-center">
+                                <x-forms.input placeholder="Repeticiones" type="number" id="repetitions" />
+                                <x-forms.button text="Intro +" id="intro" />
+                                <x-forms.button text="Estrofa +" id="estro" />
+                                <x-forms.button text="PreCoro +" id="precor" />
+                                <x-forms.button text="Coro +" id="coro" />
+                                <x-forms.button text="Puente +" id="puente" />
+                                <x-forms.button text="Outro +" id="outro" />
 
                             </div>
 
-                            <h6 class="mt-3 text-center">Intérpretes originales</h6>
-                            <div class="mt-3">
-                                <div class="input-group mt-3">
-                                    <input type="text" name="author" class="form-control bg-light small"
-                                        placeholder="ej: Hillsong" aria-label="Search" aria-describedby="basic-addon2">
 
-                                </div>
-                            </div>
+                            <x-containers.flexcolcenter gap="1">
+                                <x-forms.label text="Nombre" />
+                                <x-forms.input placeholder="Ej: Dios Está Aquí" name="name" />
+                            </x-containers.flexcolcenter>
 
-                            {{-- <h6 class="mt-3">Tonalidad por defecto</h6>
-                    <div class="mt-3">
-                        <select size="5" name="tone" multiple class="form-control bg-light small d-inline songinput">
-                            <option value="C Mayor">C</option>
-                            <option value="C Menor">Cm</option>
-                            <option value="C# Mayor">C#</option>
-                            <option value="C# Menor">C#m</option>
-                            <option value="D Mayor">D</option>
-                            <option value="D Menor">Dm</option>
-                            <option value="D# Mayor">D#</option>
-                            <option value="D# Menor">D#m</option>
-                            <option value="E Mayor">E</option>
-                            <option value="E Menor">Em</option>
-                            <option value="F Mayor">F</option>
-                            <option value="F Menor">Fm</option>
-                            <option value="F# Mayor">F#</option>
-                            <option value="F# Menor">F#m</option>
-                            <option value="G Mayor">G</option>
-                            <option value="G Menor">Gm</option>
-                            <option value="G# Mayor">G#</option>
-                            <option value="G# Menor">G#m</option>
-                            <option value="A Mayor">A</option>
-                            <option value="A Menor">Am</option>
-                            <option value="A# Mayor">A#</option>
-                            <option value="A# Menor">A#m</option>
-                            <option value="B Mayor">B</option>
-                            <option value="B Menor">Bm</option>
-                        </select>
 
-                    </div> --}}
+                            <x-containers.flexcolcenter gap="1">
+                                <x-forms.label text="Intérpretes originales" />
+                                <x-forms.input placeholder="Ej: Jesús adrian Romero" name="author" />
+                            </x-containers.flexcolcenter>
 
-                            <h6 class="mt-3 text-center">Género</h6>
-                            <div class="mt-3 d-flex justify-content-center">
-                                <select name="genre" class="songinput form-control bg-light small">
+
+                            <x-containers.flexcolcenter gap="1">
+                                <x-forms.label text="Género" />
+                                <x-forms.select name="genre">
                                     @foreach ($genre as $genre)
                                         <option value="{{ $genre->id }}">{{ $genre->name }}</option>
                                     @endforeach
+                                </x-forms.select>
 
-                                </select>
-                            </div>
+                            </x-containers.flexcolcenter>
 
 
                         </div>
-                        <h6 class="mt-3 text-center">Imagen de referencia</h6>
-                        <input type="file" class="form-control" name="pfp" id="customFile" />
-                        <h6 class="mt-3 text-center">Palabras clave</h6>
-                        <div class="mt-3 d-flex justify-content-center">
-                            <input class="songinput" type="text" name="keywords" id="">
-                        </div>
 
-                        <div class="mt-3">
-                            <label for="collab">Participación Colaborativa</label>
-                            <input type="checkbox" name="collab" value="1" id="">
-                        </div>
+                        <x-containers.flexcolcenter gap="1">
+                            <x-forms.label text="Imagen de Referencia" />
+                            @livewire('form.image-form')
+                        </x-containers.flexcolcenter>
 
-                    </div>
+
+
+                        <x-containers.flexcolcenter gap="1">
+                            <x-forms.label text="Palabras Clave" />
+                            <x-forms.input name="keywords" type="text" />
+                        </x-containers.flexcolcenter>
+
+
+                        <x-containers.flexcolcenter gap="1">
+                            <x-forms.label text="Habilitar Colaboraciones" />
+                            <x-forms.input name="collab" type="checkbox" checkbox="true" value="1" />
+
+
+                        </x-containers.flexcolcenter>
+
+
+
+
+                    </x-containers.flexcolcenter>
             </div>
-            <div class="col-xl-6 col-md-10 d-flex justify-content-center mt-md-5 mt-5 mt-xl-3">
+            <div class="col-xl-6 col-md-10 fw-bold d-flex justify-content-center mt-md-5 mt-5 mt-xl-3">
                 <div class="">
-                    <h5 class="text-center">Previsualización</h5>
+                    <h6 class="fw-bold text-center">Vista Previa</h6>
                     <div id="structure" class="m-3 text-center songletterbox">
 
                     </div>
@@ -147,21 +120,27 @@ Puente
 
     </div>
 
-    <div class="container-fluid d-flex justify-content-center my-4">
-        <h6 class="text-center col-5">
-            La canción únicamente podrá ser modificada o eliminada por ti, a menos de que habilites la participación
-            colaborativa
-        </h6>
-    </div>
+
     <div class="container-fluid d-flex justify-content-center my-3">
         <div>
-            <input class="btn btn-primary" id="sub" type="submit" value="Subir canción">
+            <x-forms.button submit="yes" text="Subir Canción" submit id="sub" />
+
 
         </div>
 
     </div>
     </form>
 
+    <input class="d-none" id="allSongsJSON" value="{{ $songs }}" />
+
+
+
+    <x-song.song-searcher :songs="$songs" />
+
+    <script src="{{ asset('js/Song/SongSearcher.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.6/Sortable.min.js"
+        integrity="sha512-csIng5zcB+XpulRUa+ev1zKo7zRNGpEaVfNB9On1no9KYTEY/rLGAEEpvgdw6nim1WdTuihZY1eqZ31K7/fZjw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="module" src="{{ asset('js/Song/SongPrev.js') }}"></script>
     <script type="module" src="{{ asset('js/Song/SongCreate.js') }}"></script>
 @endsection

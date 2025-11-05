@@ -9,7 +9,7 @@ use App\Http\Controllers\Auth\AuthMailController;
 use App\Http\Controllers\Auth\Traits\AuthValidations;
 use App\Models\User;
 use App\Http\Requests\SignRequest;
-
+use Illuminate\Support\Str;
 class AuthSignController extends Controller
 {
     use AuthValidations;
@@ -30,11 +30,12 @@ class AuthSignController extends Controller
             'email'=>$validatedData['email'],
             'sign_code'=>$code
        ])->assignRole('visitor');
+       $uuid=Str::uuid()->toString();
+       $user->code()->create(['verification_code'=> $code, 'uid'=>$uuid]);
        
 
+       session(['sign_id'=>$user->id, 'session_uid'=>$uuid]);
        $this->sendMail($req->email, $code);
-      
-       session(['sign_id'=>$user->id]);
        return response()->json(['status'=>'success', 'message'=>'Usuario creado, revisa tu email']);
     }
 

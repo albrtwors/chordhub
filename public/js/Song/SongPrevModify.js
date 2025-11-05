@@ -5,9 +5,6 @@ const $outputvalue = document.getElementById("output_value");
 
 const SongPrev = new Song();
 const songjson = document.getElementById("songjson");
-SongPrev.songArea.addEventListener("click", () => {
-    SongPrev.saveCaretPosition();
-});
 
 document.addEventListener("keypress", () => {
     SongPrev.caretposition = null;

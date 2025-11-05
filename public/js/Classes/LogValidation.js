@@ -115,19 +115,16 @@ class LogValidation {
 
             if (response.status === "success") {
                 Alert.SuccessAlert(response.message);
-                if (element) {
-                    // element.row.appendChild(comment);
-                    element.row.parentNode.innerHTML += CommentCard(
-                        null,
-                        response.comment,
-                        response.user,
-                        null,
-                        null
-                    );
-                }
+
                 if (params.redirect) {
                     window.location.href = params.url;
                 }
+            } else if (response.status === "redirect") {
+                Alert.ErrorAlert(response.message);
+
+                setTimeout(() => {
+                    window.location.href = params.url;
+                }, 500);
             } else {
                 Alert.ErrorAlert(response.message);
             }
