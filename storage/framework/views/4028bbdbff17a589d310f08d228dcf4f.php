@@ -23,7 +23,7 @@
             </select>
         </div>
 
-        <div class="d-flex">
+        <div style="transition-duration:300ms" class="d-flex transition">
             <?php echo e($songs->count() > 0 ? $songs->links(data: ['scrollTo' => false]) : ''); ?>
 
         </div>

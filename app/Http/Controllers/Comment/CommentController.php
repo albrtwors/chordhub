@@ -114,6 +114,41 @@ public function getComments($id, $type)
         //
     }
 
+    public function deleteComment(Request $req,$id ){
+      
+        $comment =Comment::find($id);
+        $comment->delete();
+        $comments = Comment::where('commentable_id', $comment->commentable_id)->whereNull('parent_id')
+        ->where('commentable_type', $comment->commentable_type)
+        ->with([
+            'user' => fn($q) => $q->with('image'),
+            'responses' => fn($q) => $q->with([
+                'user' => fn($q) => $q->with('image'),
+                'responses' => fn($q) => $q->with([
+                    'user' => fn($q) => $q->with('image'),
+                    'responses' => fn($q) => $q->with([
+                        'user' => fn($q) => $q->with('image'),
+                        'responses' => fn($q) => $q->with([
+                            'user' => fn($q) => $q->with('image'),
+                            'responses' => fn($q) => $q->with([
+                                'user' => fn($q) => $q->with('image'),
+                                'responses' => fn($q) => $q->with([
+                                    'user' => fn($q) => $q->with('image'),
+                                    'responses' => fn($q) => $q->with([
+                                        'user' => fn($q) => $q->with('image'),
+                                       
+                                    ])
+                                ])
+                            ])
+                        ])
+                    ])
+                ])
+            ])
+        ])
+        ->get();
+        
+        return response()->json(['status'=>'success', 'message'=>'Comentario eliminado', 'comments'=>$comments]);
+    }
     /**
      * Store a newly created resource in storage.
      */

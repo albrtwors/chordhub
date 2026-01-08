@@ -1,139 +1,38 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container ">
+    <div class="container d-flex flex-column gap-3 ">
 
-        <h1 class="fw-bold">Bienvenido {{ Auth::user()->name }}</h1>
-
-        <div class="row justify-content-center">
-
-            <div class="col-xl-6  col-md-12">
-                <div class="d-flex justify-content-center">
-                    <img class="pfp my-3"
-                        src="{{ Auth::user()->image->url ?? 'https://cdn-icons-png.flaticon.com/512/8791/8791450.png' }}"
-                        width="200px" height="200px" alt="">
-                </div>
+        
+        <div class="d-flex gap-3">        
+            <div class="d-flex flex-column">
+                <h1 class="fw-bold">Bienvenido  <x-utils.role-label :role="Auth::user()->roles->first()->name" /> {{Auth::user()->name}}</h1>
             </div>
-
-            <div class="col-xl-6 col-md-12">
-                <!-- Inicio, Datos del Usuario -->
-                <div class="mb-4">
-                    <div class="card border-left-primary shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <a
-                                        href="
-                                    @if ($topSong) {{ route('canciones.show', $topSong->id) }}
-                                    @else
-                                        'no hay entradas' @endif 
-                                     ">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                            Canción más buscada</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                            {{ $topSong->name ?? 'No hay entradas' }}</div>
-                                    </a>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Inicio, cancion mas popular -->
-                <div class=" mb-4">
-                    <div class="card border-left-success shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-
-                                <div class="col mr-2">
-
-                                    <a
-                                        href="
-                                    @if ($lastSong) {{ route('canciones.show', $lastSong->id) }}
-                                    @else
-                                        'no hay entradas' @endif 
-                                     ">
-
-                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                            Última Canción Añadida</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                            {{ $lastSong->name ?? 'No hay entradas' }}</div>
-                                    </a>
-                                </div>
-
-                                <div class="col-auto">
-                                    <i class="fas fa-music fa-2x text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
+          
         </div>
+       
+        
+
+        @role('admin')
+            <x-dashboard.admin-process/>
+        @endrole
+
+        @role('singer')
+            <x-dashboard.sing-process />
+        @endrole
+
+        @role('musician')
+            <x-dashboard.chord-process/>
+        @endrole
+        
+       
+      
+     
+
+        
 
         <!-- Begin Page Content -->
-        <div class="container-fluid">
-
-            <!-- Page Heading -->
-
-            <!-- Content Row -->
-            <div class="row">
-
-                <!-- Aportes del usuario -->
-                <div class="col-xl-6 col-md-6 mb-4">
-                    <div class="card border-left-info shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tus aportes al
-                                        repositorio
-                                    </div>
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col-auto">
-                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                {{ $userSongs->count() == 1 ? $userSongs->count() . ' Canción añadida' : $userSongs->count() . ' Canciones añadidas' }}
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Aportes del usuario numero de canciones -->
-                <div class="col-xl-6 col-md-6 mb-4">
-                    <div class="card border-left-warning shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                        CANCIONES DISPONIBLES</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        {{ $songs->count() == 1 ? $songs->count() . ' Canción añadida' : $songs->count() . ' Canciones añadidas' }}
-                                    </div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-guitar fa-2x text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Content Row -->
-
-            <div class="row">
+        <div class="container-fluid row">
 
                 <!-- Area Chart -->
                 <div class="col-xl-8 col-lg-7">
@@ -283,15 +182,15 @@
                     </div>
                 </div> --}}
 
-
+             
 
                 <input id="topGenresValue" type="hidden" value="{{ $topGenreJson }}" name="">
                 <input id="topContributors" type="hidden" value="{{ $topContributors }}" name="">
                 <input id="topTonalities" type="hidden" value="{{ json_encode($topTonalities) }}" name="">
                 <input id="topSongVisitsValue" type="hidden" value="{{ $topSongJson }}" name="">
-                {{-- <input id="topFilesValue" type="hidden" value="{{ $topFilesJson }}" name=""> --}}
-                {{-- <input id="mostListedSongs" type="hidden" value="{{ $mostListedSongs }}" name=""> --}}
-
+              
+                <input id="mostListedSongs" type="hidden" value="{{ $mostListedSongs }}" name="">
+             
 
                 <!-- Pie Chart -->
 

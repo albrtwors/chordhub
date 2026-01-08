@@ -1,34 +1,51 @@
 <div>
-    <div class="d-flex justify-content-center mx-5">
-        <div class="d-flex justify-content-center mx-5 w-50 gap-3">
+    <div style="overflow-x:scroll" class="mx-5 d-flex gap-3">
+       
             @if ($type == 'create')
             @elseif($type == 'edit')
+            <div class="d-flex gap-2 flex-column">
+                <label for="" class="fw-bold">Permisos</label>
                 <select wire:model.live="collabChords" class="form-control">
                     <option value="{{ false }}">Canciones con Acordes Propios</option>
                     <option value="{{ true }}">Canciones con Acordes Colaborativos</option>
                 </select>
+            </div>
             @elseif($type == 'delete')
             @else
+            <div class="d-flex gap-2 flex-column">
+                <label for="" class="fw-bold">Permisos</label>
                 <select wire:model.live="ownChords" class="form-control">
                     <option value="{{ false }}">Todas las Canciones con Acordes</option>
                     <option value="{{ true }}">Canciones con acordes propios</option>
                 </select>
+            </div>
             @endif
-
-            <select wire:model.live="quantity" class="w-25 form-control">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
+            <div class="d-flex gap-2 flex-column">
+            <label for="" class="fw-bold">Paginación</label>    
+            <select wire:model.live="quantity" class="form-control">
+                <option value="12">12</option>
+                <option value="36">36</option>
+                <option value="54">54</option>
             </select>
-            <input wire:model.live="songName" placeholder="Busca una Canción" type="text" class="form-control">
+            </div>
 
-            <select wire:model.live="genreId" class="w-25 form-control">
-                <option value="{{ null }}">Todos</option>
-                @foreach ($genres as $genre)
-                    <option value="{{ $genre->id }}">{{ $genre->name }}</option>
-                @endforeach
-            </select>
-        </div>
+            <div class="d-flex gap-2 flex-column">
+            
+                <label for="" class="fw-bold">Nombre</label>    
+                <input wire:model.live="songName" placeholder="Busca una Canción" type="text" class="form-control">
+                    
+            </div>
+
+            <div class="d-flex gap-2 flex-column">
+                <label for="" class="fw-bold">Género</label>    
+                <select wire:model.live="genreId" class="form-control">
+                    <option value="{{ null }}">Todos</option>
+                    @foreach ($genres as $genre)
+                        <option value="{{ $genre->id }}">{{ $genre->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+      
 
     </div>
 
@@ -41,83 +58,10 @@
 
 
             @forelse ($songs as $song)
-                @if ($type == 'delete')
-                    <div id="song_template" class="col-xl-4 col-md-6 col-sm-12 mt-5">
-                        <div class="d-flex">
 
-                            <div>
-                                <img width="100px" height="100px"
-                                    src="{{ $song->image->url ?? 'https://cdn-icons-png.flaticon.com/512/3809/3809073.png' }} "
-                                    alt="">
-
-                            </div>
-                            <div class="ms-3">
-                                <a class="link-dark" href="{{ route('chordsDeleteIndex', $song->id) }}">
-                                    <h4>{{ $song->name }}</h4>
-                                    <p>{{ $song->author->name }}</p>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                @elseif($type == 'create')
-                    <div id="song_template" class="col-xl-4 col-md-6 col-sm-12 mt-5">
-                        <div class="d-flex">
-
-                            <div>
-                                <img width="100px" height="100px"
-                                    src="{{ $song->image->url ?? 'https://cdn-icons-png.flaticon.com/512/3809/3809073.png' }} "
-                                    alt="">
-
-                            </div>
-                            <div class="ms-3">
-                                <a class="link-dark" href="{{ route('chordsCreate', $song->id) }}">
-                                    <h4>{{ $song->name }}</h4>
-                                    <p>{{ $song->author->name }}</p>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                @elseif($type == 'edit')
-                    <div id="song_template" class="col-xl-4 col-md-6 col-sm-12 mt-5">
-                        <div class="d-flex">
-
-                            <div>
-                                <img width="100px" height="100px"
-                                    src="{{ $song->image->url ?? 'https://cdn-icons-png.flaticon.com/512/3809/3809073.png' }} "
-                                    alt="">
-
-                            </div>
-                            <div class="ms-3">
-                                <a class="link-dark" href="{{ route('chordsEditSong', $song->id) }}">
-                                    <h4>{{ $song->name }}</h4>
-                                    <p>{{ $song->author->name }}</p>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                @else
-                    <div id="song_template" class="col-xl-4 col-md-6 col-sm-12 mt-5">
-                        <div class="d-flex">
-
-                            <div>
-                                <img width="100px" height="100px"
-                                    src="{{ $song->image->url ?? 'https://cdn-icons-png.flaticon.com/512/3809/3809073.png' }} "
-                                    alt="">
-
-                            </div>
-                            <div class="ms-3">
-                                <a class="link-dark" href="{{ route('chord.versions', $song->id) }}">
-                                    <h4>{{ $song->name }}</h4>
-                                    <p>{{ $song->author->name }}</p>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                @endif
+            
+                <x-chord.chord-card :author="$song->author->name" name="{{$song->name}}" image="{{ $song->image->url ?? 'https://cdn-icons-png.flaticon.com/512/3809/3809073.png' }}" type="{{ $type }}" id="{{ $song->id }}"/>
+               
             @empty
 
                 <div>

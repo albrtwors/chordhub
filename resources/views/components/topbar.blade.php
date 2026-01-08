@@ -75,7 +75,10 @@
 
                        <!-- Nav Item - Messages -->
 
-
+                       <div class="d-flex align-items-center font-bold gap-1">
+                            
+                            {{ Auth::user()->name }}
+                       </div>
                        <!-- Nav Item - User Information -->
                        <li class="nav-item dropdown no-arrow">
                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
@@ -95,7 +98,7 @@
                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                    Configuración
                                </a>
-                               <a class="dropdown-item" href="#">
+                               <a class="dropdown-item" href="/logs/usuario">
                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                    Actividad
                                </a>

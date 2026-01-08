@@ -3,7 +3,10 @@
 
 
     <x-react.vite-refresh path="resources/react/comments/app.jsx" />
-  
+    @if($songs->audio)
+        @vite('resources/react/song/songplayer.jsx')
+    @endif
+    @vite('resources/react/pdf/entry.jsx')
     
     <link rel="stylesheet" href="{{ asset('templates/draggable/css/winbox.min.css') }}">
     <!-- Themes -->
@@ -21,7 +24,7 @@
         }
     </style>
     <x-forms.input type="text" class="d-none" id="songjson" value="{{ $songs->structure }}" />
-
+    
 
 
     <div class="row">
@@ -36,14 +39,15 @@
 
         <div class="col-xl-5 col-md-12 col-md-12 col-sm-12 d-flex me-5 justify-content-end">
             <div class="d-flex my-3">
-                <h6 class="me-1 mt-2">Subido por: <span class="fw-bold">{{ $user->roles->first()->name }}</span>
-                    {{ $user->name }}</h6> <img class="img-profile rounded-circle" width="32" height="32"
+                <h6 class="me-1 uploadedby mt-2">Subido por: <span class="fw-bold">{{ $user?$user->roles->first()->name:'null' }}</span>
+                    {{ $user?$user->name:'null' }}</h6> <img class="img-profile rounded-circle" width="32" height="32"
                     src="{{ $user->image->url ?? 'https://cdn-icons-png.flaticon.com/512/8791/8791450.png' }}"></img>
             </div>
         </div>
 
     </div>
 
+    <input type="text" class="d-none" id="songtitle" value="{{ $songs->name }}">
     <div class="d-flex justify-content-center gap-3 my-3">
         <x-app.link route="{{ route('chord.versions', $songs->id) }}">
             <x-forms.button color="primary" text="Acordes" />
@@ -56,7 +60,7 @@
             @endif
         @endcan
 
-        <x-forms.button color="primary" id="export" text="Exportar" />
+        <div id="pdf-exporter"></div>
 
         @can('songs.destroy')
             @if ($songs->collab || $songs->user_id == Auth::id())
@@ -70,7 +74,14 @@
             @endif
         @endcan
     </div>
+    <input type="text" value="{{ $songs->audio ? $songs->audio->url : '' }}" id="songplayer-audio" class="d-none">
+    <input type="text" id="song-img" value="{{ $songs->image ? $songs->image->url : 'https://cdn-icons-png.flaticon.com/512/3809/3809073.png' }}" class="d-none">
 
+    @if($songs->audio)
+    <div class="d-flex justify-content-center">
+        <div id="songplayer-widget"></div>
+    </div>
+    @endif
 
 
     <div class="m-auto">
@@ -114,14 +125,17 @@
 
                 </div>
 
+
             </form>
+
+
 
     </div>
 
     
     <x-comments.comment-meta id="{{ $songs->id }}" type="song" />
     <div id="comment-widget"></div>
-    <div id="songplayer-widget"></div>
+    
 
     {{-- <div class="m-5 p-5 border">
         <h3 class="fw-bold mb-5">Comentarios</h3>
@@ -155,7 +169,7 @@
 
 
 
-    <script src="{{ asset('js/PDF/PDF.js') }}"></script>
+    <script type="module" src="{{ asset('js/PDF/PDF.js') }}"></script>
     <script type="module" src="{{ asset('js/Song/SongView.js') }}"></script>
     <script type="module" src="{{ asset('js/Song/SongDelete.js') }}"></script>
 @endsection

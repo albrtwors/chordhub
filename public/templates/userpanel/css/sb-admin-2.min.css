@@ -47,6 +47,26 @@
 ::before {
     box-sizing: border-box;
 }
+
+/*song-card*/
+.song-card-anchor {
+    text-decoration: none;
+    color: inherit;
+}
+.song-card,
+.file-card {
+    transition-duration: 300ms;
+    border-radius: 30px;
+    padding: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.song-card:hover,
+.file-card:hover {
+    background: #00000066;
+    color: white;
+}
 html {
     font-family: sans-serif;
     line-height: 1.15;
@@ -110,8 +130,8 @@ hr {
 ::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 50%;
-    width:3px;
-    height:10px;
+    width: 3px;
+    height: 10px;
     border: none;
 }
 ::-webkit-scrollbar-track {
@@ -163,7 +183,7 @@ hr {
     overflow: hidden;
 }
 .modal-container {
-    width: 84vw;
+    width: 85vw;
     height: 100vh;
     background: rgb(0 0 0 / 70%);
     display: flex;

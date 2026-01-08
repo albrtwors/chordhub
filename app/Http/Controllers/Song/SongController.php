@@ -13,6 +13,7 @@ use App\Models\Genre;
 use App\Http\Controllers\Search\SearchSongController;
 use App\Models\Author;
 use App\Http\Requests\SongModifyRequest;
+use App\Models\Log;
 use App\Models\Tonality;
 use App\Models\User;
 use App\Notifications\SongNotification;
@@ -90,10 +91,18 @@ class SongController extends Controller implements HasMiddleware
             'genre_id'=>$request->genre
         ]);
 
+
         $user = User::all()->except($song->user_id);
         foreach($user as $u){
             $u->notify(new SongNotification($song));
 
+        }
+
+        if($request->file('audio')){
+            $audio = $request->file('audio');
+            $audioUrl = $audio->store('songs', 'public');
+            $audioPath = Storage::url($audioUrl);
+            $song->audio()->create(['url'=>$audioPath, 'audioble_type'=>'App\Models\Song', 'audioble_id'=>$song->id]);
         }
 
         if($request->file('pfp')){
@@ -103,6 +112,7 @@ class SongController extends Controller implements HasMiddleware
             $song->image()->create(['url'=>$path, 'imageable_type'=>'App\Models\Song', 'imageable_id'=>$song->id]);
         }
 
+        Log::create(['name'=>Auth::user()->name. ' ha creado la canción '.$song->name,'user_id'=>Auth::user()->id]);
         event(new SongEvent($song));
         return response()->json(['status'=>'success', 'message'=>'Canción creada']);
     }
@@ -175,6 +185,24 @@ class SongController extends Controller implements HasMiddleware
             }
             
         }
+
+        if($request->file('audio')){
+            if($song->audio){
+                $audio = $request->file('audio');
+                $audioUrl = $audio->store('songs', 'public');
+                $audioPath = Storage::url($audioUrl);
+                $song->audio()->update(['url'=>$audioPath, 'audioble_type'=>'App\Models\Song', 'audioble_id'=>$song->id]);
+            }
+            else{
+                $audio = $request->file('audio');
+                $audioUrl = $audio->store('songs', 'public');
+                $audioPath = Storage::url($audioUrl);
+                $song->audio()->create(['url'=>$audioPath, 'audioble_type'=>'App\Models\Song', 'audioble_id'=>$song->id]);
+            }
+            
+        }        
+
+        Log::create(['name'=>Auth::user()->name. ' ha modificado la canción '.$song->name,'user_id'=>Auth::user()->id]);
         return response()->json(['status'=>'success', 'message'=>'Canción modificada']);
     }
 
@@ -187,7 +215,9 @@ class SongController extends Controller implements HasMiddleware
         if (! Gate::allows('delete-song', $song)) {
             return response()->json(['status'=>'wrong', 'message'=>'No autorizado']);
         }
+        Log::create(['name'=>Auth::user()->name. ' ha eliminado la canción '.$song->name,'user_id'=>Auth::user()->id]);
         $song->delete();
+        
         return response()->json(['status'=>'success', 'message'=>'Cancion Eliminada']);
     }
 
@@ -195,6 +225,7 @@ class SongController extends Controller implements HasMiddleware
     //searcher
     public function searchByNameAndGenre(Request $request)
     {
+        
        return SearchSongController::SearchSongs($request, 'modules.Song.songs');
     }
 

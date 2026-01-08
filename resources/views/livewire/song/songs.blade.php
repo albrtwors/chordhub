@@ -1,78 +1,66 @@
 <div>
 
-    <div class="d-flex justify-content-center mx-5">
-        <div class="d-flex justify-content-center mx-5 w-50 gap-3">
+    
+        
+        <div style="overflow-x:scroll" class="d-flex gap-3 mx-5">
             @if ($type == 'show')
+            <div class="d-flex flex-column gap-2">
+                <label  class="fw-bold" for="">Permisos </label>
                 <select wire:model.live="ownSongs" class="form-control">
                     <option value="{{ false }}">Canciones de todos</option>
                     <option value="{{ true }}">Solo canciones Propias</option>
                 </select>
+            </div>
             @elseif($type == 'edit')
+            <div class="d-flex flex-column gap-2">
+                <label  class="fw-bold" for="">Permisos</label>
                 <select wire:model.live="collabSongs" class="form-control">
                     <option value="{{ false }}">Canciones Propias</option>
                     <option value="{{ true }}">Canciones Colaborativas</option>
                 </select>
+            </div>
             @endif
-
-            <select wire:model.live="quantity" class="w-25 form-control">
-
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
+            <div class="d-flex flex-column gap-2">
+            <label  class="fw-bold" for="">Paginación </label>    
+            <select wire:model.live="quantity" class="form-control">
+                
+                <option value="12">12</option>
+                <option value="36">36</option>
+                <option value="54">54</option>
             </select>
-            <input wire:model.live="songName" placeholder="Busca una Canción" type="text" class="form-control">
+            </div>
 
-            <select wire:model.live="genreId" class="w-25 form-control">
+            <div class="d-flex flex-column gap-2">
+            <label  class="fw-bold" for="">Nombre</label>
+            <input wire:model.live="songName" placeholder="Busca una Canción" type="text" class="form-control">
+            </div>
+            <div class="d-flex flex-column gap-2">
+            <label  class="fw-bold" for="">Géneros </label>
+            <select wire:model.live="genreId" placeholder="Género" class="form-control">
+        
                 <option value="{{ null }}">Todos</option>
                 @foreach ($genres as $genre)
                     <option value="{{ $genre->id }}">{{ $genre->name }}</option>
                 @endforeach
             </select>
+            </div>
+
+
         </div>
 
-    </div>
+
+
+    
     <div class="d-flex justify-content-center mt-3">
         {{ $songs->links() }}
     </div>
 
 
     <div class="ms-5 me-3 row justify-content-center">
-
+        
         <div id="song_row" class="row">
-
-
             @forelse ($songs as $song)
-                <div id="song_template" class="col-xl-4 col-md-6 col-sm-12 mt-3">
-                    <div class="d-flex p-3 ">
-
-
-                        <div>
-                            <img width="100px" height="100px"
-                                src="{{ $song->image->url ?? 'https://cdn-icons-png.flaticon.com/512/3809/3809073.png' }} "
-                                alt="">
-
-                        </div>
-                        <div class="ms-3 d-flex flex-column flex-fill">
-
-
-
-                            <h4 class="mt-1">{{ $song->name }}</h4>
-                            <p>{{ $song->author->name }}</p>
-
-                            @if ($type == 'edit')
-                                <a href="{{ route('canciones.edit', $song->id) }}"><button
-                                        class="btn btn-success">Modificar</button></a>
-                            @elseif($type == 'show')
-                                <a href="{{ route('canciones.show', $song->id) }}"><button
-                                        class="btn btn-primary">Ver</button></a>
-                            @elseif($type == 'destroy')
-                                <a><button type="button" wire:click="showDelete({{ $song->id }})"
-                                        data-id="{{ $song->id }}" class="btn btn-danger">Eliminar</button></a>
-                            @endif
-                        </div>
-
-                    </div>
-                </div>
+              <x-song.song-card id="{{ $song->id }}" type="{{ $type }}" image="{{ $song->image->url ?? 'https://cdn-icons-png.flaticon.com/512/3809/3809073.png' }}" name="{{ $song->name }}" author="{{ $song->author->name }}"/>
 
             @empty
 

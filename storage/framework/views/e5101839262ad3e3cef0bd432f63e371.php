@@ -1,34 +1,51 @@
 <div>
-    <div class="d-flex justify-content-center mx-5">
-        <div class="d-flex justify-content-center mx-5 w-50 gap-3">
+    <div style="overflow-x:scroll" class="mx-5 d-flex gap-3">
+       
             <!--[if BLOCK]><![endif]--><?php if($type == 'create'): ?>
             <?php elseif($type == 'edit'): ?>
+            <div class="d-flex gap-2 flex-column">
+                <label for="" class="fw-bold">Permisos</label>
                 <select wire:model.live="collabChords" class="form-control">
                     <option value="<?php echo e(false); ?>">Canciones con Acordes Propios</option>
                     <option value="<?php echo e(true); ?>">Canciones con Acordes Colaborativos</option>
                 </select>
+            </div>
             <?php elseif($type == 'delete'): ?>
             <?php else: ?>
+            <div class="d-flex gap-2 flex-column">
+                <label for="" class="fw-bold">Permisos</label>
                 <select wire:model.live="ownChords" class="form-control">
                     <option value="<?php echo e(false); ?>">Todas las Canciones con Acordes</option>
                     <option value="<?php echo e(true); ?>">Canciones con acordes propios</option>
                 </select>
+            </div>
             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-
-            <select wire:model.live="quantity" class="w-25 form-control">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
+            <div class="d-flex gap-2 flex-column">
+            <label for="" class="fw-bold">Paginación</label>    
+            <select wire:model.live="quantity" class="form-control">
+                <option value="12">12</option>
+                <option value="36">36</option>
+                <option value="54">54</option>
             </select>
-            <input wire:model.live="songName" placeholder="Busca una Canción" type="text" class="form-control">
+            </div>
 
-            <select wire:model.live="genreId" class="w-25 form-control">
-                <option value="<?php echo e(null); ?>">Todos</option>
-                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $genres; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $genre): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <option value="<?php echo e($genre->id); ?>"><?php echo e($genre->name); ?></option>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
-            </select>
-        </div>
+            <div class="d-flex gap-2 flex-column">
+            
+                <label for="" class="fw-bold">Nombre</label>    
+                <input wire:model.live="songName" placeholder="Busca una Canción" type="text" class="form-control">
+                    
+            </div>
+
+            <div class="d-flex gap-2 flex-column">
+                <label for="" class="fw-bold">Género</label>    
+                <select wire:model.live="genreId" class="form-control">
+                    <option value="<?php echo e(null); ?>">Todos</option>
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $genres; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $genre): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($genre->id); ?>"><?php echo e($genre->name); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                </select>
+            </div>
+      
 
     </div>
 
@@ -42,83 +59,29 @@
 
 
             <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $songs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $song): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                <!--[if BLOCK]><![endif]--><?php if($type == 'delete'): ?>
-                    <div id="song_template" class="col-xl-4 col-md-6 col-sm-12 mt-5">
-                        <div class="d-flex">
 
-                            <div>
-                                <img width="100px" height="100px"
-                                    src="<?php echo e($song->image->url ?? 'https://cdn-icons-png.flaticon.com/512/3809/3809073.png'); ?> "
-                                    alt="">
-
-                            </div>
-                            <div class="ms-3">
-                                <a class="link-dark" href="<?php echo e(route('chordsDeleteIndex', $song->id)); ?>">
-                                    <h4><?php echo e($song->name); ?></h4>
-                                    <p><?php echo e($song->author->name); ?></p>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                <?php elseif($type == 'create'): ?>
-                    <div id="song_template" class="col-xl-4 col-md-6 col-sm-12 mt-5">
-                        <div class="d-flex">
-
-                            <div>
-                                <img width="100px" height="100px"
-                                    src="<?php echo e($song->image->url ?? 'https://cdn-icons-png.flaticon.com/512/3809/3809073.png'); ?> "
-                                    alt="">
-
-                            </div>
-                            <div class="ms-3">
-                                <a class="link-dark" href="<?php echo e(route('chordsCreate', $song->id)); ?>">
-                                    <h4><?php echo e($song->name); ?></h4>
-                                    <p><?php echo e($song->author->name); ?></p>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                <?php elseif($type == 'edit'): ?>
-                    <div id="song_template" class="col-xl-4 col-md-6 col-sm-12 mt-5">
-                        <div class="d-flex">
-
-                            <div>
-                                <img width="100px" height="100px"
-                                    src="<?php echo e($song->image->url ?? 'https://cdn-icons-png.flaticon.com/512/3809/3809073.png'); ?> "
-                                    alt="">
-
-                            </div>
-                            <div class="ms-3">
-                                <a class="link-dark" href="<?php echo e(route('chordsEditSong', $song->id)); ?>">
-                                    <h4><?php echo e($song->name); ?></h4>
-                                    <p><?php echo e($song->author->name); ?></p>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                <?php else: ?>
-                    <div id="song_template" class="col-xl-4 col-md-6 col-sm-12 mt-5">
-                        <div class="d-flex">
-
-                            <div>
-                                <img width="100px" height="100px"
-                                    src="<?php echo e($song->image->url ?? 'https://cdn-icons-png.flaticon.com/512/3809/3809073.png'); ?> "
-                                    alt="">
-
-                            </div>
-                            <div class="ms-3">
-                                <a class="link-dark" href="<?php echo e(route('chord.versions', $song->id)); ?>">
-                                    <h4><?php echo e($song->name); ?></h4>
-                                    <p><?php echo e($song->author->name); ?></p>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
-                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            
+                <?php if (isset($component)) { $__componentOriginalea968d93a10855a4626a744f34e693f3 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalea968d93a10855a4626a744f34e693f3 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.chord.chord-card','data' => ['author' => $song->author->name,'name' => ''.e($song->name).'','image' => ''.e($song->image->url ?? 'https://cdn-icons-png.flaticon.com/512/3809/3809073.png').'','type' => ''.e($type).'','id' => ''.e($song->id).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('chord.chord-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['author' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($song->author->name),'name' => ''.e($song->name).'','image' => ''.e($song->image->url ?? 'https://cdn-icons-png.flaticon.com/512/3809/3809073.png').'','type' => ''.e($type).'','id' => ''.e($song->id).'']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginalea968d93a10855a4626a744f34e693f3)): ?>
+<?php $attributes = $__attributesOriginalea968d93a10855a4626a744f34e693f3; ?>
+<?php unset($__attributesOriginalea968d93a10855a4626a744f34e693f3); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalea968d93a10855a4626a744f34e693f3)): ?>
+<?php $component = $__componentOriginalea968d93a10855a4626a744f34e693f3; ?>
+<?php unset($__componentOriginalea968d93a10855a4626a744f34e693f3); ?>
+<?php endif; ?>
+               
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
 
                 <div>

@@ -94,7 +94,10 @@
                             @livewire('form.image-form', ['songId' => $song->id, 'existingImageUrl' => $song->image->url ?? null])
                         </x-containers.flexcolcenter>
 
-
+                        <x-containers.flexcolcenter gap="1">
+                            <x-forms.label text="Audio de referencia" />
+                            @livewire('form.audio-form', ['songId' => $song->id, 'existingSongUrl' => $song->audio->url ?? null])
+                        </x-containers.flexcolcenter>
 
                         <x-containers.flexcolcenter gap="1">
                             <x-forms.label text="Palabras Clave" />
@@ -115,6 +118,13 @@
                         </x-containers.flexcolcenter>
 
 
+                        <div>
+                            <x-forms.button submit="yes" text="Subir Canción" submit id="sub" />
+                        </div>
+
+                        <div>
+                            
+                        </div>
 
 
                     </x-containers.flexcolcenter>
@@ -132,11 +142,7 @@
 
 <input class="d-none" id="allSongsJSON" value="{{ $songs }}" />
     <div class="container-fluid d-flex justify-content-center my-3">
-        <div>
-            <x-forms.button text="Subir Canción" submit id="sub" />
-
-
-        </div>
+ 
 
     </div>
     </form>

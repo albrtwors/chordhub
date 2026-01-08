@@ -62,7 +62,10 @@
 <?php $component = $__componentOriginald5a15c6dbb425adf25438466fa335ada; ?>
 <?php unset($__componentOriginald5a15c6dbb425adf25438466fa335ada); ?>
 <?php endif; ?>
+    <?php echo app('Illuminate\Foundation\Vite')('resources/react/pdf/entrychords.jsx'); ?>
+    
     <?php if($chords): ?>
+      
         <input type="text" id="songjson" value="<?php echo e($chords->structure); ?>" class="d-none">
         <div class="row">
             <div class="col-xl-6 col-md-12 col-md-12 col-sm-12">
@@ -73,7 +76,7 @@
             </div>
             <div class="col-xl-5 col-md-12 col-md-12 col-sm-12 d-flex me-5 justify-content-end">
                 <div class="d-flex my-3">
-                    <h6 class="me-1 mt-2">Armonizado por: <b><?php echo e($chords->user->roles->first()->name); ?></b>
+                    <h6 class="me-1 uploadedby mt-2">Armonizado por: <b><?php echo e($chords->user->roles->first()->name); ?></b>
                         <?php echo e($chords->user->name); ?> </h6> <img class="img-profile rounded-circle" width="32"
                         height="32"
                         src="<?php echo e($chords->user->image->url ?? 'https://cdn-icons-png.flaticon.com/512/3809/3809073.png'); ?>"></img>
@@ -81,11 +84,9 @@
 
             </div>
 
-            <div class="col-1">
-                <button id="export" class="ms-5 btn btn-primary d-inline">
-                    Exportar
-                </button>
-            </div>
+           
+                <div id="pdf-exporter"></div>
+           
 
 
         </div>

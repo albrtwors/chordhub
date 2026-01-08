@@ -7,6 +7,7 @@ use App\Models\Song;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use App\Models\Author;
+use App\Models\Log;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Gate;
 class Songs extends Component
@@ -15,7 +16,7 @@ class Songs extends Component
     protected $paginationTheme = 'bootstrap';
     public $collabSongs = false;
     public $ownSongs = false;
-    public $songName = '', $quantity = '10';
+    public $songName = '', $quantity = '12';
     public $genre;
     public $genreId = null;
     public $type;
@@ -100,8 +101,12 @@ class Songs extends Component
         }
 
 
-       
-        $songs = $query->paginate($this->quantity);
+        if(count($query->get()) > $this->quantity){
+            $songs = $query->paginate($this->quantity);
+        }else{
+            $songs = $query->paginate(count($query->get()));
+        }
+        
 
 
         $genres = Genre::all();
@@ -126,6 +131,7 @@ class Songs extends Component
             return;
         }
         $this->selectedSong->comments()->delete();
+        Log::create(['name'=>Auth::user()->name. ' ha eliminado la canción '.$this->selectedSong->name,'user_id'=>Auth::user()->id]);
         $this->selectedSong->delete();
         $this->dispatch('alert', 'Canción Eliminada');
         $this->open = false;

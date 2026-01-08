@@ -1,25 +1,36 @@
 <div>
 
+    <br>
 
+    <div style="overflow-x:scroll" class="mx-5 d-flex gap-3 ">
 
-    <div class="d-flex flex-column align-items-center justify-items-start">
+        
+            <div class="d-flex flex-column gap-2">
+                <label for="" class="fw-bold">Paginación</label>
+                <select class="form-control" wire:model.live="quantity">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                </select>
 
-        <div class="d-flex justify-content-center gap-2">
-            <select class="form-control w-25" wire:model.live="quantity">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-            </select>
-            <x-normal-input />
-        </div>
+                
+            </div>
+
+            <div class="d-flex flex-column gap-2">
+                <label for="" class="fw-bold">Nombre</label>
+                <x-normal-input />
+            </div>
+            
+       
 
     </div>
+   
     <div class="d-flex justify-content-center gap-5 mt-3">
         {{ count($users) > 0 ? $users->links(data: ['scrollTo' => false]) : '' }}
 
     </div>
-
-    <div class="container-fluid d-flex justify-content-center mt-3">
+     <div class="mx-3" style="min-width: full; overflow-x:scroll">
+    
         <table class="container-fluid">
             <thead>
                 <tr>
@@ -68,8 +79,8 @@
 
 
     </div>
-    @foreach ($users as $item)
-        <tr class="p-3" wire:key="{{ $item->id }}">
+    @foreach ($users as $index => $item)
+        <tr class="p-3 {{ $index%2==0?'bg-primary-subtle':'bg-white' }}" wire:key="{{ $item->id }}">
             <td>{{ $item->id }}</td>
             <td>
 
@@ -85,9 +96,13 @@
                     </button>
                 </a>
 
-                <button wire:click="delete({{ $item->id }})" class="btn fs-50 btn-danger">Eliminar
+                @if($item->active == 1)
+                <button wire:click="disable({{ $item->id }})" class="btn fs-50 btn-warning">Desactivar
                 </button>
-
+                @else
+                <button wire:click="active({{ $item->id }})" class="btn fs-50 btn-success">Activar
+                </button>
+                @endif
 
             </td>
         </tr>
@@ -97,6 +112,7 @@
 
 
     </table>
+
 </div>
 
 {{-- @if (!$isLoaded)
@@ -111,11 +127,11 @@
 
 <x-modal state="{{ $delete_modal }}">
     <x-slot name="head">
-        <h3 class="fw-bold">Eliminar usuario</h3>
+        <h3 class="fw-bold">Desactivar usuario</h3>
 
     </x-slot>
     <x-slot name="content">
-        <h4>Estás seguro de que quieres eliminar a <b>{{ $userToDelete->name }}</b></h4>
+        <h4>Estás seguro de que quieres desactivar a <b>{{ $userToDelete->name }}</b></h4>
     </x-slot>
 
     <x-slot name="footer">

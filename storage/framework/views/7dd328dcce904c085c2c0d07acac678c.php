@@ -21,7 +21,10 @@
 <?php $component = $__componentOriginald5a15c6dbb425adf25438466fa335ada; ?>
 <?php unset($__componentOriginald5a15c6dbb425adf25438466fa335ada); ?>
 <?php endif; ?>
-    
+    <?php if($songs->audio): ?>
+        <?php echo app('Illuminate\Foundation\Vite')('resources/react/song/songplayer.jsx'); ?>
+    <?php endif; ?>
+    <?php echo app('Illuminate\Foundation\Vite')('resources/react/pdf/entry.jsx'); ?>
     
     <link rel="stylesheet" href="<?php echo e(asset('templates/draggable/css/winbox.min.css')); ?>">
     <!-- Themes -->
@@ -58,7 +61,7 @@
 <?php $component = $__componentOriginal4fb6044c7ed6b655352043ff774efcd0; ?>
 <?php unset($__componentOriginal4fb6044c7ed6b655352043ff774efcd0); ?>
 <?php endif; ?>
-
+    
 
 
     <div class="row">
@@ -92,14 +95,15 @@
 
         <div class="col-xl-5 col-md-12 col-md-12 col-sm-12 d-flex me-5 justify-content-end">
             <div class="d-flex my-3">
-                <h6 class="me-1 mt-2">Subido por: <span class="fw-bold"><?php echo e($user->roles->first()->name); ?></span>
-                    <?php echo e($user->name); ?></h6> <img class="img-profile rounded-circle" width="32" height="32"
+                <h6 class="me-1 uploadedby mt-2">Subido por: <span class="fw-bold"><?php echo e($user?$user->roles->first()->name:'null'); ?></span>
+                    <?php echo e($user?$user->name:'null'); ?></h6> <img class="img-profile rounded-circle" width="32" height="32"
                     src="<?php echo e($user->image->url ?? 'https://cdn-icons-png.flaticon.com/512/8791/8791450.png'); ?>"></img>
             </div>
         </div>
 
     </div>
 
+    <input type="text" class="d-none" id="songtitle" value="<?php echo e($songs->name); ?>">
     <div class="d-flex justify-content-center gap-3 my-3">
         <?php if (isset($component)) { $__componentOriginal12373e55c1dbc11a6b4cd35aec4dff38 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal12373e55c1dbc11a6b4cd35aec4dff38 = $attributes; } ?>
@@ -186,26 +190,7 @@
             <?php endif; ?>
         <?php endif; ?>
 
-        <?php if (isset($component)) { $__componentOriginal48c3958713aa2b1d2dd1900fbfcfc804 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal48c3958713aa2b1d2dd1900fbfcfc804 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.button','data' => ['color' => 'primary','id' => 'export','text' => 'Exportar']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('forms.button'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['color' => 'primary','id' => 'export','text' => 'Exportar']); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal48c3958713aa2b1d2dd1900fbfcfc804)): ?>
-<?php $attributes = $__attributesOriginal48c3958713aa2b1d2dd1900fbfcfc804; ?>
-<?php unset($__attributesOriginal48c3958713aa2b1d2dd1900fbfcfc804); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal48c3958713aa2b1d2dd1900fbfcfc804)): ?>
-<?php $component = $__componentOriginal48c3958713aa2b1d2dd1900fbfcfc804; ?>
-<?php unset($__componentOriginal48c3958713aa2b1d2dd1900fbfcfc804); ?>
-<?php endif; ?>
+        <div id="pdf-exporter"></div>
 
         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('songs.destroy')): ?>
             <?php if($songs->collab || $songs->user_id == Auth::id()): ?>
@@ -238,7 +223,14 @@
             <?php endif; ?>
         <?php endif; ?>
     </div>
+    <input type="text" value="<?php echo e($songs->audio ? $songs->audio->url : ''); ?>" id="songplayer-audio" class="d-none">
+    <input type="text" id="song-img" value="<?php echo e($songs->image ? $songs->image->url : 'https://cdn-icons-png.flaticon.com/512/3809/3809073.png'); ?>" class="d-none">
 
+    <?php if($songs->audio): ?>
+    <div class="d-flex justify-content-center">
+        <div id="songplayer-widget"></div>
+    </div>
+    <?php endif; ?>
 
 
     <div class="m-auto">
@@ -338,9 +330,14 @@
 
                 </div>
 
+
             </form>
 
+
+
     </div>
+
+    
     <?php if (isset($component)) { $__componentOriginal489d95be388931adee106da957892e6d = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal489d95be388931adee106da957892e6d = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.comments.comment-meta','data' => ['id' => ''.e($songs->id).'','type' => 'song']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -362,7 +359,7 @@
 <?php unset($__componentOriginal489d95be388931adee106da957892e6d); ?>
 <?php endif; ?>
     <div id="comment-widget"></div>
-
+    
 
     
 
@@ -384,7 +381,7 @@
 
 
 
-    <script src="<?php echo e(asset('js/PDF/PDF.js')); ?>"></script>
+    <script type="module" src="<?php echo e(asset('js/PDF/PDF.js')); ?>"></script>
     <script type="module" src="<?php echo e(asset('js/Song/SongView.js')); ?>"></script>
     <script type="module" src="<?php echo e(asset('js/Song/SongDelete.js')); ?>"></script>
 <?php $__env->stopSection(); ?>

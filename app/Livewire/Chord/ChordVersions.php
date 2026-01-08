@@ -18,7 +18,7 @@ class ChordVersions extends Component
     public $ownVersions = false;
     public $collabVersions = false;
     public $selectedChord;
-    public $quantity = '10';
+    public $quantity = '12';
     public $chordName = '';
     protected $paginationTheme = 'bootstrap';
 

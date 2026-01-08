@@ -18,6 +18,7 @@ export default function Section({ comments, commentData }) {
                 responses: comment.responses,
                 setComments,
                 commentId: comment.id,
+                userId: comment.user_id,
             }}
         ></Item>
     ));

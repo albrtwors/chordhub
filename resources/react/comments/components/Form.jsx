@@ -16,7 +16,7 @@ export default function Form({ setComments, parentId }) {
                 break;
         }
         const form = new FormData(e.target);
-        fetch(`http://127.0.0.1:8001/comments`, {
+        fetch(`http://127.0.0.1:8000/comments`, {
             method: "POST",
             body: JSON.stringify({
                 comment: form.get("text"),

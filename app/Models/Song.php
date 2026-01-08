@@ -24,6 +24,10 @@ class Song extends Model
     public function user(){
         return $this->belongsTo('App\Models\User');
     }
+    
+    public function audio(){
+        return $this->morphOne('App\Models\Audio','audioble');
+    }
 
     //relacion muchos a muchos
     public function files(){

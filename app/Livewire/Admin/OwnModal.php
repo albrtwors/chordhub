@@ -46,7 +46,7 @@ class OwnModal extends Component
         }
 
         $this->random = rand(1,999);
-    
+        $this->state = false;
         $this->dispatch('render');
         $this->dispatch('alert', 'Usuario Creado');
         $this->reset(['password', 'email', 'name', 'imagen']);
@@ -54,6 +54,7 @@ class OwnModal extends Component
     } catch (\Illuminate\Validation\ValidationException $e) {
      
         $errors = $e->validator->errors()->all();
+        $this->state = false;
         $this->dispatch('alertError', $errors[0]);
 
 

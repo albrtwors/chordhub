@@ -14,7 +14,7 @@ class Chords extends Component
 
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    public $songName = '', $quantity = '10';
+    public $songName = '', $quantity = '12';
     public $genre;
     public $collabChords = false;
     public $ownChords = false;

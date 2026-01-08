@@ -13,25 +13,34 @@
             vertical-align: middle;
         }
     </style>
-    <div class="d-flex justify-content-center mx-5">
-        <div class="d-flex justify-content-center mx-5 w-50 gap-3">
-            <select wire:model.live="quantity" class="w-25 form-control">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-            </select>
-            <input wire:model.live="name" placeholder="Busca una canción" type="text" class="form-control">
+    <div class="mx-5 d-flex gap-3" style="overflow-x:scroll">
+        
+            <div class="d-flex flex-column gap-2">
+                <label for="" class="fw-bold">Paginación</label>
+                <select wire:model.live="quantity" class="form-control">
+                    
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+            <div class="d-flex flex-column gap-2">
+                <label for="" class="fw-bold">Comentario</label>
+                <input wire:model.live="name" placeholder="Me encanta esta canción...." type="text" class="form-control">
+            </div>
+
+            
 
 
-        </div>
+
 
     </div>
     <div class="d-flex justify-content-center mt-3">
         {{ $comments->links() }}
     </div>
-    <div class="d-flex justify-content-center mt-3">
+    <div class="mx-3" style="min-width:full; overflow-x:scroll" >
 
-        <table class="container-fluid mx-5">
+        <table class="container-fluid ">
             <thead>
                 <tr>
                     <th wire:click="sorting('id')" style="cursor:pointer"
@@ -90,8 +99,8 @@
 
 
             <tbody>
-                @foreach ($comments as $comment)
-                    <tr>
+                @foreach ($comments as $index=>$comment)
+                    <tr class="{{ $index%2==0?'bg-primary-subtle':'bg-white' }}">
                         <td>{{ $comment->id }}</td>
                         <td wire:click="showFullText({{ $comment }})" style="cursor:pointer" class="commentRow">
                             {{ $comment->comment }}</td>

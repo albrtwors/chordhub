@@ -46,7 +46,6 @@ if (isset($__slots)) unset($__slots);
 ?>
 
 
-    
 
     <script type="module" src="<?php echo e(asset('js/Admin/Alerts.js')); ?>"></script>
 <?php $__env->stopSection(); ?>

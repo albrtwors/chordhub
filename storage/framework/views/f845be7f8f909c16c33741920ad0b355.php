@@ -1,24 +1,28 @@
 <div>
     <div class="d-flex justify-content-center mx-5">
-        <div class="d-flex justify-content-center mx-5 w-50 gap-3">
+        <div class="d-flex justify-content-center mx-5 gap-3">
             <!--[if BLOCK]><![endif]--><?php if($type == 'show'): ?>
+                <label for="" class="fw-bold">Permisos</label>    
                 <select wire:model.live="ownVersions" class="form-control">
                     <option value="<?php echo e(false); ?>">Canciones de todos</option>
                     <option value="<?php echo e(true); ?>">Solo acordes Propias</option>
                 </select>
             <?php elseif($type == 'edit'): ?>
+                <label for="" class="fw-bold">Permisos</label>    
                 <select wire:model.live="collabVersions" class="form-control">
                     <option value="<?php echo e(false); ?>">Canciones Propias</option>
                     <option value="<?php echo e(true); ?>">Canciones Colaborativas</option>
                 </select>
             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
+            <label for="" class="fw-bold">Paginación</label>    
             <select wire:model.live="quantity" class="w-25 form-control">
 
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
+                <option value="12">12</option>
+                <option value="36">36</option>
+                <option value="54">54</option>
             </select>
+            <label for="" class="fw-bold">Nombre</label>    
             <input wire:model.live="chordName" placeholder="Busca una Canción" type="text" class="form-control">
 
            

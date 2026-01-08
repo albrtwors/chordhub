@@ -219,9 +219,10 @@ iframe {
     justify-content: center;
     align-items: center;
     padding: 15px;
-    /*background-image: url("../images/backgound.jpg"); /* Reemplaza con la ruta de tu imagen */
-    /*background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
-    /* background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-image: url("../../1016767-popular-musical-note-wallpaper-1920x1200.png");
+    /* Reemplaza con la ruta de tu imagen */
+    background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
     height: 100vh;
 }
 

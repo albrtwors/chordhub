@@ -44,7 +44,10 @@
 
 
     <x-react.vite-refresh path="resources/react/comments/entry.jsx" />
+    @vite('resources/react/pdf/entrychords.jsx')
+    
     @if ($chords)
+      
         <input type="text" id="songjson" value="{{ $chords->structure }}" class="d-none">
         <div class="row">
             <div class="col-xl-6 col-md-12 col-md-12 col-sm-12">
@@ -55,7 +58,7 @@
             </div>
             <div class="col-xl-5 col-md-12 col-md-12 col-sm-12 d-flex me-5 justify-content-end">
                 <div class="d-flex my-3">
-                    <h6 class="me-1 mt-2">Armonizado por: <b>{{ $chords->user->roles->first()->name }}</b>
+                    <h6 class="me-1 uploadedby mt-2">Armonizado por: <b>{{ $chords->user->roles->first()->name }}</b>
                         {{ $chords->user->name }} </h6> <img class="img-profile rounded-circle" width="32"
                         height="32"
                         src="{{ $chords->user->image->url ?? 'https://cdn-icons-png.flaticon.com/512/3809/3809073.png' }}"></img>
@@ -63,11 +66,9 @@
 
             </div>
 
-            <div class="col-1">
-                <button id="export" class="ms-5 btn btn-primary d-inline">
-                    Exportar
-                </button>
-            </div>
+           
+                <div id="pdf-exporter"></div>
+           
 
 
         </div>

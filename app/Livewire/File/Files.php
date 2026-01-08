@@ -15,7 +15,7 @@ class Files extends Component
     public $collabFiles = false;
     protected $userUpload = false;
     public $selectedFile;
-    public $name = '', $quantity='10';
+    public $name = '', $quantity='12';
     public $open = false;
     public function updatingName(){
         $this->resetPage();

@@ -1,3 +1,5 @@
 <div>
-    <h1>hello {{$nombre}}</h1>
+    <h1>
+        asndoasjdoiasj
+    </h1>
 </div>

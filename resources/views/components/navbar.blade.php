@@ -1,7 +1,11 @@
 {{-- bg-gradient-primary --}}
 <ul style="overflow:scroll; position:fixed; z-index:300; max-height:100vh; overflow-x:hidden;"
     class="navbar-nav bg-gradient-primary   sidebar sidebar-dark accordion" id="accordionSidebar">
-    <nav>
+       @viteReactRefresh
+        @vite('resources/react/navbar/entry.jsx')
+        <div id="navbar-widget"></div>
+    {{-- <nav>
+     
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('app') }}">
             <div class="sidebar-brand-text mx-2">Chordhub</div>
@@ -10,18 +14,16 @@
             </div>
         </a>
 
+        
 
 
         <x-app.nav-divider />
 
-        <x-app.nav-item text="Dashboard" isActive="{{ request()->is('chordhub') }}" icon="tachometer-alt"
-            route="{{ route('app') }}" />
-
-        <x-app.nav-item text="Novedades" isActive="{{ request()->is('novedades') }}" icon="newspaper"
-            route="{{ route('news.index') }}" />
-
+            <x-app.nav-item text="Dashboard" isActive="{{ request()->is('chordhub') }}" icon="tachometer-alt"
+                route="{{ route('app') }}" />
 
         <x-app.nav-divider />
+
         @can('admin.access')
             <x-app.nav-header name="ADMIN" />
             @can('admin.usersIndex')
@@ -117,7 +119,25 @@
                     text="Eliminar Acordes" route="{{ route('chordsDelete') }}" />
             @endcan
         @endcan
-    </nav>
+
+        <x-app.nav-divider />
+
+
+            <x-app.nav-header name="Inventario" />
+            <x-app.nav-item text="Gestionar Inventario" isActive="{{ request()->is('inventario') }}" icon="list"
+                route="{{ route('inventario.index') }}" />
+
+        <x-app.nav-divider />
+
+       
+            <x-app.nav-header name="Ensayos" />
+            <x-app.nav-item text="Organizar un Ensayo" isActive="{{ request()->is('ensayos') }}" icon="microphone"
+                route="{{ route('ensayos.index') }}" />
+            <x-app.nav-item text="Tus Ensayos" isActive="{{ request()->is('ensayos/usuario') }}" icon="list"
+                route="{{ route('ensayos.userIndex') }}" />
+
+        <x-app.nav-divider />
+    </nav> --}}
 
 
 </ul>

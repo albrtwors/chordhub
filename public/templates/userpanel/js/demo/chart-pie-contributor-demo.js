@@ -7,7 +7,8 @@ document.addEventListener("livewire:navigated", () => {
     // Pie Chart Example
     const contributors = document.getElementById("topContributors").value;
     const contributorsJSON = JSON.parse(contributors);
-    if (contributorsJSON.length >= 3) {
+    console.log(contributorsJSON);
+    if (contributorsJSON.length >= 2) {
         const totalSongsPercent =
             parseInt(contributorsJSON[0].songs) +
             parseInt(contributorsJSON[1].songs) +

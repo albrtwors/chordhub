@@ -54,7 +54,10 @@ class User extends Authenticatable
     }
 
     //relacion uno a uno
-    public function song(){
+    public function log(){
+        return $this->hasMany('App\Models\Log');
+    }
+    public function songs(){
         return $this->hasMany('App\Models\Song');
     }
 
@@ -74,6 +77,13 @@ class User extends Authenticatable
         
     }
     // //muchos a muchos 
+    public function practices(){
+        return $this->belongsToMany('App\Models\Practice');
+    }
+    public function practice(){
+        return $this->hasOne('App\Models\Practice');
+    }
+    
     // public function roles(){
     //    return $this->belongsToMany('Spatie\Permission\Models\Role', 'model_has_roles', 'model_id');
     // }

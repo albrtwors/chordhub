@@ -34,19 +34,26 @@ use App\Http\Controllers\Chord\ChordCreateController;
 use App\Http\Controllers\Search\SearchListController;
 use App\Http\Controllers\Search\SearchSongController;
 use App\Http\Controllers\Auth\AuthVerifySignController;
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\Chatbot\ChatbotController as ChatbotController;
 
 use App\Http\Controllers\Chord\ChordController;
 use App\Http\Controllers\Comment\CommentController;
+use App\Http\Controllers\Items\ItemsController;
+use App\Http\Controllers\Logs\LogController;
 use App\Http\Controllers\Notification\NotificationController;
+use App\Http\Controllers\Permissions\PermissionController;
+use App\Http\Controllers\Practice\PracticeController;
 use App\Http\Controllers\Script\ScriptController;
 use App\Http\Controllers\Search\SearchUsersAdminController;
+use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\Song\SongController;
 use App\Http\Controllers\SongList\SongListController;
 use App\Http\Controllers\TonalityController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Cors;
 use App\Http\Middleware\DeleteAt60Mins;
+use App\Http\Middleware\VerifyUserPractices;
 use App\Livewire\App\Dashboard;
 use App\Livewire\App\News;
 use Illuminate\Notifications\Notification;
@@ -90,7 +97,7 @@ Route::middleware([DeleteAt60Mins::class])->group(function(){
 
 
 ///////////// SESSION MIDDLEWARE
-Route::middleware([CheckUserSession::class, SaveLastPage::class])->group(function () {
+Route::middleware([CheckUserSession::class, SaveLastPage::class, VerifyUserPractices::class])->group(function () {
     //////////////////// APP MODULE VIEWS /////////////////////
     //APP VIEWS
     Route::get('/chordhub', [AppViewController::class, 'renderApp'])->name('app');
@@ -154,12 +161,22 @@ Route::middleware([CheckUserSession::class, SaveLastPage::class])->group(functio
     //CHORD DELETE VIEW
     Route::get('/acorde/eliminar', [ChordController::class, 'destroyIndex'])->name('chords.destroy');
 
+
+    //INVENTORY MODULE
+    Route::resource('/inventario', ItemsController::class);
+
+    //////  PRACTICE MODULES       ////// 
+    Route::get('ensayos/usuario', [PracticeController::class, 'userIndex'])->name('ensayos.userIndex');
+    Route::resource('ensayos', PracticeController::class);
+
     ///COMMENT MODULES
+    Route::post('/comentarios/{id}/eliminar', [CommentController::class, 'deleteComment']);
     Route::resource('/comments', CommentController::class);
     ///script views
     Route::resource('/partituras', ScriptController::class);
     ////////////////////     ADMIN MODULE               ///////////////////////
     //-----------------     USERS      -------------------
+    Route::get('/admin/publicaciones', [AdminController::class, 'postsIndex'])->name('admin.posts');
     Route::get('/admin/usuarios', [AdminController::class, 'usersIndex'])->name('admin.users');
     Route::get('/admin/usuarios/{id}', [AdminController::class, 'usersEdit'])->name('admin.users.edit');
     Route::put('/admin/usuarios/{id}', [AdminController::class, 'usersUpdate'])->name('admin.users.update');
@@ -171,9 +188,38 @@ Route::middleware([CheckUserSession::class, SaveLastPage::class])->group(functio
     Route::get('/admin/comentarios', [AdminController::class, 'commentsIndex'])->name('admin.comments');
     Route::get('/comentarios/{id}/{type?}', [CommentController::class, 'getComments'])->name('comments.get');
     ///////TONALITY MODULE
+    Route::resource('/tonality', TonalityController::class);    
 
-    Route::resource('/tonality', TonalityController::class);
+    // ------------  SETTINGS ADMIN ---------------
+    Route::get('/configuracion', [SettingsController::class, 'index']);
 
+
+
+
+
+
+
+
+
+    /// API STUFF////
+    //API get items//
+    Route::get('/backup', [BackupController::class, 'backupDatabase']);
+    Route::get('/api/permissions/user', [PermissionController::class, 'getUserPermissions'])->name('userPermissions');
+    Route::get('/api/items', [ItemsController::class, 'getItems']);
+    Route::get('/api/items/{search}', [ItemsController::class, 'getItem']);
+    Route::get('/api/user/{search}', [UserController::class, 'getUser']);
+    Route::get('/api/logs', [LogController::class, 'getLogs']);
+    Route::get('/api/routes', function () {
+        $routes = collect(Route::getRoutes())->map(function ($route) {
+            return [
+                'uri' => $route->uri(),
+                'name' => $route->getName(),
+                'methods' => $route->methods(),
+                'action' => $route->getActionName(),
+            ];
+        });
+        return response()->json($routes);
+    });
 
     //// AI CHAT MODULE (BETA)
     Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot.index');
@@ -185,6 +231,11 @@ Route::middleware([CheckUserSession::class, SaveLastPage::class])->group(functio
     Route::get('/leernotificacion/{id}', [NotificationController::class, 'readAsGet'])->name('notification.readAsGet');
     Route::get('/leernotificaciones', [NotificationController::class, 'readAll'])->name('notifications.read');
 
+
+    ///////////  LOG MODULE VIEWS     ////////////////
+    Route::get('/logs/usuario', [LogController::class, 'userLogsIndex']);
+    Route::resource('logs', LogController::class);
+    
     //SEARCH VIEWS
     Route::get('/buscador/canciones', [SongController::class, 'searchByNameAndGenre'])->name('canciones.search');
     Route::get('/buscador/acordes', [ChordController::class, 'searchByNameAndGenre'])->name('acordes.search');

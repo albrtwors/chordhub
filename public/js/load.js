@@ -1,3 +1,3 @@
 $(document).ready(function () {
-    $(".containloader").fadeOut(1200);
+    $(".containloader").fadeOut(400);
 });

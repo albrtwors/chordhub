@@ -1,16 +1,24 @@
 <div>
 
+    <br>
 
+    <div style="overflow-x:scroll" class="mx-5 d-flex gap-3 ">
 
-    <div class="d-flex flex-column align-items-center justify-items-start">
+        
+            <div class="d-flex flex-column gap-2">
+                <label for="" class="fw-bold">Paginación</label>
+                <select class="form-control" wire:model.live="quantity">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                </select>
 
-        <div class="d-flex justify-content-center gap-2">
-            <select class="form-control w-25" wire:model.live="quantity">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-            </select>
-            <?php if (isset($component)) { $__componentOriginal417c5b746b55377fcd8e48694ce53b10 = $component; } ?>
+                
+            </div>
+
+            <div class="d-flex flex-column gap-2">
+                <label for="" class="fw-bold">Nombre</label>
+                <?php if (isset($component)) { $__componentOriginal417c5b746b55377fcd8e48694ce53b10 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal417c5b746b55377fcd8e48694ce53b10 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.normal-input','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('normal-input'); ?>
@@ -30,16 +38,19 @@
 <?php $component = $__componentOriginal417c5b746b55377fcd8e48694ce53b10; ?>
 <?php unset($__componentOriginal417c5b746b55377fcd8e48694ce53b10); ?>
 <?php endif; ?>
-        </div>
+            </div>
+            
+       
 
     </div>
+   
     <div class="d-flex justify-content-center gap-5 mt-3">
         <?php echo e(count($users) > 0 ? $users->links(data: ['scrollTo' => false]) : ''); ?>
 
 
     </div>
-
-    <div class="container-fluid d-flex justify-content-center mt-3">
+     <div class="mx-3" style="min-width: full; overflow-x:scroll">
+    
         <table class="container-fluid">
             <thead>
                 <tr>
@@ -88,8 +99,8 @@
 
 
     </div>
-    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-        <tr class="p-3" wire:key="<?php echo e($item->id); ?>">
+    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <tr class="p-3 <?php echo e($index%2==0?'bg-primary-subtle':'bg-white'); ?>" wire:key="<?php echo e($item->id); ?>">
             <td><?php echo e($item->id); ?></td>
             <td>
 
@@ -106,9 +117,13 @@
                     </button>
                 </a>
 
-                <button wire:click="delete(<?php echo e($item->id); ?>)" class="btn fs-50 btn-danger">Eliminar
+                <!--[if BLOCK]><![endif]--><?php if($item->active == 1): ?>
+                <button wire:click="disable(<?php echo e($item->id); ?>)" class="btn fs-50 btn-warning">Desactivar
                 </button>
-
+                <?php else: ?>
+                <button wire:click="active(<?php echo e($item->id); ?>)" class="btn fs-50 btn-success">Activar
+                </button>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
             </td>
         </tr>
@@ -117,6 +132,7 @@
 
 
     </table>
+
 </div>
 
 
@@ -139,11 +155,11 @@
 <?php endif; ?>
 <?php $component->withAttributes(['state' => ''.e($delete_modal).'']); ?>
      <?php $__env->slot('head', null, []); ?> 
-        <h3 class="fw-bold">Eliminar usuario</h3>
+        <h3 class="fw-bold">Desactivar usuario</h3>
 
      <?php $__env->endSlot(); ?>
      <?php $__env->slot('content', null, []); ?> 
-        <h4>Estás seguro de que quieres eliminar a <b><?php echo e($userToDelete->name); ?></b></h4>
+        <h4>Estás seguro de que quieres desactivar a <b><?php echo e($userToDelete->name); ?></b></h4>
      <?php $__env->endSlot(); ?>
 
      <?php $__env->slot('footer', null, []); ?> 

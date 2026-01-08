@@ -1,30 +1,50 @@
 <div>
-    <div class="d-flex justify-content-center mx-5">
-        <div class="d-flex justify-content-center mx-5 w-50 gap-3">
+  
+        <div class="d-flex gap-3 mx-5" style="overflow-x:scroll">
             @if ($type == 'show')
+            <div class="d-flex flex-column gap-2">
+                <label for="" class="fw-bold">
+                    Permisos
+                </label>
                 <select wire:model.live="ownFiles" class="form-control">
 
                     <option value="{{ false }}">Cancioneros de todos</option>
                     <option value="{{ true }}">Solo cancioneros Propios</option>
                 </select>
+            </div>
             @elseif($type == 'edit')
+            <div class="d-flex flex-column gap-2">
+                <label for="" class="fw-bold">
+                    Permisos
+                </label>
                 <select wire:model.live="collabFiles" class="form-control">
                     <option value="{{ false }}">Cancioneros Propios</option>
                     <option value="{{ true }}">Solo Cancioneros Colaborativos</option>
                 </select>
+            </div>
             @endif
 
-            <select wire:model.live="quantity" class="w-25 form-control">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
+            <div class="d-flex flex-column gap-2">
+            <label for="" class="fw-bold">
+                Paginación
+            </label>
+            <select wire:model.live="quantity" class="form-control">
+                <option value="12">12</option>
+                <option value="24">24</option>
+                <option value="60">60</option>
             </select>
+            </div>
+            <div class="d-flex flex-column gap-2">
+            <label for="" class="fw-bold">
+                Nombre
+            </label>           
             <input wire:model.live="name" placeholder="Busca un cancionero" type="text" class="form-control">
+            </div>
 
 
         </div>
 
-    </div>
+  
 
     <div class="d-flex justify-content-center mt-2">
         {{ $lists->links() }}
@@ -33,8 +53,10 @@
     <div class="grey-bg container-fluid">
         <section id="minimal-statistics">
             <div id="list_row" class="row">
+               
                 @forelse($lists as $li)
-                    <div id="list_template" class="col-xl-3 col-sm-6 col-12 mt-3">
+                     <x-file.file-card id="{{ $li->id }}" type="{{ $type }}" name="{{ $li->name }}" author="{{ $li->user->name }}" :songs="$li->songs"/>
+                    {{-- <div id="list_template" class="col-xl-3 col-sm-6 col-12 mt-3">
 
 
 
@@ -71,7 +93,7 @@
                             @endif
                         </div>
 
-                    </div>
+                    </div> --}}
 
 
 

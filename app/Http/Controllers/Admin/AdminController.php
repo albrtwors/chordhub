@@ -26,6 +26,11 @@ class AdminController extends Controller implements HasMiddleware
            
         ];
     }
+
+    public function postsIndex()
+    {
+        return view('modules.Admin.PostsIndex');
+    }
     public function usersIndex()
     {
         return view('modules.Admin.usersIndex');

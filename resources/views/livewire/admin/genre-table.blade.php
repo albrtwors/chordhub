@@ -1,24 +1,32 @@
 <div>
-    <button wire:click="$set('createModal', true)" class="btn btn-primary ms-5">Crear Género</button>
-    <div class="d-flex justify-content-center mx-5">
-        <div class="d-flex justify-content-center mx-5 w-50 gap-3">
-            <select wire:model.live="quantity" class="w-25 form-control">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-            </select>
-            <input wire:model.live="name" placeholder="Busca un género" type="text" class="form-control">
+    <button wire:click="$set('createModal', true)" class="btn btn-primary mb-3 ms-5">Crear Género</button>
+    
+    <div style="overflow-x:scroll" class="d-flex gap-3 mx-5">
+        
+            <div class="d-flex flex-column gap-2">
+                <label for="" class="fw-bold">Paginación</label>
+                <select wire:model.live="quantity" class="form-control">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+            <div class="d-flex flex-column gap-2">
+                <div class="label fw-bold">Nombre</div>
+                <input wire:model.live="name" placeholder="Busca un género" type="text" class="form-control">
+
+            </div>
 
 
-        </div>
+        
 
     </div>
     <div class="d-flex justify-content-center mt-3">
         {{ $genres->links(data: ['scrollTo' => false]) }}
     </div>
-    <div class="d-flex justify-content-center mt-3">
+    <div class="mx-3" style="min-width: full; overflow-x:scroll">
 
-        <table class="container-fluid mx-5 mt-2">
+        <table class="container-fluid ">
             <thead>
                 <tr>
                     <th wire:click="sorting('id')" style="cursor:pointer"
@@ -55,8 +63,8 @@
 
 
             <tbody>
-                @foreach ($genres as $gen)
-                    <tr>
+                @foreach ($genres as $index=> $gen)
+                    <tr class="{{ $index%2==0?'bg-primary-subtle':'bg-white' }}">
                         <td>{{ $gen->id }}</td>
                         <td>{{ $gen->name }}</td>
 

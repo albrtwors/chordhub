@@ -4,6 +4,7 @@ namespace App\Livewire\Admin;
 
 use Livewire\Component;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Livewire\WithPagination;
@@ -70,7 +71,21 @@ class UsersTable extends Component
     public function render()
     {
       
-        $users = User::where('name', 'like', '%'.$this->name.'%')->orWhere('email', 'like', '%'.$this->name.'%')->orderBy($this->order, $this->direction)->paginate($this->quantity);
+        $userQ = User::where(function($query) {
+            $query->where('name', 'like', '%' . $this->name . '%')
+                ->orWhere('email', 'like', '%' . $this->name . '%');
+        });
+        if(!Auth::user()->hasRole('owner')){
+            $userQ->whereDoesntHave('roles', function($query) {
+                $query->whereIn('name', ['owner', 'admin']);
+            });
+            
+        }
+        $userQ->whereDoesntHave('roles', function($query) {
+            $query->whereIn('name', ['owner']);
+        });
+            
+        $users =  $userQ->orderBy($this->order, $this->direction)->paginate($this->quantity);
             
      
         return view('livewire.admin.users-table', compact('users'));
@@ -137,6 +152,15 @@ class UsersTable extends Component
     public function delete($id){
         $this->userToDelete = User::find($id);
         $this->delete_modal = true;
+    }
+
+    public function active($id){
+        User::find($id)->update(['active'=>1]);
+        $this->dispatch('alert', 'Usuario Activado');
+    }
+    public function disable($id){
+        User::find($id)->update(['active'=>0]);
+        $this->dispatch('alert', 'Usuario Desactivado');
     }
     public function deleteFromDb(){
         $this->userToDelete->delete();

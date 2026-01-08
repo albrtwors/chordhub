@@ -1,7 +1,7 @@
 export { Alert };
 
 class Alert {
-    static SuccessAlert(message) {
+    static SuccessAlert(message, text = null) {
         Swal.fire({
             customClass: {
                 title: "dmsans",
@@ -9,6 +9,7 @@ class Alert {
             },
             title: `${message}`,
             icon: "success",
+            text,
             confirmButtonText: "Aceptar",
         });
     }

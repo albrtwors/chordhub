@@ -58,7 +58,7 @@ class AppPfpChangeController extends Controller
     function validatePfp(Request $request)
     {
         $request->validate([
-            'pfp' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'pfp' => 'required|image|mimes:jpeg,webp,png,jpg,gif|max:2048',
         ]);
     }
 

@@ -16,10 +16,18 @@
         "vite": "^7.0.4"
     },
     "dependencies": {
+        "@emotion/react": "^11.14.0",
+        "@emotion/styled": "^11.14.1",
         "@midudev/tailwind-animations": "^0.2.0",
+        "@mui/material": "^7.3.5",
+        "@mui/x-charts": "^8.17.0",
+        "@pdf-viewer/react": "^1.12.0",
+        "jspdf": "^3.0.4",
+        "jspdf-autotable": "^5.0.2",
         "motion": "^12.23.22",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
+        "react-h5-audio-player": "^3.10.1",
         "sortable": "^2.0.0",
         "sortablejs": "^1.15.6"
     }

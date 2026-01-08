@@ -603,7 +603,62 @@ if (isset($__slots)) unset($__slots);
 <?php unset($__componentOriginalcfa1b140655ec83b9933d7a0d6900269); ?>
 <?php endif; ?>
 
+                        <?php if (isset($component)) { $__componentOriginalcfa1b140655ec83b9933d7a0d6900269 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalcfa1b140655ec83b9933d7a0d6900269 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.containers.flexcolcenter','data' => ['gap' => '1']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('containers.flexcolcenter'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['gap' => '1']); ?>
+                            <?php if (isset($component)) { $__componentOriginal1f715251ca27813040dd69c48bb81eec = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal1f715251ca27813040dd69c48bb81eec = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.label','data' => ['text' => 'Audio de referencia']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('forms.label'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['text' => 'Audio de referencia']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal1f715251ca27813040dd69c48bb81eec)): ?>
+<?php $attributes = $__attributesOriginal1f715251ca27813040dd69c48bb81eec; ?>
+<?php unset($__attributesOriginal1f715251ca27813040dd69c48bb81eec); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal1f715251ca27813040dd69c48bb81eec)): ?>
+<?php $component = $__componentOriginal1f715251ca27813040dd69c48bb81eec; ?>
+<?php unset($__componentOriginal1f715251ca27813040dd69c48bb81eec); ?>
+<?php endif; ?>
+                            <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('form.audio-form', ['songId' => $song->id, 'existingSongUrl' => $song->audio->url ?? null]);
 
+$__html = app('livewire')->mount($__name, $__params, 'lw-804125991-1', $__slots ?? [], get_defined_vars());
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginalcfa1b140655ec83b9933d7a0d6900269)): ?>
+<?php $attributes = $__attributesOriginalcfa1b140655ec83b9933d7a0d6900269; ?>
+<?php unset($__attributesOriginalcfa1b140655ec83b9933d7a0d6900269); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalcfa1b140655ec83b9933d7a0d6900269)): ?>
+<?php $component = $__componentOriginalcfa1b140655ec83b9933d7a0d6900269; ?>
+<?php unset($__componentOriginalcfa1b140655ec83b9933d7a0d6900269); ?>
+<?php endif; ?>
 
                         <?php if (isset($component)) { $__componentOriginalcfa1b140655ec83b9933d7a0d6900269 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalcfa1b140655ec83b9933d7a0d6900269 = $attributes; } ?>
@@ -755,6 +810,32 @@ if (isset($__slots)) unset($__slots);
 <?php endif; ?>
 
 
+                        <div>
+                            <?php if (isset($component)) { $__componentOriginal48c3958713aa2b1d2dd1900fbfcfc804 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal48c3958713aa2b1d2dd1900fbfcfc804 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.button','data' => ['submit' => true,'text' => 'Subir Canción','id' => 'sub']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('forms.button'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['submit' => true,'text' => 'Subir Canción','id' => 'sub']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal48c3958713aa2b1d2dd1900fbfcfc804)): ?>
+<?php $attributes = $__attributesOriginal48c3958713aa2b1d2dd1900fbfcfc804; ?>
+<?php unset($__attributesOriginal48c3958713aa2b1d2dd1900fbfcfc804); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal48c3958713aa2b1d2dd1900fbfcfc804)): ?>
+<?php $component = $__componentOriginal48c3958713aa2b1d2dd1900fbfcfc804; ?>
+<?php unset($__componentOriginal48c3958713aa2b1d2dd1900fbfcfc804); ?>
+<?php endif; ?>
+                        </div>
+
+                        <div>
+                            
+                        </div>
 
 
                      <?php echo $__env->renderComponent(); ?>
@@ -781,30 +862,7 @@ if (isset($__slots)) unset($__slots);
 
 <input class="d-none" id="allSongsJSON" value="<?php echo e($songs); ?>" />
     <div class="container-fluid d-flex justify-content-center my-3">
-        <div>
-            <?php if (isset($component)) { $__componentOriginal48c3958713aa2b1d2dd1900fbfcfc804 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal48c3958713aa2b1d2dd1900fbfcfc804 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.button','data' => ['text' => 'Subir Canción','submit' => true,'id' => 'sub']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('forms.button'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['text' => 'Subir Canción','submit' => true,'id' => 'sub']); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal48c3958713aa2b1d2dd1900fbfcfc804)): ?>
-<?php $attributes = $__attributesOriginal48c3958713aa2b1d2dd1900fbfcfc804; ?>
-<?php unset($__attributesOriginal48c3958713aa2b1d2dd1900fbfcfc804); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal48c3958713aa2b1d2dd1900fbfcfc804)): ?>
-<?php $component = $__componentOriginal48c3958713aa2b1d2dd1900fbfcfc804; ?>
-<?php unset($__componentOriginal48c3958713aa2b1d2dd1900fbfcfc804); ?>
-<?php endif; ?>
-
-
-        </div>
+ 
 
     </div>
     </form>

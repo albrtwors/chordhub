@@ -24,8 +24,8 @@ document.addEventListener("livewire:navigated", () => {
         document.getElementById("topSongVisitsValue").value
     );
 
-    if (topVisits.length >= 5 && topVisits[4]) {
-        if (window.innerWidth <= 1000) {
+    if (topVisits.length < 6) {
+        if (window.innerWidth <= 1700) {
             var ctx = document.getElementById("myAreaSongChart");
             var myLineChart = new Chart(ctx, {
                 type: "bar",

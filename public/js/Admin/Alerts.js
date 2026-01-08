@@ -9,3 +9,8 @@ Livewire.on("alertError", (message) => {
     $("#exampleModalCenter").modal("hide");
     Alert.ErrorAlert(message);
 });
+
+Livewire.on("alertDBRestored", (message) => {
+    $("#exampleModalCenter").modal("hide");
+    Alert.SuccessAlert(message);
+});

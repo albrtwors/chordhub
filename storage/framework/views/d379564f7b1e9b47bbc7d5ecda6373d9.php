@@ -1,30 +1,50 @@
 <div>
-    <div class="d-flex justify-content-center mx-5">
-        <div class="d-flex justify-content-center mx-5 w-50 gap-3">
+  
+        <div class="d-flex gap-3 mx-5" style="overflow-x:scroll">
             <!--[if BLOCK]><![endif]--><?php if($type == 'show'): ?>
+            <div class="d-flex flex-column gap-2">
+                <label for="" class="fw-bold">
+                    Permisos
+                </label>
                 <select wire:model.live="ownFiles" class="form-control">
 
                     <option value="<?php echo e(false); ?>">Cancioneros de todos</option>
                     <option value="<?php echo e(true); ?>">Solo cancioneros Propios</option>
                 </select>
+            </div>
             <?php elseif($type == 'edit'): ?>
+            <div class="d-flex flex-column gap-2">
+                <label for="" class="fw-bold">
+                    Permisos
+                </label>
                 <select wire:model.live="collabFiles" class="form-control">
                     <option value="<?php echo e(false); ?>">Cancioneros Propios</option>
                     <option value="<?php echo e(true); ?>">Solo Cancioneros Colaborativos</option>
                 </select>
+            </div>
             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-            <select wire:model.live="quantity" class="w-25 form-control">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
+            <div class="d-flex flex-column gap-2">
+            <label for="" class="fw-bold">
+                Paginación
+            </label>
+            <select wire:model.live="quantity" class="form-control">
+                <option value="12">12</option>
+                <option value="24">24</option>
+                <option value="60">60</option>
             </select>
+            </div>
+            <div class="d-flex flex-column gap-2">
+            <label for="" class="fw-bold">
+                Nombre
+            </label>           
             <input wire:model.live="name" placeholder="Busca un cancionero" type="text" class="form-control">
+            </div>
 
 
         </div>
 
-    </div>
+  
 
     <div class="d-flex justify-content-center mt-2">
         <?php echo e($lists->links()); ?>
@@ -34,45 +54,29 @@
     <div class="grey-bg container-fluid">
         <section id="minimal-statistics">
             <div id="list_row" class="row">
+               
                 <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $lists; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $li): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                    <div id="list_template" class="col-xl-3 col-sm-6 col-12 mt-3">
-
-
-
-
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="card-body">
-                                    <div class="media d-flex">
-                                        <div class="align-self-center">
-                                            <i class="fas fa-music fa-2x"></i>
-                                        </div>
-                                        <div class="media-body text-right">
-                                            <h6><?php echo e($li->date); ?></h6>
-                                            <h5><?php echo e($li->name); ?></h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--[if BLOCK]><![endif]--><?php if($type == 'show'): ?>
-                                <div class="d-flex justify-content-center my-3">
-                                    <a href="<?php echo e(route('cancioneros.show', $li->id)); ?>"><button
-                                            class="btn btn-primary">Ver</button></a>
-                                </div>
-                            <?php elseif($type == 'edit'): ?>
-                                <div class="d-flex justify-content-center my-3">
-                                    <a href="<?php echo e(route('cancioneros.edit', $li->id)); ?>"><button
-                                            class=" btn btn-primary">Modificar</button></a>
-                                </div>
-                            <?php else: ?>
-                                <div class="d-flex justify-content-center my-3">
-                                    <button wire:click="showDelete(<?php echo e($li->id); ?>)"
-                                        class=" btn btn-danger">Eliminar</button>
-                                </div>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                        </div>
-
-                    </div>
+                     <?php if (isset($component)) { $__componentOriginald5431a6480dec0497ab897d29c9901c6 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald5431a6480dec0497ab897d29c9901c6 = $attributes; } ?>
+<?php $component = App\View\Components\File\FileCard::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('file.file-card'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\File\FileCard::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['id' => ''.e($li->id).'','type' => ''.e($type).'','name' => ''.e($li->name).'','author' => ''.e($li->user->name).'','songs' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($li->songs)]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald5431a6480dec0497ab897d29c9901c6)): ?>
+<?php $attributes = $__attributesOriginald5431a6480dec0497ab897d29c9901c6; ?>
+<?php unset($__attributesOriginald5431a6480dec0497ab897d29c9901c6); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald5431a6480dec0497ab897d29c9901c6)): ?>
+<?php $component = $__componentOriginald5431a6480dec0497ab897d29c9901c6; ?>
+<?php unset($__componentOriginald5431a6480dec0497ab897d29c9901c6); ?>
+<?php endif; ?>
+                    
 
 
 

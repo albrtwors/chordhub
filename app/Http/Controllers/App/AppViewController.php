@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use App\Models\Genre;
 use App\Models\Visit;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+
 class AppViewController extends Controller
 {
     use GraphicController;
@@ -16,6 +19,8 @@ class AppViewController extends Controller
     public function renderApp()
     {
 
+        // Permission::create(['name'=>'admin.logs'])->syncRoles([Role::find(1), Role::find(2)]);
+        
         $genres = Genre::all();
         $topSongJson = $this->getPopularSongs() ?? null;
         $topGenreJson = $this->getPopularGenres() ?? null;
@@ -30,9 +35,6 @@ class AppViewController extends Controller
         return view("modules.App.dashboard", compact(['genres', 'topSongJson', 'topGenreJson', 'topSong', 'lastSong', 'songs', 'userSongs', 'topTonalities', 'topContributors', 'mostListedSongs']));
     }
 
-    public function newsIndex(){
-        return view('modules.app.news');
-    }
 
     public function uploadsIndex(){
         return view('modules.user.userUploads');
